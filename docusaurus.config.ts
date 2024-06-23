@@ -37,13 +37,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          lastVersion: 'current',
-          versions: {
-            current: {
-              label: '0.2.x',
-              path: ''
-            }
-          }
         },
         blog: {
           showReadingTime: true,
@@ -111,11 +104,11 @@ const config: Config = {
               to: '/docs/docs/intro',
             },
             {
-              label: 'Tutorial',
-              to: '/docs/category/tutorial',
+              label: 'Quickstart',
+              to: '/docs/docs/quickstart',
             },
             {
-              label: 'Developer Topics',
+              label: 'Squirrels Developer Topics',
               to: '/docs/category/topics',
             },
             {

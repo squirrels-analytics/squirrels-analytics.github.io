@@ -13,3 +13,5 @@ See package.json for:
 - The list of commands available using `npm run`
 
 Using github actions, the public website updates for every commit to the `main` branch, but only if `npm run build` succeeds.
+
+Write documentation content as markdown files in either the `docs/docs` folder or the `docs/references` folder. Add the file to `sidebars.ts` for it to appear in the left panel.
