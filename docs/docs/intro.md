@@ -2,15 +2,19 @@
 
 ## Overview
 
-Squirrels is a low-code REST API framework designed to simplify and automate data analytics. It eases the burden on data / analytics engineers and eliminates the need for API engineers to create data analytics APIs. With a primary focus on reusability and flexibility, Squirrels allows for query logic to be shared across multiple front-end applications. The framework makes it easy to create REST APIs that generate complex SQL queries using query parameters for selected parameter values, and delivering tabular results that can change behaviour based on selected values.
+Squirrels is a low-code REST API framework designed to simplify and automate data analytics. It eases the burden on data / analytics engineers, eliminates the need for API engineers to create data analytics APIs, and allows data / analytics engineers to play a bigger role in creating backend services for data analytics. With a primary focus on reusability and flexibility, Squirrels also allows for query logic to be shared across multiple front-end applications. The framework makes it easy to create REST APIs that generate complex SQL queries using query parameters for selected parameter values, and delivering tabular results that can change behaviour based on the selected values.
 
-For those familiar with [dbt](https://www.getdbt.com/), Squirrels is essentially the dbt for real-time dynamic data analytics. In fact, the project structure and CLI are intentionally made similar to dbt such that engineers who are already familiar with dbt can pick up Squirrels easily.
+For those familiar with [dbt](https://www.getdbt.com/), Squirrels uses a similar data modelling approach as dbt. However, the two frameworks are meant for different use cases: Squirrels is meant for the real-time data analytics, whereas dbt is meant for the offline data transformation pipelines. The project structure and CLI of Squirrels is intentionally made similar to dbt such that engineers who are already familiar with dbt can pick up Squirrels easily.
 
 ## Main Features
 
+#### API Access to Datasets
+
+Applications can access "datasets" and their associated parameters via well-defined API endpoints. Each dataset can be configured with a target model, a set of applicable widget parameters, and access permissions. A testing UI is available to conveniently test your APIs, and OpenAPI documentation is auto-generated for you.
+
 #### Dynamic Queries with SQL Jinja or Python
 
-Squirrels utilizes Jinja as a templating language for rendering complex SQL queries. These templates, known as 'models', enable the dynamic generation of queries based on business needs. Additionally, Squirrels supports Python to generate dynamic queries, providing a more flexible tool of handling data transformations through sqlalchemy ORM or pandas dataframes (if preferred).
+Squirrels utilizes Jinja as a templating language for rendering complex SQL queries. These templates, known as "models", enable the dynamic generation of queries based on business needs. Additionally, Squirrels supports Python to generate dynamic queries, providing a more flexible tool of handling data transformations through SQLAlchemy ORM or pandas dataframes (if preferred).
 
 #### Model Dependencies
 
@@ -18,15 +22,15 @@ Similar to [dbt](https://www.getdbt.com/), the **ref** function is available to 
 
 #### Cascading Parameters
 
-The framework supports dynamic cascading parameter widgets that adjust based on the selected values of other parameters. These parameters can be specified as hard-coded configurations, or fetched from database lookup tables. Models can use the selected parameter values to change behaviour.
-
-#### API Access to Datasets
-
-Applications can access "datasets" and their associated parameters via well-defined API endpoints. Each dataset can be configured with a target model, a set of applicable widget parameters, and access permissions. During development, a testing UI is available to conveniently test your APIs.
+The framework supports dynamic cascading parameter widgets that adjust based on the selected values of other parameters. These parameters can be specified as hard-coded configurations, or fetched from database lookup tables. Models can use the selected parameter values to change behaviour. For free-form text parameters, SQL models are protected from SQL injection.
 
 #### Context Variables
 
-Squirrels allows for the creation of "context variables" in Python files which can then be used within your models. These context variables are useful to leverage your favourite Python IDE (for features like autofill suggestions) to more conveniently define variables based on selected parameter values.
+Squirrels allows for the creation of "context variables" in Python files to process parameter selections into meaningful variables for your models. These context variables are useful to leverage your favourite Python IDE (for features like autofill suggestions) to more conveniently define your variables.
+
+#### Lookup Tables as CSV Files
+
+You can choose to store lookup tables as CSV files, known as "seeds", in your Squirrels project. This allows you to version control reference data together with your project. The seeds can be used as a source for your parameter options, or referenced by models using the **ref** function. 
 
 #### In-Memory Caching
 

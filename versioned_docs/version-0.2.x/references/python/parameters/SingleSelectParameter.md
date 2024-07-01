@@ -14,7 +14,7 @@ For SingleSelectParameter in particular:
 
 ### CreateSimple
 
-Creates the configurations for a single-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to an abstract pool of parameter configurations. 
+Creates the configurations for a single-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
 Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**. For arguments, see **Create** in the [Parameter] page.
 

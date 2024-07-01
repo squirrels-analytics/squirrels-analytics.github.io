@@ -9,11 +9,11 @@ Can be found in the classpath `squirrels.parameters.MultiSelectParameter` or `sq
 In addition to the static methods specified on this page, see the [Parameter] page for details on the **CreateFromSource** factory methods.
 
 For MultiSelectParameter in particular:
-- The **data_source** argument of the **CreateFromSource** factory method must be a [MultiSelectDataSource](../data_sources/MultiSelectDataSource) 
+- The **data_source** argument of the **CreateFromSource** factory method must be a [SelectDataSource](../data_sources/SelectDataSource) 
 
 ### Create
 
-Creates the configurations for a multi-select parameter by providing a list of the parameter option objects, and adds it to an abstract pool of parameter configurations.
+Creates the configurations for a multi-select parameter by providing a list of the parameter option objects, and adds it to a pool of parameter configurations that datasets can pick from.
 
 **Required Arguments:**
 
@@ -23,11 +23,11 @@ Creates the configurations for a multi-select parameter by providing a list of t
 
 **Optional Keyword Arguments:**
 
-- **show_select_all**:A boolean for whether this parameter should have a checkbox/button to automatically select all options. Default is true
+- **description**: A string for text that describes the parameter
+- **show_select_all**: A boolean for whether this parameter should have a checkbox/button to automatically select all options. Default is true
 - **is_dropdown**: A boolean for whether this parameter should show as a dropdown (true) or listbox (false). Default is true
 - **order_matters**: A boolean for whether the ordering of the selection matters. Default is false
 - **none_is_all**: A boolean for whether applying no selection is equivalent to selecting all. Default is true
-- **is_hidden**: A boolean for whether the parameter is hidden in the response of the Parameters API. Default is False
 - **user_attribute**: An optional string for the user attribute that may cascade the options for this parameter. If None, then the authorized user has no effect on the selectable parameter options. Default is None
 - **parent_name**: An optional string for the name of the parameter (or "parent parameter") that may cascade the options for this parameter. If None, then other parameters have no effect on the selectable parameter options for this parameter. Default is None
 
@@ -35,9 +35,25 @@ Creates the configurations for a multi-select parameter by providing a list of t
 
 ### CreateSimple
 
-Creates the configurations for a multi-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to an abstract pool of parameter configurations. 
+Creates the configurations for a multi-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
 Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**.
+
+### CreateFromSource
+
+Creates the configurations for a multi-select parameter by providing a lookup table to query from, and adds it to a pool of parameter configurations that datasets can pick from.
+
+**Required Arguments:**
+
+- **name**: A string for the name of the parameter
+- **label**: A string for human-friendly display name for this parameter
+- **data_source**: An instance of a [SelectDataSource](../data_sources/SelectDataSource) which contains details of the lookup table from the external database
+
+**Optional Keyword Arguments:**
+
+Same optional arguments as the **Create** static method.
+
+**Returns:** None
 
 ## Non-Static Methods
 

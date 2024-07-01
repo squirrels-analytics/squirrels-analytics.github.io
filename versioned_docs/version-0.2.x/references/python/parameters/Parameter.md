@@ -18,7 +18,7 @@ The definitions of the **Create** and **CreateFromSource** factory methods are v
 
 ### Create
 
-Creates the configurations for a widget parameter by providing a list of the parameter option objects, and adds it to an abstract pool of parameter configurations.
+Creates the configurations for a widget parameter by providing a list of the parameter option objects, and adds it to a pool of parameter configurations that datasets can pick from.
 
 **Required Arguments:**
 
@@ -36,7 +36,7 @@ Creates the configurations for a widget parameter by providing a list of the par
 
 ### CreateFromSource
 
-Creates the configurations for a widget parameter by providing a lookup table to query from, and adds it to an abstract pool of parameter configurations.
+Creates the configurations for a widget parameter by providing a lookup table to query from, and adds it to a pool of parameter configurations that datasets can pick from.
 
 **Required Arguments:**
 

@@ -37,6 +37,13 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: '0.3.x',
+              path: ''
+            }
+          }
         },
         blog: {
           showReadingTime: true,
@@ -82,8 +89,14 @@ const config: Config = {
           label: 'References',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'releases', 
+          label: 'Release Notes', 
+          position: 'left'
+        },
+        {
           type: 'docsVersionDropdown',
-          position: 'left',
+          position: 'left'
         },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
@@ -109,11 +122,11 @@ const config: Config = {
             },
             {
               label: 'Squirrels Developer Topics',
-              to: '/docs/category/topics',
+              to: '/docs/docs/topics',
             },
             {
               label: 'Frontend Topics',
-              to: '/docs/category/frontend',
+              to: '/docs/docs/frontend',
             },
           ],
         },
@@ -122,11 +135,11 @@ const config: Config = {
           items: [
             {
               label: 'CLI References',
-              to: '/docs/category/cli',
+              to: '/docs/references/cli',
             },
             {
               label: 'Python Classes',
-              to: '/docs/category/python',
+              to: '/docs/references/python',
             },
           ],
         },
@@ -135,7 +148,7 @@ const config: Config = {
           items: [
             {
               label: 'Discord',
-              href: 'https://discord.gg/KqUkZX3G',
+              href: 'https://discord.com/invite/7STqRCEG4f',
             },
           ],
         },

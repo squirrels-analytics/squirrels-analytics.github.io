@@ -5,25 +5,20 @@ The `sqrl run` command is activates the API server to interact with the datasets
 The run command provides the following options (this can be found from `sqrl run -h`):
 
 ```bash
-usage: sqrl run [-h] [--no-cache] [--debug] [--host HOST] [--port PORT]
+usage: sqrl run [-h] [--no-cache] [--host HOST] [--port PORT]
 
 optional arguments:
   -h, --help   Show this help message and exit
   --no-cache   Do not cache any api results
-  --debug      Show all "hidden parameters" in the parameters response
   --host HOST  The host to run on
   --port PORT  The port to run on
 ```
 
-The default host is `127.0.0.1` and the default port is `4465`. Behind the scenes, Squirrels run a FastAPI app. While running, you can access http://127.0.0.1:4465 or http://localhost:4465 from the browser to interact with the Squirrels Testing UI. 
+The default host is `127.0.0.1` and the default port is `4465`. Behind the scenes, Squirrels run a FastAPI app. While running, you can access:
+- http://127.0.0.1:4465 or http://localhost:4465 to interact with the Squirrels Testing UI
+- http://127.0.0.1:4465/docs or http://localhost:4465/docs to see the auto-generated OpenAPI docs
 
-:::warning
-
-In a future version of Squirrels, we intend to make the Testing UI on a separate port than the other REST APIs. This means running two FastAPI apps on two different ports simultaneously, with the ability to terminate both servers at once.
-
-:::
-
-Assume you have a project named "my_proj" with a sample dataset named "my_ds". You can use the following REST APIs for requests to retrieve various JSON results:
+There are additional paths that return JSON results. Assume you have a project named "my_proj" with a sample dataset named "my_ds". You can use the following REST APIs to retrieve the results:
 
 - The Projects Catalog API
     - **Path**: GET **/squirrels-v0**

@@ -24,7 +24,7 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
 
 :::tip
 
-If you wish to use some custom Python function in Jinja, it's possible to do so by setting a context variable to the function!
+If you wish to use a custom Python function in Jinja, it's possible to do so by setting a context variable to the function! This is illustrated below:
 
 In `context.py`:
 
@@ -38,9 +38,7 @@ ctx["my_function"] = my_func
 In Jinja:
 
 ```jinja
-{%- set my_func = ctx["my_function"] -%}
-
-{{ my_func("some_args") }}
+{{ ctx.my_function("my_args") }}
 ```
 
 :::

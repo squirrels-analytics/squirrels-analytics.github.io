@@ -446,7 +446,7 @@ In addition, the following topics may also useful for your Squirrels projects:
 - [Versioning Best Practices](./topics/tips/versioning)
 - [Deployment](./topics/tips/deployment)
 
-You can also check out the [CLI References](/docs/category/cli) to understand the commands available with Squirrels, or check out the [Python Classes](/docs/category/python) available in the Squirrels library.
+You can also check out the [CLI References](/docs/references/cli) to understand the commands available with Squirrels, or check out the [Python Classes](/docs/references/python) available in the Squirrels library.
 
 
 [python virtual environments]: https://realpython.com/python-virtual-environments-a-primer/

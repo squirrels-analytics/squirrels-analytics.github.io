@@ -14,7 +14,7 @@ For DateParameter in particular:
 
 ### CreateSimple
 
-Creates the configurations for a date parameter by providing a list of [DateParameterOption](../parameter_options/DateParameterOption) instances, and adds it to an abstract pool of parameter configurations.
+Creates the configurations for a date parameter by providing a list of [DateParameterOption](../parameter_options/DateParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from.
 
 Unlike the **Create** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
 

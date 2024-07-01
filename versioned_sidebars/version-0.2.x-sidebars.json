@@ -9,7 +9,7 @@
         "type": "generated-index",
         "title": "Squirrels Developer Topics",
         "description": "Topics on developing projects with the Squirrels framework",
-        "slug": "category/topics"
+        "slug": "docs/topics"
       },
       "items": [
         "docs/topics/project",
@@ -40,7 +40,7 @@
         "type": "generated-index",
         "title": "Frontend Topics",
         "description": "Topics on using REST APIs developed by a Squirrels project",
-        "slug": "category/frontend"
+        "slug": "docs/frontend"
       },
       "items": [
         "docs/frontend/rest-api",
@@ -56,7 +56,7 @@
         "type": "generated-index",
         "title": "CLI References",
         "description": "References for Squirrels CLI commands",
-        "slug": "category/cli"
+        "slug": "references/cli"
       },
       "items": [
         "references/cli/init",
@@ -72,7 +72,7 @@
         "type": "generated-index",
         "title": "Python Classes",
         "description": "References for Python classes and functions available in the Squirrels python library",
-        "slug": "category/python"
+        "slug": "references/python"
       },
       "items": [
         {
@@ -157,5 +157,8 @@
         }
       ]
     }
+  ],
+  "releases": [
+    "releases"
   ]
 }

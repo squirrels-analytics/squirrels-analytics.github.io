@@ -13,7 +13,7 @@ For MultiSelectParameter in particular:
 
 ### Create
 
-Creates the configurations for a multi-select parameter by providing a list of the parameter option objects, and adds it to an abstract pool of parameter configurations.
+Creates the configurations for a multi-select parameter by providing a list of the parameter option objects, and adds it to a pool of parameter configurations that datasets can pick from.
 
 **Required Arguments:**
 
@@ -35,7 +35,7 @@ Creates the configurations for a multi-select parameter by providing a list of t
 
 ### CreateSimple
 
-Creates the configurations for a multi-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to an abstract pool of parameter configurations. 
+Creates the configurations for a multi-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
 Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**.
 

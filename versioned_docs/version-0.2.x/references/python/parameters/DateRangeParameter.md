@@ -14,7 +14,7 @@ For DateRangeParameter in particular:
 
 ### CreateSimple
 
-Creates the configurations for a date range parameter by providing a list of [DateRangeParameterOption](../parameter_options/DateRangeParameterOption) instances, and adds it to an abstract pool of parameter configurations. 
+Creates the configurations for a date range parameter by providing a list of [DateRangeParameterOption](../parameter_options/DateRangeParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
 Unlike the **Create** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
 

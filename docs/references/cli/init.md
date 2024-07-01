@@ -1,6 +1,6 @@
 # sqrl init
 
-The `sqrl init` command is used to set up a new Squirrels project, or add files to an existing one. When used, it will populate the current directory with a barebones version of a Squirrels project, where the files added depend on the user's preference. By default, the files created will not overwrite files that already exist. This behaviour can be changed by using the `--overwrite` option.
+The `sqrl init` command is used to set up a new Squirrels project, or add files to an existing one. When used, it will populate the current directory with a barebones version of a Squirrels project, where the files added depend on the user's preference. By default, the files created will not overwrite files that already exist. This behaviour can be changed by using the `--overwrite` or `-o` option.
 
 After executing the command, the user would be able to specify which files should be initialized by answering the following prompts:
 
@@ -11,13 +11,14 @@ After executing the command, the user would be able to specify which files shoul
         - **What's the file format for the database view model? (sql/py)**
         - **What's the file format for the federated model? (sql/py)**
 - **Do you want to add the 'auth.py' file? (y/N)**
-- **What sample sqlite database do you wish to use (if any)? (none/expenses/weather)**
+- **What sample sqlite database do you wish to use (if any)? (expenses/weather/none)**
 
 The core files include:
 
 - `squirrels.yml`, `environcfg.yml`, and `.gitignore` files in the project root
 - A `database_view1.sql` or `database_view1.py` file in `models/dbviews/` folder
 - A `dataset_example.sql` or `dataset_example.py` file in the `models/federates/` folder
+- `seed_categories.csv` and `seed_subcategories.csv` in the `seeds` folder
 - In the `pyconfigs/` folder
     - A `connections.py` file if `py` was specified for database connections
     - A `parameters.py` file if `py` was specified for parameters
@@ -35,27 +36,25 @@ Additional prompts are also provided to inquire whether certain files (such as `
 |`pyconfigs/auth.py`|If authentication is involved, the user model and authentication function is defined here. See [Authentication](../../docs/topics/auth) for more details.|
 |`models/dbviews/*`|SQL Jinja templates or Python files that define dynamic views of external database(s). See [SQL Models](../../docs/topics/models-sql) or [Python Models](../../docs/topics/models-python) for more details.|
 |`models/federates/*`|SQL Jinja templates or Python files that define dynamic tables/views that may depend on other models. These tables/views are written to a temporary database embedded in server memory. See [SQL Models](../../docs/topics/models-sql) or [Python Models](../../docs/topics/models-python) for more details.|
+|`seeds/*`|CSV files that can be used as lookup tables for parameters or models.|
 
-Further usage details can be found by running `sqrl init -h` which prints the text below. The user can also choose which files to include through command line options without using the prompts above. All command line options below except for `-h` and `--overwrite` disables the prompts.
+Further usage details can be found by running `sqrl init --help` or `sqrl init -h` which prints the text below. The user can also choose which files to include through command line options without using the prompts above. All command line options below except for `-h` and `-o` disables the prompts.
 
 ```bash
-usage: sqrl init [-h] [-o] [--core] [--connections {yml,py}] [--parameters {yml,py}] [--dbview {sql,py}]
-                 [--federate {sql,py}] [--auth] [--sample-db {expenses,weather}]
+usage: sqrl init [-h] [-o] [--core] [--connections {yml,py}] [--parameters {yml,py}] [--dbview {sql,py}] [--federate {sql,py}] [--auth]
+                 [--sample-db {expenses,weather,none}]
 
 optional arguments:
   -h, --help            Show this help message and exit
   -o, --overwrite       Overwrite files that already exist
   --core                Include all core files
   --connections {yml,py}
-                        Configure database connections as yaml (default) or python. Ignored if "--core" is not
-                        specified
+                        Configure database connections as yaml (default) or python. Ignored if "--core" is not specified
   --parameters {yml,py}
                         Configure parameters as python (default) or yaml. Ignored if "--core" is not specified
-  --dbview {sql,py}     Create database view model as sql (default) or python file. Ignored if "--core" is not
-                        specified
-  --federate {sql,py}   Create federated model as sql (default) or python file. Ignored if "--core" is not        
-                        specified
+  --dbview {sql,py}     Create database view model as sql (default) or python file. Ignored if "--core" is not specified
+  --federate {sql,py}   Create federated model as sql (default) or python file. Ignored if "--core" is not specified
   --auth                Include the auth.py file
-  --sample-db {expenses,weather}
+  --sample-db {expenses,weather,none}
                         Sample sqlite database to include
 ```

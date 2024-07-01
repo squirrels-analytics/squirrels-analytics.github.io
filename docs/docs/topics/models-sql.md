@@ -14,7 +14,7 @@ Like [dbt], all SQL models in Squirrels can be templated with [Jinja]. However, 
 
 The **dbview model** represents a view that runs against an external database. The connection settings to the external database is set up with YAML in the "connections" section of [squirrels.yml] or with Python in [connections.py]. This means the SQL dialect for the dbview model depends on the database it's running against. All dbview models are defined in the `models/dbviews/` folder.
 
-By default, the connection name used by the dbview model is called `default` (or whatever is set for the [project setting] **connections.default_name_used**). To change the connection name used, use the **connection_name** argument of the **config** function in Jinja.
+By default, the connection name used by the dbview model is called `default` (or whatever is set for the [Project Setting] **connections.default_name_used**). To change the connection name used, use the **connection_name** argument of the **config** function in Jinja.
 
 ```sql
 {{- config(connection_name="my_conn_name") -}}
@@ -32,7 +32,7 @@ dbviews:
 
 ## Federate Models
 
-The **federate model** would then be able to transform the results from dbview models (or other federate models) to create new results. This is possible since the results of the dbview models are written to a temporary in-memory database as a table for every API request. This in-memory database is typically sqlite, which also means that the SQL dialect for federate models is sqlite (this can also change to duckdb instead of sqlite using the [project setting] for **in_memory_database**). All federate models are defined in the `models/federates/` folder.
+The **federate model** would then be able to transform the results from dbview models (or other federate models) to create new results. This is possible since the results of the dbview models are written to a temporary in-memory database as a table for every API request. This in-memory database is typically sqlite, which also means that the SQL dialect for federate models is sqlite (this can also change to duckdb instead of sqlite using the [Project Setting] for **in_memory_database**). All federate models are defined in the `models/federates/` folder.
 
 Use the **ref** function to specify the dependent models. This is how Squirrels can figure out all upstream models that must be run first before running a given federate model (models are compiled in upstream order and then run in downstream order). This function cannot be used in dbview models. Below is a simple example of usage.
 
@@ -68,14 +68,14 @@ In addition to **ref** and **config**, there are other useful variables defined 
 - **proj_vars** - a dictionary of the project variables defined in [squirrels.yml].
 - **env_vars** - a dictionary of the environment variables defined in [environcfg.yml].
 
-In Jinja, a dictionary value can be referenced by key with square brackets, the same way in Python. For example:
+In Jinja, a dictionary value can be referenced by key with square brackets, the same way in Python, or by simply using dot notation. For example:
 
 ```sql
 SELECT * FROM mytable
-WHERE mycol = '{{ ctx["some_value"] }}'
+WHERE mycol = '{{ ctx.some_value }}'
 ```
 
-Attributes of Python class instances, such as **user**, can also by referenced the same way in Jinja and Python. For example:
+Attributes of Python class instances, such as **user**, can also be referenced by dot notation, which is the same way in Jinja and Python. For example:
 
 ```sql
 SELECT
@@ -153,7 +153,7 @@ However, using include or importing **with context** are not recommended since t
 
 [squirrels.yml]: ./project-file
 [environcfg.yml]: ./environcfg
-[project setting]: ./settings
+[Project Setting]: ./settings
 [connections.py]: ./database
 [sqrl init]: ../../references/cli/init
 [sqrl deps]: ../../references/cli/deps

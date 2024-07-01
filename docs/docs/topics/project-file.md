@@ -73,7 +73,7 @@ The fields **name** and **url** are required. The field **credential** is only r
 - **credential** - Select a credential name defined in [environcfg.yml].
 - **url** - The SQLAlchemy URL. Placeholders for `{username}` and `{password}` can be included in the URL to substitute the username and password from the specified **credential**.
 
-If you need to use a different URL based on the environment, you can set an environment variable in [environcfg.yml] and use Jinja to substitute environment variables into "squirrels.yml" (such as `url: {{ my_conn_str }}`).
+If you need to use a different URL based on the environment, you can set an environment variable in [environcfg.yml] and use the "env_vars" dictionary in Jinja to substitute environment variables into "squirrels.yml". For example, `url: {{ env_vars.my_conn_str }}`.
 
 :::note
 
@@ -108,7 +108,7 @@ Each parameter must define the fields **type**, **factory**, and **arguments**.
 
 Most arguments are typical key-value pairs (where yaml can represent the type for the value). However, this is not quite the case for argument types of **datasource** (a parameter data source class) and **all_options** (a list of parameter option classes).
 
-If the argument is **datasource** (which is required for all **CreateFromSource** factory methods), then use the arguments of the corresponding data source class constructor to specify a new set of key-value pairs. For instance, the corresponding data source class for **MultiSelectParameter** is **MultiSelectDataSource**. As shown in the example below, **MultiSelectDataSource** requires arguments **table_or_query**, **id_col**, and **options_col** (note, **table_or_query** is required for all data source constructors).
+If the argument is **datasource** (which is required for all **CreateFromSource** factory methods), then use the arguments of the corresponding data source class constructor to specify a new set of key-value pairs. For instance, the corresponding data source class for **MultiSelectParameter** is **SelectDataSource**. As shown in the example below, **SelectDataSource** requires arguments **table_or_query**, **id_col**, and **options_col** (note, **table_or_query** is required for all data source constructors).
 
 ```yaml
 parameters:
@@ -126,7 +126,7 @@ parameters:
 The equivalent Python representation would be:
 
 ```python
-my_data_source = MultiSelectDataSource("my_lookup_table", id_col="my_ids", options_col="my_options")
+my_data_source = SelectDataSource("my_lookup_table", id_col="my_ids", options_col="my_options")
 MultiSelectParameter.CreateFromSource("my_filter", "My Filter", data_source=my_data_source)
 ```
 
@@ -158,35 +158,6 @@ SingleSelectParameter.Create("my_select", "My Single Select", all_options=my_par
 
 For non-select parameter types like **DateParameter**, it may seem unintuitive why multiple parameter options may be needed (using the **Create** factory method), but it's useful when parent parameters are defined and for instance, you want to change the default date based on the selection of the parent parameter. More details can be found in the [Widget Parameters](./parameters) page.
 
-### selection_test_sets
-
-This section provides test sets for parameter selections when working with the [sqrl compile](../../references/cli/compile) CLI command.
-
-For example, suppose we have test set called `my_test_set` defined in this section as such:
-
-```yaml
-selection_test_sets:
-  - name: my_test_set
-    user_attributes:
-      organization: org1
-    parameters:
-      my_single_select_param: x3
-```
-
-For each test set, the **name** field is required, and the **user_attributes** and **parameters** fields are optional.
-- **name** - The assigned name of the test set to make it easy to reference elsewhere. If the name `default` is defined, it overrides the default selections if no test set is not explicitly referenced.
-- **user_attributes** - If authentication is used, the values of required user attributes (i.e., the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
-  - If needed, you can override the **username** and **is_internal** attributes here as well. If omitted, default values are empty string for **username** and false for **is_internal**.
-- **parameters** - The selected parameter values to test with are defined here. For any parameter names that are not specified here, the default selected value is used.
-
-Then, you can test the generation of SQL queries from the Jinja templates using the selections defined in `my_test_set` with `sqrl compile --test-set my_test_set`. If no `--test-set` option is specified, it will use the test set named `default` if it exists, or use all the default values for each parameter selection. 
-
-:::warning
-
-If using authentication and a user attibute is being referenced (in a model for instance), then the test set used with the `sqrl compile` command must define it in the **user_attributes** field. If the user_attribute is not defined for a test set named `default`, then using the `sqrl compile` command without specifying the `--test-set` option will not work.
-
-:::
-
 ### datasets
 
 This section defines the datasets to serve as API endpoints. The following example defines a dataset named `my_dataset`.
@@ -201,6 +172,7 @@ datasets:
       - my_param
     traits:
       my_field: value
+    default_test_set: null
 ```
 
 For each dataset, the **name** field is required, and the other fields are optional.
@@ -210,6 +182,39 @@ For each dataset, the **name** field is required, and the other fields are optio
 - **scope** - One of **public**, **protected**, or **private**. All users (authenticated or not) can access public datasets, only authenticated users can access protected datasets, and only internal users can access private datasets. If omitted, default is **public**.
 - **parameters** - The list of parameters that this dataset uses. If omitted, all parameters are used.
 - **traits** - A set of variable values defined under this dataset, which may affect the behaviour of data models.
+- **default_test_set** - The default test set to compile this dataset with if no test set is specified. If omitted, uses the default test set configured for the project based on [Project Setting] for **selection_test_sets.default_name_used**, which is typically set to `default`. If this value doesn't exist as a test set in the **selection_test_sets** section, default parameter selections are used. More details on test sets are provided in the **selection_test_sets** section below.
+
+### selection_test_sets
+
+This section provides test sets for parameter selections when working with the [sqrl compile](../../references/cli/compile) CLI command.
+
+For example, suppose we have test set called `my_test_set` defined in this section as such:
+
+```yaml
+selection_test_sets:
+  - name: my_test_set
+    datasets:
+      - my_dataset
+    user_attributes:
+      organization: org1
+    parameters:
+      my_single_select_param: x3
+```
+
+For each test set, the **name** field is required, and the **datasets**, **user_attributes**, and **parameters** fields are optional.
+- **name** - The assigned name of the test set to make it easy to reference for multiple datasets.
+- **datasets** - The list of datasets that the test set is applicable to. If omitted, it is assumed that the test set is applicable for all datasets.
+- **user_attributes** - If authentication is used, the values of required user attributes (i.e., the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
+  - If needed, you can override the **username** and **is_internal** attributes here as well. If omitted, default values are empty string for **username** and false for **is_internal**.
+- **parameters** - The selected parameter values to test with are defined here. For any parameter names that are not specified here, the default selected value is used.
+
+Then, you can test the generation of SQL queries from the Jinja templates using the selections defined in `my_test_set` with `sqrl compile --test-set my_test_set`. If no `--test-set` option is specified, it will use the test set named `default` if it exists, or use all the default values for each parameter selection. 
+
+:::warning
+
+If using authentication and a user attibute is being referenced (in a model for instance), then the test set used with the `sqrl compile` command must define it in the **user_attributes** field. If the user_attribute is not defined for a test set named `default`, then using the `sqrl compile` command without specifying the `--test-set` option will not work.
+
+:::
 
 ### dbviews
 
@@ -237,13 +242,13 @@ federates:
 
 The **name** field is required and other fields are optional.
 - **name** - The name of the federate model, which should also be the name of a SQL file in the `models/federates/` folder.
-- **materialized** - Defines how the federate model gets materialized in the in-memory database. Options are "table" and "view", with "table" being the default (unless specified otherwise with the **defaults.federates.materialized** [setting]).
+- **materialized** - Defines how the federate model gets materialized in the in-memory database. Options are "table" and "view", with "table" being the default (unless specified otherwise with the **defaults.federates.materialized** [Project Setting]).
 
 ### settings
 
-This section defines certain settings that Squirrels would apply to the project. See the [Project Settings](./settings) page for the available settings, descriptions, and default values.
+This section defines certain settings that Squirrels would apply to the project. See the [Project Setting] page for the available settings, descriptions, and default values.
 
 
 [Python parameter classes]: ../../references/python/parameters/Parameter
 [environcfg.yml]: ./environcfg
-[setting]: ./settings
+[Project Setting]: ./settings

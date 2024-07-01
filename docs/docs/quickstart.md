@@ -14,7 +14,7 @@ Starting with an empty folder for your Squirrels project, create and activate a 
 
 :::tip
 
-For example, you can create the virtual environment by running `python -m venv .venv` in the terminal. This will create a ".venv" folder in your project.
+There are a number of ways to create a Python virtual environment. One of the most common ways is by running `python -m venv .venv` in the terminal. This will create a ".venv" folder in your project.
 
 Then, activate the virtual environment by doing one of the following:
 - run `.venv/Scripts/activate` in a Windows terminal, or
@@ -26,7 +26,7 @@ Then, activate the virtual environment by doing one of the following:
 To install the Squirrels library in your virtual environment, run:
 
 ```bash
-pip install "squirrels>=0.2.0,<0.3.0"
+pip install "squirrels>=0.3.0,<0.4.0"
 ```
 
 To confirm it installed properly, run:
@@ -42,10 +42,12 @@ Or simply run `sqrl --version` for short.
 You can initialize the project files using:
 
 ```bash
-sqrl init
+sqrl init --core
 ```
 
-Prompts will appear for the various files you wish to include in your project. Answer the prompts as follows:
+:::note
+
+If you choose to run `sqrl init` without the `--core` option, a set of prompts will appear for the various files you wish to include in your project. For this tutorial, you would answer the prompts as follows:
 
 ```config
 [?] Include all core project files? (Y/n): y
@@ -74,14 +76,6 @@ Prompts will appear for the various files you wish to include in your project. A
    weather
 ```
 
-:::tip
-
-You can also skip the prompts by running this instead:
-
-```bash
-sqrl init --core --sample-db expenses
-```
-
 :::
 
 Once the command is executed, a set of folders/files are created for a sample project. Go ahead and take a quick glance at the new files (no need to fully understand them now). Then, run the API server using the command:
@@ -90,12 +84,15 @@ Once the command is executed, a set of folders/files are created for a sample pr
 sqrl run
 ```
 
-In a web browser, go to `http://localhost:4465/`. This leads you to the Squirrels Testing UI, a convenient interface for testing the REST APIs. Click the "Apply" button to display the dataset for the default parameter selections (feel free to take some time now to play with different parameter selections).
+In a web browser, go to `http://localhost:4465/`. This leads you to the Squirrels Testing UI, a convenient interface for testing the REST APIs created by your Squirrels project. Click the "Apply" button to display the dataset for the default parameter selections (feel free to play around with different parameter selections).
 
-To see the API endpoints that provide the information on the parameters and results of the "Sample Dataset", you can use the following URLs to access the JSON response:
+To find OpenAPI/Swagger documentation on the REST APIs, go to `http://localhost:4465/docs`.
+
+You can enter the following URLs directly to access the JSON response:
 
 1. Parameters API: `http://localhost:4465/squirrels-v0/sample/v1/dataset/dataset-example/parameters`
-2. Dataset Result API: `http://localhost:4465/squirrels-v0/sample/v1/dataset/dataset-example` (for default parameter selections)
+2. Dataset Result API: `http://localhost:4465/squirrels-v0/sample/v1/dataset/dataset-example` 
+    - Note: default parameter selections are used when no query parameters are specified
 
 After you're done with the API server, you can shut it down in the terminal with "Ctrl+C".
 
@@ -111,13 +108,13 @@ This adds a `weather.db` file in the `database` folder.
 
 ## Step 2: Configure the Squirrels Project File
 
-Go to the `squirrels.yml` file. This is the Squirrels project file to configure most of the properties of the Squirrels project in [yaml].
+Open the [squirrels.yml] file. This is the Squirrels project file to configure most of the properties of the Squirrels project in [yaml].
 
-In this tutorial, we will focus on the **project_variables**, **connections**, and **datasets** sections.
+In this step, we will focus on the **project_variables**, **connections**, and **datasets** sections.
 
 ### Setting the Project Variables
 
-The project variables **name** and **major_version** are required. The **label** is optional, and will use the **name** if not specified. You are also free to add any of your own project variable.
+The project variables **name** and **major_version** are required. The **label** is optional, and will use the **name** if not specified. You are also free to add any of your own project variables here.
 
 In this tutorial, we will be making datasets for historical weather data. Change the **name** to `weather` and **label** to `Weather Analytics` (we will leave **major_version** as is).
 
@@ -138,11 +135,15 @@ Under `default`, change the url to `sqlite:///./database/weather.db`.
 
 :::tip
 
-You can also substitute environment variables defined in the `environcfg.yml` file using [Jinja].
+You can also substitute environment variables defined in the [environcfg.yml] file using [Jinja]. For instance, if there is an environment variable called "sqlite_conn_str" in [environcfg.yml], then you can set the url of `default` to: 
+
+```
+{{ env_vars.sqlite_conn_str }}
+```
 
 :::
 
-The syntax for the URL uses [sqlalchemy database URLs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls). Since sqlite databases don't require a username and password, the **credential** field can be either set to null or omitted entirely. More details on setting and using credential keys and connections can be found in the [Database Connections](./topics/database) page.
+The syntax for the URL uses [sqlalchemy database URLs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls). Since sqlite databases don't require a username and password, the **credential** field can be either set to `null` or omitted entirely. More details on setting and using credential keys and connections can be found in the [Database Connections](./topics/database) page.
 
 The **connections** section should now look like this:
 
@@ -171,7 +172,7 @@ datasets:
       - group_by_dim
 ```
 
-Every dataset name that's set in the **datasets** section must also have a matching file name somewhere in `models` folder (unless a **model** field is specified). At this point, we can rename the following models files:
+Every dataset name that's set in the **datasets** section must also have a matching file name somewhere in `models` folder. At this point, we can rename the following models files:
 1. In the `models/federates` folder, rename `dataset_example.sql` to `weather_by_time.sql`.
 2. In the `models/dbviews` folder, rename `database_view1.sql` to `aggr_weather_metrics.sql`.
 
@@ -187,7 +188,7 @@ The possible widget parameter types supported today are **SingleSelectParameter*
 
 :::
 
-We will start from scratch, so remove all the existing code in the **main** function body. We will create one single-select parameter to specify the dimension to group by.
+We will rewrite this file, so remove all the existing code in the **main** function body. We will create one single-select parameter to specify the dimension to group by.
 
 ### Define the Parameter Options
 
@@ -203,13 +204,13 @@ group_by_options = [
 ]
 ```
 
-The first two parameters to the **SelectParameterOption** constructors are the ID and label. The ID must be distinct across options and should never change in the future. If an API client associates ID "3" to mean "the dataset will be grouped by day of year", then the ID must always stay as "3" such that this association would never be broken, even if the label of the option changes to "Day Index of Year" instead.
+The first two parameters to the **SelectParameterOption** constructors are the ID and label. The ID must be distinct across options and should never change in the future. If an API client associates ID "3" to mean "the dataset will be grouped by day of year", then the ID must always stay as "3" such that this association would never be broken... even if the label of the option changes to "Day Index of Year" in the future.
 
-Arbitrary keyword arguments such as "dim_col" and "order_by_col" can be specified to the **SelectParameterOption** constructor which will be treated as custom fields to the parameter option that can be used later. For more info, see the [Widget Parameters](./topics/parameters) page.
+Arbitrary keyword arguments such as "dim_col" and "order_by_col" can be specified to the **SelectParameterOption** constructor, which will be treated as custom fields to the parameter option. For more info, see the [Widget Parameters](./topics/parameters) page.
 
-:::note
+:::info
 
-The **SelectParameterOption** class has an "is_default" attribute to specify the parameter option(s) that are selected by default. By default, "is_default" is set to False. When none of the parameter options have "is_default" as True, the first option is selected by default for single-select parameters, and nothing is selected by default for multi-select parameters.
+The **SelectParameterOption** class has an "is_default" attribute to specify the parameter option(s) that are selected by default. By default, "is_default" is set to False. When none of the parameter options have "is_default" set as True, the first option is selected by default for single-select parameters, and nothing is selected by default for multi-select parameters.
 
 :::
 
@@ -229,7 +230,7 @@ For **SingleSelectParameter**, the arguments for **CreateSimple** and **Create**
 
 :::
 
-At this point, your `parameters.py` file should look something like this:
+At this point, your [parameters.py] file should look something like this:
 
 ```python
 import squirrels as sr
@@ -277,7 +278,7 @@ This query finds the average temperature, precipitation level, and wind speed by
 
 :::info
 
-The **set** keyword is Jinja syntax for assigning variables. The `prms['group_by_dim']` returns a **SingleSelectParameter** (as we previously defined in `parameters.py`), which contains the method **get_selected** for getting specific fields of the selected **SelectParameterOption**. We've previously defined "dim_col" in all the options in `parameters.py`, but only specified "order_by_col" for one of the options. The **get_selected** method has the argument "default_field" to pick "dim_col" for the "order_by_col" if "order_by_col" does not exist as a custom field.
+The **set** keyword is Jinja syntax for assigning variables. The `prms['group_by_dim']` returns a **SingleSelectParameter** (as we previously defined in [parameters.py]), which contains the method **get_selected** for getting specific fields of the selected **SelectParameterOption**. We've previously defined "dim_col" in all the options in [parameters.py], but only specified "order_by_col" for one of the options. The **get_selected** method has the argument "default_field" to pick "dim_col" for the "order_by_col" if "order_by_col" does not exist as a custom field.
 
 :::
 
@@ -299,13 +300,13 @@ ORDER BY ordering
 
 This query takes the result of "aggr_weather_metrics" and orders by a column called "ordering".
 
-:::info
+:::note
 
 A few things to note here about the `weather_by_time.sql` model:
 
 1. In this query, we are selecting all columns except the "ordering" column, which is what we use in the "ORDER BY" clause instead.
-2. The **ref** function only exists for federate models to reference other models (which can be dbviews or other federate models). In this example, the model depends on running the results from `aggr_weather_metrics.sql` first. Squirrels takes care of model execution order for you.
-3. The first line where we set "dim_col" is repeated in `aggr_weather_metrics.sql` as well. This can be avoided either by using [Jinja's include/import], or by using the `context.py` file which will be discussed later in the tutorial.
+2. The **ref** function exists for federate models to reference other models (i.e., dbviews, seeds, or other federate models). In this example, the model depends on running the results from `aggr_weather_metrics.sql` first. Squirrels takes care of the order of model execution for you.
+3. The first line where we set "dim_col" is repeated in `aggr_weather_metrics.sql` as well. This can be avoided either by using [Jinja's include/import], or by using the [context.py] file which will be shown later in the tutorial.
 
 :::
 
@@ -331,11 +332,11 @@ To do so for the `weather_by_time` dataset (using the default parameter selectio
 sqrl compile --dataset weather_by_time
 ```
 
-This creates the folder path `target/compile/default/weather_by_time` with the compiled SQL queries for all the relevant SQL models (without actually running them).
+This creates the folder path `target/compile/weather_by_time/default` with the compiled SQL queries for all the relevant SQL models (without actually running them).
 
 :::tip
 
-You can also use the short form `-d` instead of `--dataset`. If you omit this option, all datasets in the project will be compiled.
+You can also use `-d` instead of `--dataset`. You may also use `-D` or `--all-datasets` to compile for all datasets.
 
 :::
 
@@ -351,30 +352,32 @@ If `--dataset` is not specified, then the `--select` option is ignored. This is 
 
 :::tip
 
-You can also use the short form `-s` instead of `--select`. You can also run the sql query with the `--runquery` or `-r` option. When used in conjunction with `-s` or `--select`, this will compile and run all the upstream models as well. You can find the results as csv files in the `target` folder.
+You can also use `-s` instead of `--select`. You can choose to run the sql query with the `--runquery` or `-r` option. When used in conjunction with `-s` or `--select`, this will compile and run all the upstream models as well. You can find the run results as csv files in the `target` folder.
 
 :::
 
 ### Using Selection Test Sets
 
-You can also test on non-default parameter selections. Suppose you want to group by month instead of grouping by year (the default parameter selection).
+To test on non-default parameter selections, you would define and use test sets. Suppose you want to group by month instead of grouping by year (the default parameter selection).
 
-In the `squirrels.yml` file, replace the **selection_test_sets** section with:
+In the [squirrels.yml] file, replace the **selection_test_sets** section with:
 
 ```yaml
 selection_test_sets:
   - name: group_by_month
+    datasets:
+      - weather_by_time
     parameters:
       group_by_dim: '2'
 ```
 
-The '2' is the ID for "Month" option defined in `parameters.py`. Now you can use the `--test-set` or `-t` option on the **compile** command to specify the test set to compile with:
+The "datasets" field defines the list of datasets that this test set can be applied to, and the "parameters" field defines parameter selections. The selected value for "group_by_dim" is "2", which is the ID for "Month" option defined in [parameters.py]. Now you can use the `--test-set` or `-t` option on the **compile** command to specify the test set to compile with:
 
 ```bash
 sqrl compile --dataset weather_by_time --test-set group_by_month
 ```
 
-This creates new files in the `target/compile/group_by_month/weather_by_time` folder (not the "target/compile/**default**/weather_by_time" folder we saw before).
+This creates new files in the `target/compile/weather_by_time/group_by_month` folder (not the "target/compile/weather_by_time/**default**" folder we saw before).
 
 See `sqrl compile --help` or the [compile command](../references/cli/compile) page for more details. 
 
@@ -382,9 +385,9 @@ See `sqrl compile --help` or the [compile command](../references/cli/compile) pa
 
 Let's revisit the files in the models folder. In both files, we use `prms["group_by_dim"].get_selected("dim_col")` to get the "dim_col" attribute from the selected parameter option. Writing this sort of "Python-like" code in a SQL/Jinja file can be a poor developer experience, especially if you're using an IDE that can provide auto-completion for Python files.
 
-Instead, we can use the `pyconfigs/context.py` file to improve the developer experience. We use its **main** function to transform all selected parameter options into useful values (usually strings), and setting them as key-value pairs in a dictionary called **ctx**. Then, in the SQL/Jinja files, the dictionary values can be referenced using the **ctx** keyword.
+Instead, we can use the `pyconfigs/context.py` file to improve the developer experience. We use its **main** function to transform all selected parameter options into meaningful values that can be used by the models, and set them as key-value pairs in a dictionary called **ctx**. Then, in the SQL/Jinja files, the dictionary values can be referenced using the **ctx** keyword.
 
-For example, we can update the `context.py` file contents to look like this:
+For example, we can update the [context.py] file contents to look like this:
 
 ```python
 from typing import Any
@@ -399,13 +402,13 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
 
 :::note
 
-Notice that type hints were added to **group_by_param** variable. This is useful to provide the IDE information on suggesting methods for auto-complete. For instance, with a list of suggestions, we don't have to memorize that the **get_selected** method exists for SingleSelectParameter objects, or what method names are available for other parameter classes. When starting to type ".get", suggestions provided by the IDE would allow appropriate methods to be discovered more easily, if the IDE is configured to the correct Python interpreter / virtual environment.
+Notice that type hints were added to **group_by_param** variable. This is useful to provide the IDE required information to suggest appropriate methods for auto-complete. With a list of suggestions the moment you type `group_by_param.get`, you don't have to memorize that the **get_selected** method exists for SingleSelectParameter objects for instance, or what method names are available for other parameter classes, given that the IDE is configured to the correct Python interpreter / virtual environment.
 
 :::
 
-The SQL queries can now be written more concisely to reference the context variables instead. In Jinja, we can also choose to reference dictionary values like `ctx.dim_col` instead of `ctx["dim_col"]`.
+The model files can now be modified to reference the context variables instead. In Jinja, we can also choose to reference dictionary values like `ctx.dim_col` instead of `ctx["dim_col"]`.
 
-The contents for `aggr_weather_metrics.sql` can now be changed to the following.
+The contents for `aggr_weather_metrics.sql` can be changed to:
 
 ```sql
 SELECT {{ ctx.dim_col }}
@@ -418,7 +421,7 @@ FROM weather
 GROUP BY {{ ctx.dim_col }}, {{ ctx.order_col }}
 ```
 
-In addition, the contents for `weather_by_time.sql` can now be changed to the following.
+In addition, the contents for `weather_by_time.sql` can be changed to:
 
 ```sql
 SELECT {{ ctx.dim_col }}
@@ -430,7 +433,7 @@ FROM {{ ref("aggr_weather_metrics") }}
 ORDER BY ordering
 ```
 
-Congratulations, you have reached the end of the tutorial! We will leave it up to you to try out `sqrl run` or `sqrl compile` again on these new changes.
+**Congratulations, you have reached the end of the tutorial!** We will leave it up to you to try out `sqrl run` or `sqrl compile` again on these new changes.
 
 ## What's Next?
 
@@ -441,15 +444,23 @@ https://github.com/squirrels-analytics/squirrels-examples
 It serves as a good example of sharing common SQL functionality across multiple datasets while allowing their parameter or query definitions to differ.
 
 In addition, the following topics may also useful for your Squirrels projects:
+- [SQL Placeholders](./topics/placeholders)
+  - Mechanism for using entered values from free-form text parameters in models while preventing SQL injection
+- [Seeds](./topics/seeds)
+  - Lookup tables as CSV files stored in the project
 - [Authentication](./topics/auth)
 - [Modify Dates with dateutils](./topics/dateutils)
 - [Versioning Best Practices](./topics/tips/versioning)
-- [Deployment](./topics/tips/deployment)
+- [Deploy with Docker](./topics/tips/deployment)
 
-You can also check out the [CLI References](/docs/category/cli) to understand the commands available with Squirrels, or check out the [Python Classes](/docs/category/python) available in the Squirrels library.
+You can also check out the [CLI References](/docs/references/cli) to understand the commands available with Squirrels, or check out the [Python Classes](/docs/references/python) available in the Squirrels library.
 
 
 [python virtual environments]: https://realpython.com/python-virtual-environments-a-primer/
 [yaml]: https://yaml.org/
 [Jinja]: https://jinja.palletsprojects.com/
 [Jinja's include/import]: https://ttl255.com/jinja2-tutorial-part-6-include-and-import/
+[squirrels.yml]: ./topics/project-file
+[environcfg.yml]: ./topics/environcfg
+[parameters.py]: ./topics/parameters
+[context.py]: ./topics/context

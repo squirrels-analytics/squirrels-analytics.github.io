@@ -1,12 +1,12 @@
-# MultiSelectDataSource
+# SelectDataSource
 
-The class for the database table source for a multi-select parameter. See [DataSource] page for more details on the common constructor arguments.
+The class for the database table source for single-select parameters and multi-select parameters. See [DataSource] page for more details on the common constructor arguments.
 
-Can be found in the classpath `squirrels.data_sources.MultiSelectDataSource` or `squirrels.MultiSelectDataSource`.
+Can be found in the classpath `squirrels.data_sources.SelectDataSource` or `squirrels.SelectDataSource`.
 
 ### Constructor
 
-Creates a MultiSelectDataSource object.
+Creates a SelectDataSource object.
 
 **Required Arguments:**
 
@@ -19,10 +19,6 @@ Creates a MultiSelectDataSource object.
 - **order_by_col**: A string for the column (usually of type int) that can be used to order the parameter options. If None, then "id_col" becomes the ordering column. Default is None
 - **is_default_col**: A string for the column (usually of type bool or int) that flags the default parameter options. If multiple are flagged as default, then only the first one is used. If None, the first parameter option is selected. Default is None
 - **custom_cols**: A dictionary of custom field names (of the parameter option) to column names. Default is empty dictionary
-- **show_select_all**: A boolean for whether this parameter should have a checkbox/button to automatically select all options. Default is true
-- **is_dropdown**: A boolean for whether this parameter should show as a dropdown (true) or listbox (false). Default is true
-- **order_matters**: A boolean for whether the ordering of the selection matters. Default is false
-- **none_is_all**: A boolean for whether applying no selection is equivalent to selecting all. Default is true
 - **user_group_col** (see [DataSource])
 - **parent_id_col** (see [DataSource])
 - **connection_name** (see [DataSource])

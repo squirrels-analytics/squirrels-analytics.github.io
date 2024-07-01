@@ -10,11 +10,11 @@ In addition to the static methods specified on this page, see the [Parameter] pa
 
 For SingleSelectParameter in particular:
 - The **all_options** argument of the **Create** factory method must be a sequence of [SelectParameterOption](../parameter_options/SelectParameterOption) instances
-- The **data_source** argument of the **CreateFromSource** factory method must be a [SingleSelectDataSource](../data_sources/SingleSelectDataSource) 
+- The **data_source** argument of the **CreateFromSource** factory method must be a [SelectDataSource](../data_sources/SelectDataSource) 
 
 ### CreateSimple
 
-Creates the configurations for a single-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to an abstract pool of parameter configurations. 
+Creates the configurations for a single-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
 Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**. For arguments, see **Create** in the [Parameter] page.
 
