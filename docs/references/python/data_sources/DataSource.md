@@ -18,6 +18,7 @@ The following are common arguments for the constructors of all DataSource classe
 
 **Optional Keyword Arguments:**
 
+- **from_seeds**: A boolean for whether the datasource is derived from seeds (CSV files in the "seeds" folder of the project). When True, the file stems of the CSV files can be treated as table names for **table_or_query** argument. Default is False
 - **user_group_col**: A string for the column name of the groups of users the parameter options apply to. Default is None
     - If multiple rows have the same value for "id_col" but different value for "user_group_col", then the ID is applicable to multiple user groups
 - **parent_id_col**: A string for the column name of the parameter option IDs of the parent parameter that the parameter options of this parameter apply to. Default is None

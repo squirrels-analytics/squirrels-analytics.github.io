@@ -22,11 +22,11 @@ Methods to overwrite in the custom User model.
 
 ### set_attributes
 
-Sets custom attributes on the user given a user object as a Python dictionary. Should be overwritten in the custom User model, otherwise does nothing by default.
+Sets custom attributes on the user. Should be overwritten in the custom User model, otherwise does nothing by default.
 
-**Required Arguments:**
+**Optional Keyword Arguments:**
 
-- **user_dict**: A dictionary representing a user object (such as a row from a database)
+- Specify any custom keyword argument, and access them through the "kwargs" dictionary argument.
 
 ## Static or Class Methods
 
@@ -39,10 +39,10 @@ Factory method to create a user if the authentication is valid. This method will
 **Required Arguments:**
 
 - **username**: A string for the username for the authenticated user
-- **user_dict**: A dictionary representation of a user and its attributes
 
 **Optional Keyword Arguments:**
 
 - **is_internal**: A boolean for whether the user can access private datasets. Default is false.
+- Specify any custom keyword argument to be provided to the **set_attributes** method.
 
 **Returns:** User (the one that this class method was called on)

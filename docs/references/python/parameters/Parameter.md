@@ -28,7 +28,7 @@ Creates the configurations for a widget parameter by providing a list of the par
 
 **Optional Keyword Arguments:**
 
-- **is_hidden**: A boolean for whether the parameter is hidden in the response of the Parameters API. Default is False
+- **description**: A string for the explanation / purpose of the parameter. Default is empty string
 - **user_attribute**: An optional string for the user attribute that may cascade the options for this parameter. If None, then the authorized user has no effect on the selectable parameter options. Default is None
 - **parent_name**: An optional string for the name of the parameter (or "parent parameter") that may cascade the options for this parameter. If None, then other parameters have no effect on the selectable parameter options for this parameter. Default is None
 

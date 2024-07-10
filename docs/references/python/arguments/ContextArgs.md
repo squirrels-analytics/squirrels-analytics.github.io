@@ -27,3 +27,26 @@ A dictionary of the parameter objects (containing the real-time parameter select
 ### traits
 
 A dictionary of the dataset traits.
+
+## Methods
+
+Methods that can be invoked with the "sqrl" argument.
+
+### set_placeholder
+
+Gets user credentials for database connections.
+
+**Required Arguments:**
+
+- **placeholder**: A string for the placeholder name
+- **value**: A value of any type for the placeholder
+
+### param_exists
+
+Checks whether a parameter exists and is enabled
+
+**Required Arguments:**
+
+- **param_name**: A string for the parameter name
+
+**Returns:** A boolean for whether the parameter name exists and is enabled

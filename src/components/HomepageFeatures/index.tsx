@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Dataset Endpoints',
-    image: require('@site/static/img/running_squirrel.png').default,
+    image: require('@site/static/img/dataset_api.png').default,
     description: (
       <>
         Configure API endpoints for datasets in YAML! Use the <code>sqrl run</code> CLI 

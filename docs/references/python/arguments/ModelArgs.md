@@ -39,6 +39,25 @@ A dictionary of sqlalchemy engines by connection name.
 
 Methods that can be invoked with the "sqrl" argument.
 
+### set_placeholder
+
+Gets user credentials for database connections.
+
+**Required Arguments:**
+
+- **placeholder**: A string for the placeholder name
+- **value**: A value of any type for the placeholder
+
+### param_exists
+
+Checks whether a parameter exists and is enabled
+
+**Required Arguments:**
+
+- **param_name**: A string for the parameter name
+
+**Returns:** A boolean for whether the parameter name exists and is enabled
+
 ### ref
 
 Gets the result of a dependent data model.
@@ -48,6 +67,26 @@ Gets the result of a dependent data model.
 - **model**: A string for the dependent model name
 
 **Returns:** A pandas dataframe.
+
+### is_placeholder
+
+Checks whether a name is a valid placeholder
+
+**Required Arguments**
+
+- **placeholder**: A string for the placeholder name
+
+**Returns:** A boolean for whether the placeholder name is valid
+
+### get_placeholder_value
+
+Gets the value of a placeholder. USE WITH CAUTION. Do not use the return value directly in a SQL query since that could be prone to SQL injection
+
+**Required Arguments**
+
+- **placeholder**: A string for the placeholder name
+
+**Returns:** Returns the value of the placeholder (can by any type) or None if the placeholder doesn't exist
 
 ### run_external_sql
 

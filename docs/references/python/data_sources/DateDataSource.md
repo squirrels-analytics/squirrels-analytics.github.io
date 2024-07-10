@@ -17,6 +17,7 @@ Creates a DateDataSource object.
 
 - **date_format**: A string for the format of the default date(s). Uses [datetime's format codes](https://www.w3schools.com/python/gloss_python_date_format_codes.asp). Default is '%Y-%m-%d'
 - **id_col** (see [DataSource])
+- **from_seeds** (see [DataSource])
 - **user_group_col** (see [DataSource])
 - **parent_id_col** (see [DataSource])
 - **connection_name** (see [DataSource])

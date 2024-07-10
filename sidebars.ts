@@ -116,6 +116,7 @@ const sidebars: SidebarsConfig = {
             "references/python/parameter_options/DateRangeParameterOption",
             "references/python/parameter_options/NumberParameterOption",
             "references/python/parameter_options/NumberRangeParameterOption",
+            "references/python/parameter_options/TextParameterOption",
           ]
         },
         {
@@ -128,6 +129,7 @@ const sidebars: SidebarsConfig = {
             "references/python/data_sources/DateRangeDataSource",
             "references/python/data_sources/NumberDataSource",
             "references/python/data_sources/NumberRangeDataSource",
+            "references/python/data_sources/TextDataSource",
           ]
         },
         {
@@ -141,6 +143,7 @@ const sidebars: SidebarsConfig = {
             "references/python/parameters/DateRangeParameter",
             "references/python/parameters/NumberParameter",
             "references/python/parameters/NumberRangeParameter",
+            "references/python/parameters/TextParameter",
           ]
         },
         {

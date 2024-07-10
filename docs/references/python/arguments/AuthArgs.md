@@ -38,6 +38,6 @@ Gets user credentials for database connections.
 
 **Arguments:**
 
-- **key**: The key to credentials (username and password) set in `environcfg.yml`
+- **key**: A string for the key to credentials (username and password) set in `environcfg.yml`
 
 **Returns:** The corresponding username and password as a tuple of two strings.

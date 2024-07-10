@@ -127,7 +127,7 @@ In addition, there are now more ways to substitute environment variables in `squ
 
 ### Changes to Project Settings
 
-Two new [project settings] (specified in [squirrels.yml]) are introduced:
+Two new [Project Settings] (specified in [squirrels.yml]) are introduced:
 - **seeds.infer_schema**
 - **seeds.na_values**
 
@@ -135,4 +135,6 @@ Also, the defaults for **parameters.cache.ttl_minutes** and **results.cache.ttl_
 
 See the [Project Settings] page for more details.
 
-[project settings]: ../docs/topics/settings
+
+[squirrels.yml]: ../docs/topics/project-file
+[Project Settings]: ../docs/topics/settings

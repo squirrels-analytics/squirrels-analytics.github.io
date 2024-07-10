@@ -28,8 +28,8 @@ Unlike the **Create** factory method, this factory method assumes only one param
 
 **Optional Keyword Arguments:**
 
+- **description**: A string for the explanation / purpose of the parameter. Default is empty string
 - **date_format**: A string for the format of the "default_date" argument. Uses [datetime's format codes](https://www.w3schools.com/python/gloss_python_date_format_codes.asp). Default is '%Y-%m-%d'
-- **is_hidden**: A boolean for whether the parameter is hidden in the response of the Parameters API. Default is False
 
 **Returns:** None
 

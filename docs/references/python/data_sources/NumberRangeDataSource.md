@@ -20,6 +20,7 @@ Creates a NumberRangeDataSource object.
 - **default_lower_value_col**: A string for the column name of the default lower value. If None, uses the "min_value_col" argument. Default is None
 - **default_upper_value_col**: A string for the column name of the default upper value. If None, uses the "max_value_col" argument. Default is None
 - **id_col** (see [DataSource])
+- **from_seeds** (see [DataSource])
 - **user_group_col** (see [DataSource])
 - **parent_id_col** (see [DataSource])
 - **connection_name** (see [DataSource])

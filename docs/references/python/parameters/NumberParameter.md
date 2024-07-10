@@ -28,11 +28,11 @@ Unlike the **Create** factory method, this factory method assumes only one param
 
 **Optional Keyword Arguments:**
 
+- **description**: A string for the explanation / purpose of the parameter. Default is empty string
 - **increment**: A string, int, or Decimal (from decimal package). This is the increment of selectable values. Default is 1
     - Must fit evenly between "min_value" and "max_value"
 - **default_value**: A string, int, Decimal (from decimal package), or None. This is the default selected value. When None, the "min_value" is used. Default is None
     - Must be selectable based on "min_value", "max_value", and "increment"
-- **is_hidden**: A boolean for whether the parameter is hidden in the response of the Parameters API. Default is False
 
 **Returns:** None
 

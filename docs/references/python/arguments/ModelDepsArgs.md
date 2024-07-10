@@ -31,3 +31,26 @@ A dictionary of the dataset traits.
 ### ctx
 
 A dictionary of context variables (often defined based on the real-time parameter selections) defined in `context.py`.
+
+## Methods
+
+Methods that can be invoked with the "sqrl" argument.
+
+### set_placeholder
+
+Gets user credentials for database connections.
+
+**Required Arguments:**
+
+- **placeholder**: A string for the placeholder name
+- **value**: A value of any type for the placeholder
+
+### param_exists
+
+Checks whether a parameter exists and is enabled
+
+**Required Arguments:**
+
+- **param_name**: A string for the parameter name
+
+**Returns:** A boolean for whether the parameter name exists and is enabled

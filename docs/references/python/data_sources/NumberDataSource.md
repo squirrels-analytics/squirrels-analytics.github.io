@@ -19,6 +19,7 @@ Creates a NumberDataSource object.
 - **increment_col**: A string for the column name of the increment value. If None, assumes column of 1's. Default is None
 - **default_value_col**: A string for the column name of the default value. If None, uses the "min_value_col" argument. Default is None
 - **id_col** (see [DataSource])
+- **from_seeds** (see [DataSource])
 - **user_group_col** (see [DataSource])
 - **parent_id_col** (see [DataSource])
 - **connection_name** (see [DataSource])
