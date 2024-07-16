@@ -25,8 +25,8 @@ The `connections.py` file must have a **main** function with two arguments **con
 - **connections** is the output dictionary that is written to in the function. The keys should be strings, and the values are typically SQLAlchemy engines.
 - **sqrl** is an object of type [ConnectionsArgs](../../references/python/arguments/ConnectionsArgs) that contains inputs/utilities you may choose to use. Some examples include:
   - The **sqrl.proj_vars** attribute, a dictionary for accessing project variables defined in [squirrels.yml].
-  - The **sqrl.env_vars** attribute, a dictionary for accessing environment variables defined in [environcfg.yml].
-  - The **sqrl.get_credential** method to get username and password from a credential name defined in [environcfg.yml].
+  - The **sqrl.env_vars** attribute, a dictionary for accessing environment variables defined in [env.yml].
+  - The **sqrl.get_credential** method to get username and password from a credential name defined in [env.yml].
 
  This file is run once the moment the API server is started with the [sqrl run](../../references/cli/run) command. A sample **main** function `connections.py` can look something like this:
 
@@ -51,4 +51,4 @@ For certain advanced use cases where you want to save Python values in memory at
 
 
 [squirrels.yml]: ./project-file
-[environcfg.yml]: ./environcfg
+[env.yml]: ./environcfg

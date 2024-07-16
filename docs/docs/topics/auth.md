@@ -79,7 +79,7 @@ def get_user_if_valid(sqrl: AuthArgs) -> Union[User, WrongPassword, None]:
         return WrongPassword()
 ```
 
-When **None** is returned instead of a [WrongPassword] object, Squirrels will continue looking for the username in the "users" section of [environcfg.yml]. The section is generally used for specifying mock users to test with for the environment. It is represented as a dictionary where keys are usernames and values are nested dictionaries of user attributes. The user attributes dictionary must include **password** and **is_internal**.
+When **None** is returned instead of a [WrongPassword] object, Squirrels will continue looking for the username in the "users" section of [env.yml]. The section is generally used for specifying mock users to test with for the environment. It is represented as a dictionary where keys are usernames and values are nested dictionaries of user attributes. The user attributes dictionary must include **password** and **is_internal**.
 
 ## Users and Parameters
 
@@ -158,4 +158,4 @@ However, in Python models, when the `sqrl.user` is None, attempting to access a 
 [User]: ../../references/python/user_base/User
 [WrongPassword]: ../../references/python/user_base/WrongPassword
 [Database Connections]: ./database
-[environcfg.yml]: ./environcfg
+[env.yml]: ./environcfg

@@ -30,12 +30,12 @@ venv/
 .git
 
 # squirrels files to ignore
-environcfg.yml
+env.yml
 target/
 sqrl_packages/
 ```
 
-In addition to the docker image, a docker volume is also needed store the [environcfg.yml] file. If your [environcfg.yml] is in current directory, you can use the following `compose.yml` file to create a docker container with the volume by running `docker-compose up`.
+In addition to the docker image, a docker volume is also needed store the [env.yml] file. If your [env.yml] is in current directory, you can use the following `compose.yml` file to create a docker container with the volume by running `docker-compose up`.
 
 ```yaml
 services:
@@ -44,8 +44,8 @@ services:
     ports:
       - "4465:4465"
     volumes:
-      - ./environcfg.yml:/app/environcfg.yml
+      - ./env.yml:/app/env.yml
 ```
 
 
-[environcfg.yml]: ../environcfg
+[env.yml]: ../environcfg

@@ -138,3 +138,16 @@ See the [Project Settings] page for more details.
 
 [squirrels.yml]: ../docs/topics/project-file
 [Project Settings]: ../docs/topics/settings
+
+## Fixes in v0.3.1
+
+The following fixes were applied in the 0.3.1 release:
+
+- Make the context.py file optional. If not specified, no context variables are created.
+- Make the "parameters" field of a dataset in "squirrels.yml" optional. If not specified, the dataset takes no parameters.
+- Improve error handling of misspelled parameter names under the "parameters" field of a dataset in "squirrels.yml".
+- Fix the end date coming from date range parameters from the Testing UI. This use to sometimes provide the end date as the day after the selected end date.
+
+In addition, we now support using the name "env.yml" in replacement of "environcfg.yml". The "environcfg.yml" name continues to work as before.
+
+And going forward, SQLite databases created by the "init" command will be created in an "assets" folder instead of a "database" folder.

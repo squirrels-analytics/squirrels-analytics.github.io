@@ -70,10 +70,10 @@ connections:
 
 The fields **name** and **url** are required. The field **credential** is only required if `{username}` and `{password}` are in the **url**, but otherwise optional.
 - **name** - The assigned name of the connection to make it easy to reference elsewhere. The connection name `default` should be defined (either here or in the `connections.py` file), where it becomes the database connection used by default if the connection name is not specified explicitly for the dbview model or widget parameter source.
-- **credential** - Select a credential name defined in [environcfg.yml].
+- **credential** - Select a credential name defined in [env.yml].
 - **url** - The SQLAlchemy URL. Placeholders for `{username}` and `{password}` can be included in the URL to substitute the username and password from the specified **credential**.
 
-If you need to use a different URL based on the environment, you can set an environment variable in [environcfg.yml] and use the "env_vars" dictionary in Jinja to substitute environment variables into "squirrels.yml". For example, `url: {{ env_vars.my_conn_str }}`.
+If you need to use a different URL based on the environment, you can set an environment variable in [env.yml] and use the "env_vars" dictionary in Jinja to substitute environment variables into "squirrels.yml". For example, `url: {{ env_vars.my_conn_str }}`.
 
 :::note
 
@@ -250,5 +250,5 @@ This section defines certain settings that Squirrels would apply to the project.
 
 
 [Python parameter classes]: ../../references/python/parameters/Parameter
-[environcfg.yml]: ./environcfg
+[env.yml]: ./environcfg
 [Project Setting]: ./settings

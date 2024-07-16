@@ -1,17 +1,23 @@
 # Environment Configuration File
 
-The environment configuration file (`environcfg.yml`) contains secret values that are NOT part of the codebase for the Squirrels project. It may contain any of the following sections:
+The environment configuration file (`env.yml`) contains secret values that are NOT part of the codebase for the Squirrels project. It may contain any of the following sections:
 
 1. **users**
 2. **env_vars**
 3. **credentials**
 4. **secrets**
 
-The `environcfg.yml` file can either be saved in the `$HOME/.squirrels/` folder (to share values across Squirrels projects), or in the project folder. If the file is available in both folders, the values in the `environcfg.yml` file in the project folder will overwrite values in the same file in the `$HOME/.squirrels/` folder.
+The `env.yml` file can either be saved in the `$HOME/.squirrels/` folder (to share values across Squirrels projects), or in the project folder. If the file is available in both folders, the values in the `env.yml` file in the project folder will overwrite values in the same file in the `$HOME/.squirrels/` folder.
 
 This file is included in `.gitignore`. NEVER COMMIT THIS FILE TO SOURCE CONTROL!
 
 The sections are described in detail below. Use the right sidebar to jump to a specific section.
+
+:::info
+
+This file was called `environcfg.yml` before version 0.3.1. Although the file name has been changed to `env.yml`, the `environcfg.yml` name continues to work for backward compatibility. If both files exist and contain the same value in any of the sections, then the one in `env.yml` will overwrite the one in `environcfg.yml`.
+
+:::
 
 ### users
 

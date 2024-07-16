@@ -18,7 +18,7 @@ The following are the full set of files and folders in a Squirrels project with 
 ├─ target
 │   └─ ...
 ├─ .gitignore
-├─ environcfg.yml
+├─ env.yml
 └─ squirrels.yml
 ```
 
@@ -26,7 +26,7 @@ At the minimum, all Squirrels projects contain a [squirrels.yml] file for projec
 
 |Resource|Git_Ignored|Description|
 |:-------|:----------|:----------|
-|[environcfg.yml](./environcfg)|Y|Contains configuration specific to the server/environment, or environment variables that must not be shared|
+|[env.yml](./environcfg)|Y|Contains configuration specific to the server/environment, or environment variables that must not be shared|
 |[models/](./models-sql)|N|Folder for data models (as Jinja SQL or Python files)|
 |pyconfigs/|N|Contains only Python files for configurations or functionality written in Python (other than Python models).|
 |[sqrl_packages/](../../references/cli/deps)|Y|Git projects used as package dependencies (downloaded with [sqrl deps](../../references/cli/deps)) are stored here|

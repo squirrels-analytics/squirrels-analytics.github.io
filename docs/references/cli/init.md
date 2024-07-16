@@ -15,7 +15,7 @@ After executing the command, the user would be able to specify which files shoul
 
 The core files include:
 
-- `squirrels.yml`, `environcfg.yml`, and `.gitignore` files in the project root
+- `squirrels.yml`, `env.yml`, and `.gitignore` files in the project root
 - A `database_view1.sql` or `database_view1.py` file in `models/dbviews/` folder
 - A `dataset_example.sql` or `dataset_example.py` file in the `models/federates/` folder
 - `seed_categories.csv` and `seed_subcategories.csv` in the `seeds` folder
@@ -29,7 +29,7 @@ Additional prompts are also provided to inquire whether certain files (such as `
 |File|Description|
 |:---|:----------|
 |`squirrels.yml`|The project-level configurations for any Squirrels project. See [Squirrels Project File](../../docs/topics/project-file) for more details.|
-|`environcfg.yml`|Includes variables specific to the environment (secrets, credentials, etc.). See [Environment Configuration File](../../docs/topics/environcfg) for more details.|
+|`env.yml`|Includes variables specific to the environment (secrets, credentials, etc.). See [Environment Configuration File](../../docs/topics/environcfg) for more details.|
 |`pyconfigs/connections.py`|Database connections can be defined here if preferred to do so in Python instead of in `squirrels.yml`. See [Database Connections](../../docs/topics/database) for more details.|
 |`pyconfigs/parameters.py`|Parameter widgets (for making data analytics **dynamic**) are defined here. Alternatively, they can be defined in `squirrels.yml`, though it can be more verbose. See [Widget Parameters](../../docs/topics/parameters) for more details.|
 |`pyconfigs/context.py`|The place to define meaningful variables in Python (derived from parameter selections, dataset traits, etc.) which can then be used to change behaviour of models. See the [Context File](../../docs/topics/context) for more details.|

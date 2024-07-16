@@ -66,7 +66,7 @@ In addition to **ref** and **config**, there are other useful variables defined 
 - **user** - an object of the user if one is authorized (or **null** if no user authorized). The user attributes are defined by the User class in [auth.py].
 - **traits** - a dictionary of the dataset traits defined in [squirrels.yml] for the requested dataset.
 - **proj_vars** - a dictionary of the project variables defined in [squirrels.yml].
-- **env_vars** - a dictionary of the environment variables defined in [environcfg.yml].
+- **env_vars** - a dictionary of the environment variables defined in [env.yml].
 
 In Jinja, a dictionary value can be referenced by key with square brackets, the same way in Python, or by simply using dot notation. For example:
 
@@ -152,7 +152,7 @@ However, using include or importing **with context** are not recommended since t
 
 
 [squirrels.yml]: ./project-file
-[environcfg.yml]: ./environcfg
+[env.yml]: ./environcfg
 [Project Setting]: ./settings
 [connections.py]: ./database
 [sqrl init]: ../../references/cli/init

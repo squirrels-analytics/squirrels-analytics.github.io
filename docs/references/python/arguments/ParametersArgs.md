@@ -14,4 +14,4 @@ A dictionary to access a project variable defined in `squirrels.yml`
 
 ### env_vars
 
-A dictionary to access an environment variable defined in `environcfg.yml`
+A dictionary to access an environment variable defined in `env.yml`
