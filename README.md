@@ -15,3 +15,18 @@ See package.json for:
 Using github actions, the public website updates for every commit to the `main` branch, but only if `npm run build` succeeds.
 
 Write documentation content as markdown files in either the `docs/docs` folder or the `docs/references` folder. Add the file to `sidebars.ts` for it to appear in the left panel.
+
+To create a new version in the `versioned_docs` folder, run `npm run docusaurus docs:version <version_number>`.
+
+To pretend that the current version is a cut version, add this to the `docusaurus.config.js` file:
+
+```ts
+docs: {
+    lastVersion: 'current',
+    versions: {
+        current: {
+            label: '<version_number>'
+        },
+    },
+},
+```

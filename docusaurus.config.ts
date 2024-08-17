@@ -37,11 +37,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          lastVersion: 'current',
+          // lastVersion: 'current',
           versions: {
             current: {
-              label: '0.3.x',
-              path: ''
+              label: 'Canary 🚧'
             }
           }
         },
@@ -96,7 +95,7 @@ const config: Config = {
         },
         {
           type: 'docsVersionDropdown',
-          position: 'left'
+          position: 'right'
         },
         {to: '/blog', label: 'Blog', position: 'right'},
         {

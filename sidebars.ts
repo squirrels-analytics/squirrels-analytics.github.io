@@ -144,6 +144,7 @@ const sidebars: SidebarsConfig = {
             "references/python/parameters/NumberParameter",
             "references/python/parameters/NumberRangeParameter",
             "references/python/parameters/TextParameter",
+            "references/python/parameters/TextValue",
           ]
         },
         {
