@@ -16,7 +16,7 @@ The following is a sample **main** function in the "context.py" file.
 
 ```python
 def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
-    if "group_by" in sqrl.prms:
+    if sqrl.param_exists("group_by"):
         group_by_param: sr.MultiSelectParameter = sqrl.prms["group_by"]
         dimension_columns: list[str] = group_by_param.get_selected("columns")
         ctx["group_by_cols"] = ",".join(dimension_columns)

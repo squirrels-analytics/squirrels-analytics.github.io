@@ -10,6 +10,7 @@ After executing the command, the user would be able to specify which files shoul
         - **How would you like to configure the parameters? (py/yml)**
         - **What's the file format for the database view model? (sql/py)**
         - **What's the file format for the federated model? (sql/py)**
+- **Do you want to include a dashboard example? (y/N)**
 - **Do you want to add the 'auth.py' file? (y/N)**
 - **What sample sqlite database do you wish to use (if any)? (expenses/weather/none)**
 
@@ -24,7 +25,7 @@ The core files include:
     - A `parameters.py` file if `py` was specified for parameters
     - A `context.py` file
 
-Additional prompts are also provided to inquire whether certain files (such as `pyconfigs/auth.py`) are needed. Below is a description of files specific to a Squirrels project.
+Additional prompts are also provided to inquire whether certain files (such as `pyconfigs/auth.py`) are needed. Below is a description of files that may be included in a Squirrels project.
 
 |File|Description|
 |:---|:----------|
@@ -36,6 +37,7 @@ Additional prompts are also provided to inquire whether certain files (such as `
 |`pyconfigs/auth.py`|If authentication is involved, the user model and authentication function is defined here. See [Authentication](../../docs/topics/auth) for more details.|
 |`models/dbviews/*`|SQL Jinja templates or Python files that define dynamic views of external database(s). See [SQL Models](../../docs/topics/models-sql) or [Python Models](../../docs/topics/models-python) for more details.|
 |`models/federates/*`|SQL Jinja templates or Python files that define dynamic tables/views that may depend on other models. These tables/views are written to a temporary database embedded in server memory. See [SQL Models](../../docs/topics/models-sql) or [Python Models](../../docs/topics/models-python) for more details.|
+|`dashboards/*`|Python files for dashboard contents. See [Dashboards](../../docs/topics/dashboards) for more details.|
 |`seeds/*`|CSV files that can be used as lookup tables for parameters or models.|
 
 Further usage details can be found by running `sqrl init --help` or `sqrl init -h` which prints the text below. The user can also choose which files to include through command line options without using the prompts above. All command line options below except for `-h` and `-o` disables the prompts.
@@ -54,6 +56,7 @@ optional arguments:
                         Configure parameters as python (default) or yaml. Ignored if "--core" is not specified
   --dbview {sql,py}     Create database view model as sql (default) or python file. Ignored if "--core" is not specified
   --federate {sql,py}   Create federated model as sql (default) or python file. Ignored if "--core" is not specified
+  --dashboard           Include a sample dashboard file
   --auth                Include the auth.py file
   --sample-db {expenses,weather,none}
                         Sample sqlite database to include

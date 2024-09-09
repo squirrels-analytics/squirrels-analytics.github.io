@@ -148,7 +148,7 @@ The following fixes were applied in the 0.3.1 release:
 - Improve error handling of misspelled parameter names under the "parameters" field of a dataset in "squirrels.yml".
 - Fix the end date coming from date range parameters from the Testing UI. This use to sometimes provide the end date as the day after the selected end date.
 
-In addition, we now support using the name "env.yml" in replacement of "environcfg.yml". The "environcfg.yml" name continues to work as before.
+In addition, we now support using the name "env.yml" in replacement of "environcfg.yml". The "environcfg.yml" name continues to work as before, but is now deprecated.
 
 And going forward, SQLite databases created by the "init" command will be created in an "assets" folder instead of a "database" folder.
 

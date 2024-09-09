@@ -46,12 +46,13 @@ Reuse functionality across different Squirrels projects through package installa
 
 ## REST API Types
 
-Every Squirrels project defines a set of related datasets under a single version contolled project. When running the API server for a Squirrels projects, the following API types become available.
+Every Squirrels project defines a set of related datasets (and sometimes dashboards) under a single version contolled project. When running the API server for a Squirrels projects, the following API types become available.
 
 - **Token API** - Retrieve a short-lived API token if the provided credentials are valid
-- **Datasets Catalog API** - Provides a catalog of datasets available under the project (can vary with authentication)
+- **Data Catalog API** - Provides a catalog of datasets and dashboards available under the project (can vary with authentication)
 - **Parameters API** - Provides information of the parameter widgets for a given dataset
 - **Dataset Result API** - Provides the tabular result of a dataset given parameter selections
+- **Dashboard Result API** - Provides an image of a dashboard given parameter selections
 
 More details are available in the [REST API Types](./frontend/rest-api) page.
 
@@ -61,6 +62,6 @@ Although a dataset is only associated to one target model, the target model may 
 
 1. Parameter selections are validated, and context variables are created.
 2. Models are compiled from SQL templates / python functions in upstream order and concurrently if possible. Compilation results are based on parameter selections, context variables, and authenticated user. Note that the compiled models should form a DAG (directed acyclic graph).
-3. The DAG is validated to contain no cycles (i.e., the DAG is truly acyclic). This is separate from the step above since validation is done in a non-concurrent manner.
+3. The DAG is validated to contain no cycles (i.e. the DAG is truly acyclic). This is separate from the step above since validation is done in a non-concurrent manner.
 4. Models are executed in downstream order and concurrently if possible. Some models, called "dbviews", are run against external databases, while other models, called "federates", run in a temporary in-memory database (choice of sqlite or duckdb) created in the API server. Federates can join results of dbviews or other federates via the **ref** function (dbviews cannot use **ref**).
 5. Once the target model is complete, the results are loaded to JSON and provided as the REST API response.

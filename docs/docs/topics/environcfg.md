@@ -13,12 +13,6 @@ This file is included in `.gitignore`. NEVER COMMIT THIS FILE TO SOURCE CONTROL!
 
 The sections are described in detail below. Use the right sidebar to jump to a specific section.
 
-:::info
-
-This file was called `environcfg.yml` before version 0.3.1. Although the file name has been changed to `env.yml`, the `environcfg.yml` name continues to work for backward compatibility. If both files exist and contain the same value in any of the sections, then the one in `env.yml` will overwrite the one in `environcfg.yml`.
-
-:::
-
 ### users
 
 This section lets you specify mock users for local development testing (see page on [Authentication](./auth) for integrating your authentication system in Python to validate real users). An example may look like this:

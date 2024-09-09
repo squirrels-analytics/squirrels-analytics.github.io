@@ -175,7 +175,7 @@ selection_test_sets:
 
 For each test set, the **name** field is required, and the **user_attributes** and **parameters** fields are optional.
 - **name** - The assigned name of the test set to make it easy to reference elsewhere. If the name `default` is defined, it overrides the default selections if no test set is not explicitly referenced.
-- **user_attributes** - If authentication is used, the values of required user attributes (i.e., the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
+- **user_attributes** - If authentication is used, the values of required user attributes (i.e. the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
   - If needed, you can override the **username** and **is_internal** attributes here as well. If omitted, default values are empty string for **username** and false for **is_internal**.
 - **parameters** - The selected parameter values to test with are defined here. For any parameter names that are not specified here, the default selected value is used.
 

@@ -5,22 +5,22 @@ In the future, we intend to create our own Cloud platform to host Squirrels proj
 Typically, a file named "Dockerfile" is needed for creating docker images (which can be stored in your Squirrels project or somewhere in your server). There is no "one size fits all" for the contents of your Dockerfile since it depends on the Python version and package management tool that you use. Assuming Python version 3.11 and the dependencies of your project are provided in a `requirements.txt` file that can be used for pip installs, the Dockerfile can look something like this:
 
 ```dockerfile
-# Change here to use different python version (ex. 3.12-slim for version 3.12)
-FROM python:3.11-slim
+# Change here to use different python version (ex. 3.11-slim for version 3.11)
+FROM python:3.12-slim
 WORKDIR /app
 
-COPY requirements.txt .
 COPY . .
 
-# Only needed if there are Python libraries installed from git in requirements.txt, 
-# or for the "sqrl deps" command if there are packages defined in "squirrels.yml"
+# Only needed if there are python dependencies installed using git, or for the
+# "sqrl deps" command if there are packages defined in "squirrels.yml"
 RUN apt-get update && apt-get install -y git
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN sqrl deps
+RUN squirrels deps
 
-CMD ["sqrl", "run", "--host", "0.0.0.0", "--port", "4465"]
+EXPOSE 4465
+CMD ["squirrels", "run", "--host", "0.0.0.0", "--port", "4465"]
 ```
 
 You will want docker to ignore a few files and folders by adding them to `.dockerignore` file. The contents should looks similar to your `.gitignore` file except you also want to include the ".git" directory.

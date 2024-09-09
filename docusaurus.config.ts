@@ -59,9 +59,21 @@ const config: Config = {
   ],
 
   themeConfig: {
+    algolia: {
+      // The application ID provided by Algolia
+      appId: '4ROC9CBNYO',
+
+      // Public API key: it is safe to commit it
+      apiKey: '211c27ce35edac97afd5837badeffd65',
+
+      indexName: 'squirrels-analyticsio',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+    },
     image: 'img/squirrels.jpg',
     metadata: [
-      {name: 'keywords', content: 'squirrels, data, api, dynamic, dynamic data, dynamic data api, data engineering, data analytics, analytics, blog, documentation, home page'}
+      {name: 'keywords', content: 'squirrels,data,api,framework,data engineer,data analytics,analytics,analytics engineer'}
     ],
     docs: {
       sidebar: {
@@ -95,7 +107,7 @@ const config: Config = {
         },
         {
           type: 'docsVersionDropdown',
-          position: 'right'
+          position: 'left'
         },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
@@ -116,7 +128,7 @@ const config: Config = {
               to: '/docs/docs/intro',
             },
             {
-              label: 'Quickstart',
+              label: 'Tutorial',
               to: '/docs/docs/quickstart',
             },
             {

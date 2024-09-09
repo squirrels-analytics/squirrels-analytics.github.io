@@ -57,6 +57,6 @@ Although a dataset is only associated to one target model, the target model may 
 
 1. Parameter selections are validated, and context variables are created.
 2. Models are compiled from SQL templates / python functions in upstream order and concurrently if possible. Compilation results are based on parameter selections, context variables, and authenticated user. Note that the compiled models should form a DAG (directed acyclic graph).
-3. The DAG is validated to contain no cycles (i.e., the DAG is truly acyclic). This is separate from the step above since validation is done in a non-concurrent manner.
+3. The DAG is validated to contain no cycles (i.e. the DAG is truly acyclic). This is separate from the step above since validation is done in a non-concurrent manner.
 4. Models are executed in downstream order and concurrently if possible. Some models, called "dbviews", are run against external databases, while other models, called "federates", run in a temporary in-memory database (choice of sqlite or duckdb) created in the API server. Federates can join results of dbviews or other federates via the **ref** function (dbviews cannot use **ref**).
 5. Once the target model is complete, the results are loaded to JSON and provided as the REST API response.

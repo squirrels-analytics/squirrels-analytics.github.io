@@ -37,6 +37,7 @@ const sidebars: SidebarsConfig = {
         "docs/topics/models-python",
         "docs/topics/placeholders",
         "docs/topics/seeds",
+        "docs/topics/dashboards",
         "docs/topics/auth",
         "docs/topics/dateutils",
         {
@@ -103,6 +104,7 @@ const sidebars: SidebarsConfig = {
             "references/python/arguments/ContextArgs",
             "references/python/arguments/ModelDepsArgs",
             "references/python/arguments/ModelArgs",
+            "references/python/arguments/DashboardArgs",
             "references/python/arguments/AuthArgs",
           ]
         },
@@ -145,6 +147,14 @@ const sidebars: SidebarsConfig = {
             "references/python/parameters/NumberRangeParameter",
             "references/python/parameters/TextParameter",
             "references/python/parameters/TextValue",
+          ]
+        },
+        {
+          type: "category",
+          label: "from squirrels.dashboards",
+          items: [
+            "references/python/dashboards/PngDashboard",
+            "references/python/dashboards/HtmlDashboard",
           ]
         },
         {

@@ -2,7 +2,7 @@
 
 The "data model" can simply be thought of as a table or view in a database, derived from pre-existing tables or views. All models are defined somewhere in the `models/` folder, and all SQL model files use the **.sql** extension. The part of the file name before the extension becomes the name of the model. In Squirrels, we split this into two categories: **dbview models** and **federate models**.
 
-You can use the [sqrl init] command to create example SQL models:
+You can use the [sqrl init] command to create example SQL models from an empty project:
 
 ```bash
 sqrl init --core --dbview sql --federate sql

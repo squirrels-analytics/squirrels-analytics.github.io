@@ -4,18 +4,20 @@ sidebar_position: 1
 
 # REST API Types
 
-When interacting the APIs for a single Squirrels project as a client, a sample workflow may look like this:
+This page describes details of the REST API types in suplement of the Swagger / OpenAPI documentation found in the **/docs** path of any Squirrels project. Please check out the Swagger / OpenAPI documentation first if you haven't already.
+
+When interacting with the APIs for a single Squirrels project as a client, a sample workflow may look like this:
 
 1. Login with a username and password to retrieve an authorization token for subsequent API calls. This would use the **login API**.
-2. Retrieve all datasets you have access to for that project. This would use the **datasets catalog API**.
-3. Pick a dataset and retrieve its parameters. This would use the **parameters API**.
-4. Gather parameter selections, and use them to retrieve the dataset result. This would use the **dataset result API**.
+2. Retrieve all datasets / dashboards you have access to for the project. This would use the **data catalog API**.
+3. Pick a dataset / dashboard and retrieve its parameters. This would use the **parameters API**.
+4. Gather parameter selections, and use them to retrieve the dataset / dashboard result. This would use the **dataset result API** or the **dashboard result API**.
 
-Depending on the use case, not all API types have to be used. For instance, the datasets may all be public, so using the **login API** would not be needed. Or your application may use only one of the datasets, assuming that it always exists, so it may not use the **datasets catalog API**.
+Depending on the use case, not all API types have to be used. For instance, if you only care about public datasets / dashboards, the **login API** is not needed. Or you may have a front-end application that only uses one of the datasets (assuming that it always exists), so it may not use the **data catalog API**.
 
-Further details of each API type are described in the sections below. All paths are prefixed with **/squirrels-v0**, and the `v0` here means "use the API interface corresponding to major version 0 of the squirrels library". All APIs return a JSON response.
+Further details of each API type are described in the sections below. All paths are prefixed with **/squirrels-v0**, and the `v0` here means "use the API interface corresponding to major version 0 of the squirrels library". All APIs return a JSON response, except the **dashboard result API** which can return various formats such as PNG data as bytes or HTML string. 
 
-For example purposes, suppose we have a Squirrels project named `my_project`, its major version is 1, and it contains a dataset named `my_dataset`.
+For example purposes, suppose we have a Squirrels project named `my_project`, its major version is 1, and it contains a dataset named `my_dataset` and a dashboard named `my_dashboard`.
 
 ## Project Level APIs
 
@@ -50,7 +52,7 @@ To use the access token for the other API endpoints, simply provide the request 
 
 `"Authorization": "Bearer <access_token>"`
 
-If the username or password provided to the Login API are invalid, a 401 status code is returned with the following JSON response.
+If the username or password provided to the **Login API** are invalid, a 401 status code is returned with the following JSON response.
 
 ```json
 {
@@ -58,20 +60,25 @@ If the username or password provided to the Login API are invalid, a 401 status 
 }
 ```
 
-### Datasets Catalog API
+### Data Catalog API
 
 - Request type: **GET**
 - Path: **/squirrels-v0/\{project_name\}/v\{major_version\}/datasets**
 - Path Example: **/squirrels-v0/my-project/v1/datasets**
 
-This API endpoint retrieves the list of datasets that the user has access to. And only public datasets are provided if the user is not authenticated.
+This API endpoint retrieves the list of datasets / dashboards that the user has access to. Only public datasets / dashboards are provided if the user is not authenticated.
 
-This returns a JSON object with a "datasets" field whose value is a list of JSON objects with the following fields:
+This returns a JSON object with "datasets" and "dashboards" fields, both of which are lists of JSON objects with the following fields:
 
-- **name**: The name of the dataset (usually in snake case).
-- **label**: The human-friendly display name for the dataset.
-- **parameters_path**: The API path for the dataset's parameters API.
-- **result_path**: The API path for the dataset's result API.
+- **name**: The name of the dataset / dashboard (usually in snake case).
+- **label**: The human-friendly display name for the dataset / dashboard.
+- **description**: The description of the dataset / dashboard.
+- **parameters_path**: The API path for the dataset's / dashboard's parameters API.
+- **result_path**: The API path for the dataset's / dashboard's result API.
+
+The JSON objects in the "dashboards" list have an additional field:
+
+- **result_format**: The format of the dashboard's result API response (one of png, html, etc.).
 
 Here is a sample JSON response:
 
@@ -81,39 +88,50 @@ Here is a sample JSON response:
         {
             "name": "my_dataset",
             "label": "Dataset Example",
+            "description": "This is an example dataset",
             "parameters_path": "/squirrels-v0/my-project/v1/dataset/my-dataset/parameters",
             "result_path": "/squirrels-v0/my-project/v1/dataset/my-dataset"
+        }
+    ],
+    "dashboards": [
+        {
+            "name": "my_dashboard",
+            "label": "Dashboard Example",
+            "description": "This is an example dashboard",
+            "parameters_path": "/squirrels-v0/my-project/v1/dashboard/my-dashboard/parameters",
+            "result_path": "/squirrels-v0/my-project/v1/dashboard/my-dashboard",
+            "result_format": "png"
         }
     ]
 }
 ```
 
-## Dataset Level APIs
+## Data Analytics APIs
 
-Within a Squirrels project, each dataset has a different API path for the parameters API and dataset result API. Both API types can either be a **GET** request that takes parameter selections through query parameters, or a **POST** request that takes parameters selections as a JSON in the request body.
+Within a Squirrels project, each dataset / dashboard has a different API path for the parameters and the results. Both API types can either be a **GET** request that takes parameter selections through query parameters, or a **POST** request that takes parameters selections as a JSON in the request body.
 
 The input format for the parameter selections depend on the parameter type. More details on identifying the parameter type for a parameter will be discussed soon in the "Parameters API" section. Below are the available parameter types and their input formats for parameter selections. Note that only string inputs are accepts for **GET** requests, while accepted inputs for **POST** requests include any valid JSON. The key for the parameter selection is the parameter name, and underscores can be replaced with dashes if desired.
 
 - **single_select**: A string for the id of the selected option (ex. `id0`).
-- **multi_select**: Either a comma delimited string of the selected options (ex. `id0,id1,id2`), a JSON list of strings (ex. `["id0","id1","id2"]` for **POST** requests only), a string representation of the JSON list with escaped quotes, or multiple query parameters of the same parameter name (ex. `param=id0&param=id1&param=id2` for **GET** requests only).
+- **multi_select**: Either a comma delimited string of the selected options (ex. `id0,id1,id2`), a JSON list of strings (for **POST** requests only; ex. `["id0","id1","id2"]`), a string representation of the JSON list with escaped quotes, or multiple query parameters of the same parameter name (for **GET** requests only; ex. `param=id0&param=id1&param=id2`).
 - **date**: A string with format "yyyy-MM-dd" (ex. `2024-01-01`).
 - **date_range**: Two dates with format "yyyy-MM-dd" as a comma joined string (ex. `2024-01-01,2024-02-01`), a JSON list of strings (ex. `["2024-01-01","2024-02-01"]` for **POST** requests only), a string representation of JSON list with escaped quotes, or multiple query parameters of the same parameter name (ex. `param=2024-01-01&param=2024-02-01` for **GET** requests only).
 - **number**: A number or string representing a valid decimal number (ex. `3` or `3.0`).
-- **number_range**: Two decimal numbers as a comma joined string (ex. `1,10`), a JSON list of strings or numbers (ex. `["1","10"]` or `[1,10]` for **POST** requests only), a string representation of the JSON list, or multiple query parameters of the same parameter name (ex. `param=1&param=10` for **GET** requests only).
+- **number_range**: Two decimal numbers as a comma joined string (ex. `1,10`), a JSON list of strings or numbers (for **POST** requests only; ex. `["1","10"]` or `[1,10]`), a string representation of the JSON list, or multiple query parameters of the same parameter name (for **GET** requests only; ex. `param=1&param=10`).
 - **text**: A string for the entered text (ex. `sushi`).
 
-Suppose we want to specify selected values for parameters named "my_single_select", "my_multi_select", and "my_date" with selected values `id0`, `id00,id02`, and `2024-01-01` respectively. The following are few examples of valid inputs (without URL encoding):
+Suppose we want to specify selected values for parameters named "my_single_select", "my_multi_select", and "my_date" with selected values `id0`, `id00,id02`, and `2024-01-01` respectively. The following are few examples of valid inputs (ignoring URL encoding):
 
 Using query parameters for **GET** request:
-- `?my_single_select=id0&my_multi_select=id00,id02&my_date=2024-01-01`
-- `?my-single-select=id0&my-multi-select=id00,id02&my-date=2024-01-01` (Note that the dash character is replaced with a hyphen character)
-- `?my-single-select=id0&my-multi-select=["id00","id02"]&my-date=2024-01-01`
-- `?my-single-select=id0&my-multi-select=id00&my-multi-select=id02&my-date=2024-01-01`
+- `?my_single_select=id0&my_date=2024-01-01&my_multi_select=id00,id02`
+- `?my-single-select=id0&my-date=2024-01-01&my-multi-select=id00,id02` (Note that the underscore character is replaced with the hyphen character)
+- `?my-single-select=id0&my-date=2024-01-01&my-multi-select=["id00","id02"]`
+- `?my-single-select=id0&my-date=2024-01-01&my-multi-select=id00&my-multi-select=id02`
 
 Using JSON request body for **POST** request:
-- `{"my_single_select": "id0", "my_multi_select": "id00,id02", "my_date": "2024-01-01"}`
-- `{"my_single_select": "id0", "my_multi_select": ["id00", "id02"], "my_date": "2024-01-01"}`
-- `{"my_single_select": "id0", "my_multi_select": "[\"id00\",\"id02\"]", "my_date": "2024-01-01"}`
+- `{"my_single_select": "id0", "my_date": "2024-01-01", "my_multi_select": "id00,id02"}`
+- `{"my_single_select": "id0", "my_date": "2024-01-01", "my_multi_select": ["id00", "id02"]}`
+- `{"my_single_select": "id0", "my_date": "2024-01-01", "my_multi_select": "[\"id00\",\"id02\"]"}`
 
 ### Parameters API
 
@@ -123,28 +141,73 @@ Using JSON request body for **POST** request:
 
 This API endpoint retrieves the widget parameters for a dataset. This endpoint can also be used to get updates for the children parameters when selections change for parent parameters (for instance, selecting a value for a "continent" parameter would change the available options for "country"). This is done by passing the value as a query parameter for **GET** requests or part of the request body for **POST** requests. Passing more than one parameter selection to this request is invalid.
 
-The response is a JSON object with a "parameters" field whose value is a list of parameters as JSON objects. The fields to a parameter JSON object varies based on the parameter type. The following are all possible fields, the parameter type (or **widget_type**) they are applicable to in brackets, and the field descriptions.
+The response is a JSON object with a "parameters" field whose value is a list of parameters as JSON objects. The fields to a parameter JSON object varies based on the parameter type. 
 
-- **widget_type** (all parameter types): The parameter type.
-- **name** (all parameter types): The name of the parameter. Use this as the key when providing the API request parameters.
-- **label** (all parameter types): The human-friendly display name for the parameter.
-- **options** (`single_select` and `multi_select`): A list of select options as JSON objects containing **id** and **label** fields.
-- **trigger_refresh** (`single_select` and `multi_select`): A boolean that's set to true for parent parameters that require a new parameters API call when the selection changes.
-- **selected_id** (`single_select`): The id of the selected option.
-- **selected_ids** (`multi_select`): A list of ids of the selected options.
-- **show_select_all** (`multi_select`): A boolean for whether there should be a way to select all options with one click.
-- **order_matters** (`multi_select`): A boolean for whether the ordering of the input selections would affect the result of the dataset.
-- **selected_date** (`date`): A string in "yyyy-MM-dd" format for the default selected date.
-- **selected_start_date** (`date_range`): A string in "yyyy-MM-dd" format for the default selected start date.
-- **selected_end_date** (`date_range`): A string in "yyyy-MM-dd" format for the default selected end date.
-- **min_value** (`number` and `number_range`): A decimal string for the lower bound of the selectable number.
-- **max_value** (`number` and `number_range`): A decimal string for the upper bound of the selectable number.
-- **increment** (`number` and `number_range`): A decimal string for the selectable increments between the lower bound and upper bound.
-- **selected_value** (`number`): A decimal string for the default selected number.
-- **selected_lower_value** (`number_range`): A decimal string for the default selected lower number.
-- **selected_upper_value** (`number_range`): A decimal string for the default selected upper number.
-- **entered_text** (`text`): A string for the default entered text.
-- **input_type** (`text`): A string for the input type. Can be one of "text", "textarea", "number", "date", "datetime-local", "month", "time", "color", or "password".
+The following are the possible fields based on the parameter type (i.e. value of the **widget_type**).
+
+For parameter type **"single_select"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **options**: A list of dropdown options as JSON objects containing **id** and **label** fields.
+- **trigger_refresh**: A boolean that's set to true for parent parameters that require a new parameters API call when the selection changes.
+- **selected_id**: The ID of the selected / default option.
+
+For parameter type **"multi_select"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **options**: A list of dropdown options as JSON objects containing **id** and **label** fields.
+- **trigger_refresh**: A boolean that's set to true for parent parameters that require a new parameters API call when the selection changes.
+- **selected_ids**: A list of ids of the selected / default options.
+- **show_select_all**: A boolean for whether there should be a toggle to select all options.
+- **order_matters**: A boolean for whether the ordering of the input selections would affect the result of the dataset.
+
+For parameter type **"date"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **selected_date**: A string in "yyyy-MM-dd" format for the selected / default date.
+
+For parameter type **"date_range"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **selected_start_date**: A string in "yyyy-MM-dd" format for the selected / default start date.
+- **selected_end_date**: A string in "yyyy-MM-dd" format for the selected / default end date.
+
+For parameter type **"number"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **min_value**: A number for the lower bound of the selectable number.
+- **max_value**: A number for the upper bound of the selectable number.
+- **increment**: A number for the selectable increments between the lower bound and upper bound.
+- **selected_value**: A number for the selected / default number.
+
+For parameter type **"number_range"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **min_value**: A number for the lower bound of the selectable number.
+- **max_value**: A number for the upper bound of the selectable number.
+- **increment**: A number for the selectable increments between the lower bound and upper bound.
+- **selected_lower_value**: A number for the selected / default lower number.
+- **selected_upper_value**: A number for the selected / default upper number.
+
+For parameter type **"text"**:
+
+- **widget_type**: The parameter type.
+- **name**: The name of the parameter. Use this as the key when providing the API request parameters.
+- **label**: The human-friendly display name for the parameter.
+- **entered_text**: A string for the default entered text.
+- **input_type**: A string for the input type. Can be one of "text", "textarea", "number", "date", "datetime-local", "month", "time", "color", or "password".
 
 The following is an example of a simple response with just one single select parameter.
 
@@ -172,6 +235,8 @@ The following is an example of a simple response with just one single select par
 }
 ```
 
+For more details, check out the auto-generated API documentation for the parameters API at the /docs path.
+
 ### Dataset Result API
 
 - Request type: **GET** or **POST**
@@ -185,7 +250,7 @@ The response is a JSON object with fields **schema** and **data**. The response 
 - **schema**: A JSON object with the following fields:
     - **fields**: A list of JSON objects containing the **name** and **type** for each of the columns in the result. The possible values of **type** are "string", "number", "integer", "boolean", and "datetime".
     - **dimensions**: A list of column names (as strings) that serve as the dimensions for the dataset
-- **data**: A list of JSON objects where each object is a row of the tabular results. The keys and values of the object are column names (described in **fields**), and values of the row.
+- **data**: A list of JSON objects where each object is a row of the tabular results. The keys and values of the object are column names (described in **fields**) and values of the row.
 
 The following is an example of the JSON response:
 
@@ -224,6 +289,18 @@ The following is an example of the JSON response:
     ]
 }
 ```
+
+For more details, check out the auto-generated API documentation for the dataset API at the /docs path.
+
+### Dashboard Result API
+
+- Request type: **GET** or **POST**
+- Path: **/squirrels-v0/\{project_name\}/v\{major_version\}/dashboard/\{dashboard_name\}**
+- Path Example: **/squirrels-v0/my-project/v1/dashboard/my-dashboard**
+
+This API endpoint retrieves the dashboard (as PNG or HTML format, specified through the data catalog API) given parameter selections as query parameters (for **GET** requests) or JSON request body (for **POST** requests).
+
+For more details, check out the auto-generated API documentation for the dashboard API at the /docs path.
 
 
 [settings]: ../topics/settings

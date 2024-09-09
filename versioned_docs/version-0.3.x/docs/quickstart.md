@@ -380,7 +380,7 @@ This query takes the "dbv_weather_grouped" database view result and orders by a 
 
 A few things to note here about the `weather_by_period.sql` model:
 
-1. The **ref** function exists for federate models to reference other models (i.e., dbviews, [seeds], or other federate models). In this example, the model depends on running the `dbv_weather_grouped.sql` database view first. Squirrels takes care of the order of model execution for you.
+1. The **ref** function exists for federate models to reference other models (i.e. dbviews, [seeds], or other federate models). In this example, the model depends on running the `dbv_weather_grouped.sql` database view first. Squirrels takes care of the order of model execution for you.
 2. We are also using the **ref** function to look up the name of the month from the "seed_month_names.csv" file when we are grouping by month.
 3. The second line where we set "dim_col" is repeated in `dbv_weather_grouped.sql` as well. This can be avoided either by using [Jinja's include/import](https://ttl255.com/jinja2-tutorial-part-6-include-and-import/) statement, or by using the [context.py] file which will be shown later in the tutorial.
 

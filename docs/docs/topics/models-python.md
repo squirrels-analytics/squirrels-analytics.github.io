@@ -2,7 +2,7 @@
 
 Similar to [SQL models], all Python model files must be in the `models/dbviews/` or `models/federates/` folder, and use the **.py** extension. There is actually no difference in functionality between Python models in either folder. The folder you choose for each Python model is simply personal preference based on its purpose.
 
-You can use the [sqrl init] command to create example Python models:
+You can use the [sqrl init] command to create example Python models from an empty project:
 
 ```bash
 sqrl init --core --dbview py --federate py

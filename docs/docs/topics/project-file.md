@@ -6,9 +6,10 @@ The Squirrels project file ("squirrels.yml") includes configurations for the pro
 2. **packages**
 3. **connections**
 4. **parameters**
-5. **selection_test_sets**
-6. **datasets**
-7. **settings**
+5. **datasets**
+6. **dashboards**
+7. **selection_test_sets**
+8. **settings**
 
 Only the **project_variables** section is required (though there isn't much purpose for a project without a datasets section).
 
@@ -178,43 +179,12 @@ datasets:
 For each dataset, the **name** field is required, and the other fields are optional.
 - **name** - The name of the dataset, and is part of URL paths for the parameters and dataset result APIs.
 - **label** - The human-friendly title of the dataset that's provided through the catalog API response. If omitted, the **name** is used by default.
+- **description** - A description of the dataset that's provided through the catalog API response. If omitted, default is empty string.
 - **model** - The target model for the dataset. If omitted, the **name** is used by default.
 - **scope** - One of **public**, **protected**, or **private**. All users (authenticated or not) can access public datasets, only authenticated users can access protected datasets, and only internal users can access private datasets. If omitted, default is **public**.
-- **parameters** - The list of parameters that this dataset uses. If omitted, all parameters are used.
+- **parameters** - The list of parameters that this dataset uses. If omitted, no parameters are used.
 - **traits** - A set of variable values defined under this dataset, which may affect the behaviour of data models.
 - **default_test_set** - The default test set to compile this dataset with if no test set is specified. If omitted, uses the default test set configured for the project based on [Project Setting] for **selection_test_sets.default_name_used**, which is typically set to `default`. If this value doesn't exist as a test set in the **selection_test_sets** section, default parameter selections are used. More details on test sets are provided in the **selection_test_sets** section below.
-
-### selection_test_sets
-
-This section provides test sets for parameter selections when working with the [sqrl compile](../../references/cli/compile) CLI command.
-
-For example, suppose we have test set called `my_test_set` defined in this section as such:
-
-```yaml
-selection_test_sets:
-  - name: my_test_set
-    datasets:
-      - my_dataset
-    user_attributes:
-      organization: org1
-    parameters:
-      my_single_select_param: x3
-```
-
-For each test set, the **name** field is required, and the **datasets**, **user_attributes**, and **parameters** fields are optional.
-- **name** - The assigned name of the test set to make it easy to reference for multiple datasets.
-- **datasets** - The list of datasets that the test set is applicable to. If omitted, it is assumed that the test set is applicable for all datasets.
-- **user_attributes** - If authentication is used, the values of required user attributes (i.e., the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
-  - If needed, you can override the **username** and **is_internal** attributes here as well. If omitted, default values are empty string for **username** and false for **is_internal**.
-- **parameters** - The selected parameter values to test with are defined here. For any parameter names that are not specified here, the default selected value is used.
-
-Then, you can test the generation of SQL queries from the Jinja templates using the selections defined in `my_test_set` with `sqrl compile --test-set my_test_set`. If no `--test-set` option is specified, it will use the test set named `default` if it exists, or use all the default values for each parameter selection. 
-
-:::warning
-
-If using authentication and a user attibute is being referenced (in a model for instance), then the test set used with the `sqrl compile` command must define it in the **user_attributes** field. If the user_attribute is not defined for a test set named `default`, then using the `sqrl compile` command without specifying the `--test-set` option will not work.
-
-:::
 
 ### dbviews
 
@@ -243,6 +213,61 @@ federates:
 The **name** field is required and other fields are optional.
 - **name** - The name of the federate model, which should also be the name of a SQL file in the `models/federates/` folder.
 - **materialized** - Defines how the federate model gets materialized in the in-memory database. Options are "table" and "view", with "table" being the default (unless specified otherwise with the **defaults.federates.materialized** [Project Setting]).
+
+### dashboards
+
+This section allows you to define configurations for dashboards that provide visualizations on top of datasets. For example, this is an example that defines a dashboard named `dashboard_example` and defines "start_date", "end_date", and "category" as dynamic parameters to the dashboard.
+
+```yaml
+dashboards:
+  - name: dashboard_example
+    label: Example Dashboard
+    scope: public
+    parameters:
+      - start_date
+      - end_date
+      - category
+```
+
+For each dashboard, the **name** field is required, and the other fields are optional.
+- **name** - The name of the dashboard, and is part of URL paths for the parameters and dashboard result APIs. The associated Python file in the `dashboards/` folder must have the same name.
+- **label** - The human-friendly title of the dashboard that's provided through the data catalog API response. If omitted, the **name** is used by default.
+- **description** - A description of the dashboard that's provided through the data catalog API response. If omitted, default is empty string.
+- **scope** - One of **public**, **protected**, or **private**. All users (authenticated or not) can access public dashboard, only authenticated users can access protected dashboard, and only internal users can access private dashboard. If omitted, default is **public**.
+- **parameters** - The list of parameters that this dashboard uses. If omitted, no parameters are used.
+  - The specified parameters only impact the dashboard if the dependent datasets used by the dashboard uses the parameters as well. In the example above, if the "dashboard_example" only uses a dataset called "dataset_example" and "dataset_example" does not use "category", then "category" has no effect on the dashboard.
+
+### selection_test_sets
+
+This section provides test sets for parameter selections when working with the [sqrl compile](../../references/cli/compile) CLI command.
+
+For example, suppose we have test set called `my_test_set` defined in this section as such:
+
+```yaml
+selection_test_sets:
+  - name: my_test_set
+    datasets:
+      - my_dataset
+    user_attributes:
+      organization: org1
+    parameters:
+      my_single_select_param: x3
+```
+
+For each test set, the **name** field is required, and the **datasets**, **user_attributes**, and **parameters** fields are optional.
+- **name** - The assigned name of the test set to make it easy to reference for multiple datasets.
+- **datasets** - The list of datasets that the test set is applicable to. If omitted, it is assumed that the test set is applicable for all datasets.
+- **user_attributes** - If authentication is used, the values of required user attributes (i.e. the attributes defined in the User class in `pyconfigs/auth.py`) are defined here.
+  - If needed, you can override the **username** and **is_internal** attributes here as well. If omitted, default values are empty string for **username** and false for **is_internal**.
+- **parameters** - The selected parameter values to test with are defined here. For any parameter names that are not specified here, the default selected value is used.
+
+Then, you can test the generation of SQL queries from the Jinja templates using the selections defined in `my_test_set` with `sqrl compile --test-set my_test_set`. If no `--test-set` option is specified, it will use the test set named `default` if it exists, or use all the default values for each parameter selection. 
+
+:::warning
+
+If using authentication and a user attibute is being referenced (in a model for instance), then the test set used with the `sqrl compile` command must define it in the **user_attributes** field. If the user_attribute is not defined for a test set named `default`, then using the `sqrl compile` command without specifying the `--test-set` option will not work.
+
+:::
 
 ### settings
 

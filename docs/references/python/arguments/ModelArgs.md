@@ -19,6 +19,7 @@ A dictionary to access an environment variable defined in `env.yml`.
 ### user
 
 The authenticated user with type User class defined in `auth.py` (if applicable), or None if no user authenticated.
+
 ### prms
 
 A dictionary of the parameter objects (containing the real-time parameter selections) by parameter name.

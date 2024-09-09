@@ -4,6 +4,8 @@ The Official Documentation Website for Squirrels
 
 ## Contributing
 
+Install NodeJS v20.10.0 or higher. Then run `npm install` on this project.
+
 Use `npm run start` to host the development version of the website on localhost. Changes to files are reflected live on the website in this development version.
 
 Use `npm run build` to create a build (which verifies all internal links are valid). Then use `npm run serve` to host the build on localhost.
