@@ -4,21 +4,91 @@
         <title>Squirrels Blog</title>
         <link>https://squirrels-analytics.github.io/blog</link>
         <description>Squirrels Blog</description>
-        <lastBuildDate>Sat, 22 Jun 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 07 Sep 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Squirrels - What Problems Does It Solve?]]></title>
+            <link>https://squirrels-analytics.github.io/blog/problems-solved</link>
+            <guid>https://squirrels-analytics.github.io/blog/problems-solved</guid>
+            <pubDate>Sat, 07 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Squirrels is a REST API framework for data analytics. APIs built with this framework return datasets, dashboards, or parameters for datasets/dashboards. APIs for authentication, data catalog, and testing UI are also included.]]></description>
+            <content:encoded><![CDATA[<p>Squirrels is a REST API framework for data analytics. APIs built with this framework return datasets, dashboards, or parameters for datasets/dashboards. APIs for authentication, data catalog, and testing UI are also included.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="problems-solved">Problems Solved<a href="https://squirrels-analytics.github.io/blog/problems-solved#problems-solved" class="hash-link" aria-label="Direct link to Problems Solved" title="Direct link to Problems Solved">​</a></h2>
+<p>The following are details on the problems that Squirrels is meant to solve:</p>
+<ol>
+<li>Embedded Analytics<!-- -->
+<ul>
+<li>Today, data professions may feel comfortable creating data analytics dashboards in BI tools like Tableau, Looker, and PowerBI. However, to embed data analytics into your own applications with the same “look and feel” is not possible to do with these popular BI tools</li>
+</ul>
+</li>
+<li>Data Analytics Without Vendor Lock-in<!-- -->
+<ul>
+<li>Working with Squirrels is easy. You just need to install Python, run “pip install squirrels”, run “sqrl init” to create a working project, and run “sqrl run” to activate the API server. From here, you can run the API server in a Docker Container, and host it on your own cloud platform, all for free!</li>
+</ul>
+</li>
+<li>Aligned Skillsets Across Data Analytics Responsibilities<!-- -->
+<ul>
+<li>Today, dbt has become popular as the go-to tool for offline data transformation pipelines because it lets analytics engineers use YAML, SQL (templated with Jinja), and sometimes Python to produce production-grade data pipelines. It gained popularity largely because of how ubiquitous SQL and Python skills are among data professionals. After creating cleaned/processed tables with dbt, these tables may be queried using tools like Tableau, Looker, PowerBI, Excel, etc. Tableau uses VizQL, Looker uses LookML, PowerBI uses DAX, and Excel uses its own syntax for Excel formulas. This means if an analytics engineer works with dbt and Tableau in one company, and then switched jobs to work with dbt and Looker instead, the engineer would need to learn a new query language for Looker. On the other hand, Squirrels lets you write your dynamic real-time queries with YAML, SQL (templated with Jinja), and sometimes Python, which is similar to dbt! So if that engineer switched into a job that uses dbt and Squirrels, he/she would already be an expert in both!</li>
+<li>Analogously, NodeJS became popular because it allowed full-stack web developers to use the same language for both frontend and backend. This is similar to how dbt and Squirrels allow data professions to use the same language between offline data pipelines and dynamic real-time queries</li>
+</ul>
+</li>
+</ol>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="competition">Competition<a href="https://squirrels-analytics.github.io/blog/problems-solved#competition" class="hash-link" aria-label="Direct link to Competition" title="Direct link to Competition">​</a></h2>
+<p>Classifying other products/companies as “competition” depends on how broad of a use-case is considered. Simply considering products that assist with data analytics, then there are hundreds or thousands. If considering only products that are also API frameworks for data analytics in a git controllable project, <a href="http://cube.dev/" target="_blank" rel="noopener noreferrer">Cube</a> appears to be the only one that is well-known. However, looking at the three problems above, Cube does not solve the third. If considering products that also attempt to solve the three problems above, the following products have recently been introduced to the market, but neither have made a name for themselves yet.</p>
+<ul>
+<li><a href="https://tools.latitude.so/" target="_blank" rel="noopener noreferrer">Latitude</a></li>
+<li><a href="https://vulcansql.com/" target="_blank" rel="noopener noreferrer">VulcanSQL</a></li>
+</ul>
+<p>However, there are a few features not available with one or more of these tools, but are available with Squirrels:</p>
+<ul>
+<li>Compatibility with Windows<!-- -->
+<ul>
+<li>Squirrels and VulcanSQL are compatible with all operating systems including Windows</li>
+<li>Latitude is not compatible with Windows natively, but can be used on Windows with WSL</li>
+</ul>
+</li>
+<li>Widget Parameters<!-- -->
+<ul>
+<li>Squirrels lets you define parameters as single-select, multi-select, date / date range, number / number range, or text parameters. It’s even possible get parameter options from a database or have cascading effects between options</li>
+<li>Latitude and VulcanSQL allow for arbitrary parameter values passed as query parameters with no specification on parameter typing or parameter options</li>
+</ul>
+</li>
+<li>Query Multiple Databases in One API Call<!-- -->
+<ul>
+<li>Squirrels differentiate data models by those that run on the external database (i.e. “database views”) and those that run in the API server (i.e. “federate views”). Federate views can join database views (or other federate views) even if they ran in different databases! Any database / data warehouse with a SQLAlchemy driver can be queried as a source for database views.</li>
+<li>Latitude allows data models to reference another, but the chain of queries must be on the same database. No concept of “federate views” exist</li>
+<li>VulcanSQL does not support data models referencing another. There can only be one source per project</li>
+</ul>
+</li>
+<li>Data Models with Python Pandas<!-- -->
+<ul>
+<li>If SQL with Jinja is insufficient, data models in Squirrels can be created in Python as a function that return pandas dataframes</li>
+<li>Latitude and VulcanSQL have no support for Python since both their backend are NodeJS</li>
+</ul>
+</li>
+<li>Visualization Dashboards<!-- -->
+<ul>
+<li>Squirrels lets you create APIs that return dashboards as images or html. The dashboards are created in Python with your favourite Python data visualization library such as matplotlib or plotly</li>
+<li>Latitude lets you create dashboards with Svelte, and uses their own syntax for components. Likely requires a higher learning curve</li>
+<li>VulcanSQL has no support for dashboards</li>
+</ul>
+</li>
+</ul>]]></content:encoded>
+            <category>squirrels</category>
+        </item>
         <item>
             <title><![CDATA[Welcome to Squirrels]]></title>
             <link>https://squirrels-analytics.github.io/blog/welcome</link>
             <guid>https://squirrels-analytics.github.io/blog/welcome</guid>
             <pubDate>Sat, 22 Jun 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[Welcome to the official documentation website for Squirrels, an open-source project framework for building parameterizable REST APIs for dynamic data analytics or tabular data! This is an easy-to-use framework for anyone who is familiar with SQL and YAML.]]></description>
-            <content:encoded><![CDATA[<p>Welcome to the official documentation website for <strong>Squirrels</strong>, an open-source project framework for building parameterizable REST APIs for dynamic data analytics or tabular data! This is an easy-to-use framework for anyone who is familiar with SQL and YAML.</p>
+            <description><![CDATA[Welcome to the official documentation website for Squirrels, an open-source project framework for building parameterizable REST APIs for dynamic data analytics! This is an easy-to-use framework for anyone who is familiar with SQL and YAML.]]></description>
+            <content:encoded><![CDATA[<p>Welcome to the official documentation website for <strong>Squirrels</strong>, an open-source project framework for building parameterizable REST APIs for dynamic data analytics! This is an easy-to-use framework for anyone who is familiar with SQL and YAML.</p>
 <p>In today's web development world, REST APIs are known to be the "backbone of the internet". It allows two software applications across the world to communicate with each other and share data.</p>
 <p>In today's data analytics world, requirements for data analytics and business intelligence are growing in most companies. But it often comes down to a few technical data experts to answer the growing number of data questions. For instance, suppose that today, a company executive asks for revenue by location for last year, and then tomorrow, asks for revenue by day of week for the last quarter only. For many organizations, these executives must rely on others to produce the required analytics rather than being able to retrieve the information themselves (for instance, by clicking a button in a graphical user interface). This often requires a lot of tedious work for the technical data experts to revise queries on a regular basis, even when several of these data queries take a similar shape but parameterized in different ways.</p>
 <p>This is where Squirrels comes into play. It merges the two worlds of "REST APIs" and "data analytics" together! By creating dynamic datasets with a <strong>low-code</strong> framework and exposing them as REST APIs that accept query parameters and return a standard JSON structure, you allow others to self-serve the data analytics while having tight control over what they are allowed to query. And it's not just for internal analytics only, it can also be embedded in your customer-facing applications to expose analytics for external users!</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-is-it-named-squirrels">Why is it named "Squirrels"?<a class="hash-link" aria-label="Direct link to Why is it named &quot;Squirrels&quot;?" title="Direct link to Why is it named &quot;Squirrels&quot;?" href="https://squirrels-analytics.github.io/blog/welcome#why-is-it-named-squirrels">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-is-it-named-squirrels">Why is it named "Squirrels"?<a href="https://squirrels-analytics.github.io/blog/welcome#why-is-it-named-squirrels" class="hash-link" aria-label="Direct link to Why is it named &quot;Squirrels&quot;?" title="Direct link to Why is it named &quot;Squirrels&quot;?">​</a></h2>
 <p>First off, it seems to be the trend that many data-relevant tools are named after animals (Pandas, Koalas, Polars, DuckDB, etc.). Not to mention, Squirrels runs on Python, a programming language named after an animal as well.</p>
 <p>But more importantly, the phonetics of the word "squirrels" sounds like a blend between SQL and URLs, which encapsulates the purpose of this framework very well.</p>]]></content:encoded>
             <category>welcome</category>
