@@ -25,7 +25,7 @@ The contents of dashboards are Python files under the "dashboards" folder in the
 The main ideas are simple. In the main function of the Python file, you:
 1. Use the `sqrl.dataset` function to retrieve dataset(s) as a pandas DataFrame(s).
 2. Create plots from the dataset(s) as either a matplotlib figure, bytes/bytes buffer for a PNG image, or string/string buffer for an HTML representation.
-3. Return the plots as an instance of one of the Dashboard classes from `squirrels.dashboards`. For example, a PngDashboard can be constructed by passing either a matplotlib figure or bytes/bytes buffer as the only argument, or an HtmlDashboard can be constructed by passing either a string/string buffer as the only argument.
+3. Return the plots as an instance of one of the Dashboard classes from `squirrels.dashboards`. For example, a [PngDashboard] can be constructed by passing either a matplotlib figure or bytes/bytes buffer as the only argument, or an [HtmlDashboard] can be constructed by passing either a string/string buffer as the only argument.
 
 Below is a simple example of what a dashboard Python file can look like:
 
@@ -80,6 +80,12 @@ Squirrels uses the signature of the main function to determine the output format
 
 :::
 
+:::tip
+
+It is often easier to experiment in a Jupyter notebook first (to create a static dashboard) before moving the code to a dashboard Python file to create a dynamic dashboard. See [Interacting with Squirrels in Python](./interact-in-python) for more details.
+
+:::
+
 ### More information on `sqrl.dataset` function
 
 The `sqrl.dataset` function is analogous to using the REST API to retrieve a dataset, except that is returns a pandas DataFrame instead of JSON. It is an asynchronous function so it must be called with the `await` keyword (or handled with methods that deal with Python async functions).
@@ -122,3 +128,5 @@ In this example, both `spending_by_month_df` and `spending_by_subcategory_df` ar
 
 
 [squirrels.yml]: ./project-file
+[PngDashboard]: ../../references/python/dashboards/PngDashboard
+[HtmlDashboard]: ../../references/python/dashboards/HtmlDashboard

@@ -599,6 +599,7 @@ In addition, the following topics may also useful for your Squirrels projects:
 - [SQL Placeholders](./topics/placeholders)
   - A mechanism to use free-form text parameter values in models without SQL injection
 - [Authentication](./topics/auth)
+- [Interacting with Squirrels in Python](./topics/interact-in-python)
 - [Modify Dates with dateutils](./topics/dateutils)
 - [Versioning Best Practices](./topics/tips/versioning)
 - [Deploy with Docker](./topics/tips/deployment)

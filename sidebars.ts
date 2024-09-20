@@ -39,6 +39,7 @@ const sidebars: SidebarsConfig = {
         "docs/topics/seeds",
         "docs/topics/dashboards",
         "docs/topics/auth",
+        "docs/topics/interact-in-python",
         "docs/topics/dateutils",
         {
           type: "category",
@@ -153,6 +154,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "from squirrels.dashboards",
           items: [
+            "references/python/dashboards/Dashboard",
             "references/python/dashboards/PngDashboard",
             "references/python/dashboards/HtmlDashboard",
           ]
@@ -163,6 +165,13 @@ const sidebars: SidebarsConfig = {
           items: [
             "references/python/user_base/User",
             "references/python/user_base/WrongPassword",
+          ]
+        },
+        {
+          type: "category",
+          label: "from squirrels.project",
+          items: [
+            "references/python/project/SquirrelsProject",
           ]
         },
         {
