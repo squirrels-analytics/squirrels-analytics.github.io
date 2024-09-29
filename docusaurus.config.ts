@@ -129,7 +129,7 @@ const config: Config = {
             },
             {
               label: 'Tutorial',
-              to: '/docs/docs/quickstart',
+              to: '/docs/docs/tutorial',
             },
             {
               label: 'Squirrels Developer Topics',

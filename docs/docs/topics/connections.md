@@ -10,10 +10,10 @@ See the "connections" section of the [Squirrels Project File](./project-file) pa
 
 ### Creating the file from scratch
 
-An easy way to get an example of a `connections.py` file is by using the [sqrl init](../../references/cli/init) command and specify the connections format to be Python. You can go through the prompts or you can run:
+An easy way to get an example `connections.py` file is by using the [sqrl get-file](../../references/cli/get-file) command. Simply run:
 
 ```bash
-sqrl init --core --connections py
+sqrl get-file connections.py
 ```
 
 This adds the `connections.py` file to the `pyconfigs/` folder. 

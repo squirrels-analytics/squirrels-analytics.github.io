@@ -6,17 +6,17 @@ Can be found in the classpath `squirrels.parameters.DateParameter` or `squirrels
 
 ## Static / Class Methods
 
-In addition to the static methods specified on this page, see the [Parameter] page for details on the **Create** and **CreateFromSource** factory methods.
+In addition to the static methods specified on this page, see the [Parameter] page for details on the **CreateWithOptions** and **CreateFromSource** factory methods.
 
 For DateParameter in particular:
-- The **all_options** argument of the **Create** factory method must be a sequence of [DateParameterOption](../parameter_options/DateParameterOption) instances
+- The **all_options** argument of the **CreateWithOptions** factory method must be a sequence of [DateParameterOption](../parameter_options/DateParameterOption) instances
 - The **data_source** argument of the **CreateFromSource** factory method must be a [DateDataSource](../data_sources/DateDataSource) 
 
 ### CreateSimple
 
 Creates the configurations for a date parameter by specifying the default date directly without specifying any [DateParameterOption](../parameter_options/DateParameterOption) instances. The parameter configurations get added to a pool of parameter configurations that datasets can pick from.
 
-Unlike the **Create** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
+Unlike the **CreateWithOptions** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
 
 **Required Arguments:**
 

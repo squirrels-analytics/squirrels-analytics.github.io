@@ -8,17 +8,17 @@ Then in subsequent steps, we will alter the project to create our own Squirrels 
 
 ## Installation
 
-Python 3.10 or higher is required. Confirm the appropriate version of [Python](https://www.python.org/downloads/) is installed by running:
+**Python 3.10 or higher is required**. Confirm the appropriate version of [Python](https://www.python.org/downloads/) is installed by running:
 
 ```bash
 python --version
 ```
 
-This should print something like `Python 3.10.X` in the terminal.
+This should print something like `Python 3.X.Y` in the terminal. Confirm that X >= 10.
 
 If this doesn't work for you, or it is not showing the correct version, try `python3 --version` instead.
 
-Once you've confirmed Python is installed, create an empty folder for your Squirrels project. Then, create and activate a [Python virtual environment](https://realpython.com/python-virtual-environments-a-primer/) for the project.
+Once you've confirmed Python is installed, create an empty folder for your Squirrels project. Although not required, it is strongly recommended to create and activate a [Python virtual environment](https://realpython.com/python-virtual-environments-a-primer/) for the project.
 
 :::tip
 
@@ -34,7 +34,7 @@ Then, activate the virtual environment by doing one of the following:
 To install the Squirrels library in your virtual environment, run:
 
 ```bash
-pip install "squirrels>=0.4.0,<0.5.0"
+pip install "squirrels>=0.4.0"
 ```
 
 To confirm it installed properly, run:
@@ -58,8 +58,6 @@ sqrl init --core
 If you choose to run `sqrl init` without the `--core` option, a set of prompts will appear for the various files you wish to include in your project. If you choose to do it this way instead, you would answer the prompts as follows for this tutorial:
 
 ```config
-[?] Include all core project files? (Y/n): y
-
 [?] How would you like to configure the database connections?:
  > yml
    py
@@ -79,11 +77,6 @@ If you choose to run `sqrl init` without the `--core` option, a set of prompts w
 [?] Do you want to include a dashboard example? (y/N): n
 
 [?] Do you want to add the 'auth.py' file to enable custom API authentication? (y/N): n
-
-[?] What sample sqlite database do you wish to use (if any)?:
- > expenses
-   weather
-   none
 ```
 
 :::
@@ -114,10 +107,10 @@ After you're done with the API server, you can shut it down in the terminal with
 
 ## Step 2: Add The Weather Database
 
-Now is a good time to add the SQLite database we will use for the rest of the tutorial. We will use the init command again and run:
+Now is a good time to add the SQLite database we will use for the rest of the tutorial. Simply run:
 
 ```bash
-sqrl init --sample-db weather
+sqrl get-file weather.db
 ```
 
 This adds a `weather.db` file in the `assets` folder.
@@ -147,11 +140,11 @@ project_variables:
 
 This section is where we set all the database connection details that we need. We provide a list of connection names here and refer to them in other files. The connection name `default` must be provided for models that don't set a connection name explicitly.
 
-Under `default`, change the url to `sqlite:///./assets/weather.db`.
+Under `default`, change the url to `sqlite:///{project_path}/assets/weather.db`.
 
 :::tip
 
-You can also substitute environment variables defined in the [env.yml] file using [Jinja]. For instance, if there is an environment variable called "sqlite_conn_str" in [env.yml], then you can set the url of `default` to: 
+You can also substitute environment variables defined in the [env.yml] file using [Jinja]. For instance, if there is an environment variable called "sqlite_conn_str" in [env.yml], then you can also set the url to: 
 
 ```
 {{ env_vars.sqlite_conn_str }}
@@ -159,7 +152,7 @@ You can also substitute environment variables defined in the [env.yml] file usin
 
 :::
 
-The syntax for the URL uses [sqlalchemy database URLs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls). Since SQLite databases don't require a username and password, the **credential** field can be either set to `null` or omitted entirely. More details on setting and using credential keys and connections can be found in the [Database Connections](./topics/database) page.
+The syntax for the URL uses [sqlalchemy database URLs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls). Since SQLite databases don't require a username and password, the **credential** field can be either set to `null` or omitted entirely. More details on setting and using credential keys and connections can be found in the [Database Connections](./topics/connections) page.
 
 The **connections** section should now look like this:
 
@@ -167,7 +160,7 @@ The **connections** section should now look like this:
 connections:
   - name: default
     credential: null
-    url: sqlite:///./assets/weather.db
+    url: sqlite:///{project_path}/assets/weather.db
 ```
 
 ### Defining the Datasets
@@ -204,7 +197,7 @@ Go into the `pyconfigs/parameters.py` file. This file contains the definitions o
 
 :::info
 
-The possible widget parameter types supported today are **SingleSelectParameter**, **MultiSelectParameter**, **DateParameter**, **DateRangeParameter**, **NumberParameter**, **NumberRangeParameter**, and **TextParameter**. Each parameter type can be created with one of the factory method **Create**, **CreateSimple**, or **CreateFromSource**, which exists as class methods on each parameter type. Every factory method takes "name" and "label" as required arguments.
+The possible widget parameter types supported today are **SingleSelectParameter**, **MultiSelectParameter**, **DateParameter**, **DateRangeParameter**, **NumberParameter**, **NumberRangeParameter**, and **TextParameter**. Each parameter type can be created with one of the factory method **CreateSimple**, **CreateWithOptions**, or **CreateFromSource**, which exists as class methods on each parameter type. Every factory method takes "name" and "label" as required arguments.
 
 :::
 
@@ -255,7 +248,7 @@ This sets the name and label of the new parameter to "group_by_dim" and "Group B
 
 :::info
 
-For **SingleSelectParameter**, the arguments for **CreateSimple** and **Create** are very similar, except **Create** lets you specify a parent parameter for cascading the shown options. For non-select parameter types like **DateParameter**, **Create** lets you specify a parent parameter and a list of **DateParameterOption** (to use a different default_date based on selected parent option), while **CreateSimple** takes a single "default_date" instead.
+For **SingleSelectParameter**, the arguments for **CreateSimple** and **CreateWithOptions** are very similar, except **CreateWithOptions** lets you specify a parent parameter for cascading the shown options. For non-select parameter types like **DateParameter**, **CreateWithOptions** lets you specify a parent parameter and a list of **DateParameterOption** (to use a different default_date based on selected parent option), while **CreateSimple** takes a single "default_date" instead.
 
 :::
 
@@ -444,10 +437,10 @@ You can also use `-d` instead of `--dataset`. You may also use `-D` or `--all-da
 If you only care about compiling one model, you can run:
 
 ```bash
-sqrl compile --dataset weather_by_period --select weather_by_period
+sqrl compile --dataset weather_by_period --select dbv_weather_grouped
 ```
 
-In addition to writing the file in the `target` folder, this will print out the compiled SQL query as well.
+In addition to writing the file in the `target` folder, this will print out the compiled SQL query for `dbv_weather_grouped` as well.
 
 :::note
 
@@ -499,7 +492,7 @@ from typing import Any
 from squirrels import ContextArgs, parameters as p
 
 def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
-    if sqrl.param_exists("group_by"):
+    if sqrl.param_exists("group_by_dim"):
         group_by_param = sqrl.prms["group_by_dim"]
         assert isinstance(group_by_param, p.SingleSelectParameter)
         
@@ -509,7 +502,7 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
 
 :::note
 
-Notice that we asserted that **group_by_param** is a SingleSelectParameter. This is useful to provide the IDE required information to suggest appropriate methods for auto-complete. With a list of suggestions the moment you type `group_by_param.get`, you don't have to memorize that the **get_selected** method exists for SingleSelectParameter objects, or what method names are available for other parameter classes. This is assuming that the IDE is configured to the correct Python interpreter / virtual environment.
+Notice that we asserted that **group_by_param** is a SingleSelectParameter. This is useful to provide the IDE required information to suggest appropriate methods for auto-complete. With a list of suggestions the moment you type `group_by_param.get`, you don't have to memorize that the **get_selected** method exists for SingleSelectParameter objects, or what method names are available for other parameter classes. This is assuming that the IDE is configured to the correct Python interpreter / virtual environment with Squirrels installed.
 
 :::
 

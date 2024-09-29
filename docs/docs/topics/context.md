@@ -1,6 +1,12 @@
 # Context File
 
-The context file (`pyconfigs/context.py`) is where you can process runtime inputs, such as (but not limited to) parameter selections, into meaningful variables that can be used in the data models. The file contains a single **main** function with the arguments **ctx** and **sqrl**.
+The context file (`pyconfigs/context.py`) is where you can process runtime inputs, such as (but not limited to) parameter selections, into meaningful variables that can be used in the data models. You can get a sample context file by running:
+
+```bash
+sqrl get-file context.py
+```
+
+The file contains a single **main** function with the arguments **ctx** and **sqrl**.
 
 - **ctx** (short for "context) is the output dictionary that is written to in the function. The keys should be strings, and the values can be anything.
 - **sqrl** is an object of type [ContextArgs](../../references/python/arguments/ContextArgs) that contains inputs/utilities you may choose to use. Some examples include:

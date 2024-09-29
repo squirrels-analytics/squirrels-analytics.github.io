@@ -6,17 +6,17 @@ Can be found in the classpath `squirrels.parameters.SingleSelectParameter` or `s
 
 ## Static / Class Methods
 
-In addition to the static methods specified on this page, see the [Parameter] page for details on the **Create** and **CreateFromSource** factory methods.
+In addition to the static methods specified on this page, see the [Parameter] page for details on the **CreateWithOptions** and **CreateFromSource** factory methods.
 
 For SingleSelectParameter in particular:
-- The **all_options** argument of the **Create** factory method must be a sequence of [SelectParameterOption](../parameter_options/SelectParameterOption) instances
+- The **all_options** argument of the **CreateWithOptions** factory method must be a sequence of [SelectParameterOption](../parameter_options/SelectParameterOption) instances
 - The **data_source** argument of the **CreateFromSource** factory method must be a [SelectDataSource](../data_sources/SelectDataSource) 
 
 ### CreateSimple
 
 Creates the configurations for a single-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
-Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**. For arguments, see **Create** in the [Parameter] page.
+Similar to the **CreateWithOptions** factory method, but without the optional arguments for **user_attribute** and **parent_name**. For arguments, see **CreateWithOptions** in the [Parameter] page.
 
 ## Non-Static Methods
 

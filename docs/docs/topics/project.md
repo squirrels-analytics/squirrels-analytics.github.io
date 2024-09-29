@@ -38,7 +38,7 @@ Within the `models/` and `pyconfigs/` folders, the Squirrels framework can also 
 |:-----|:-------|:----------|
 |models|[dbviews/](./models-sql)|Data models that run against an external database|
 |models|[federates/](./models-sql)|Data models that join together one or more other models using an embedded database|
-|pyconfigs|[connections.py](./database)|Specifies a set of database connections as SQLAlchemy engines that the project uses in Python. Only needed if not specified already in YAML in the [squirrels.yml] file|
+|pyconfigs|[connections.py](./connections)|Specifies a set of database connections as SQLAlchemy engines that the project uses in Python. Only needed if not specified already in YAML in the [squirrels.yml] file|
 |pyconfigs|[parameters.py](./parameters)|Specifies a set of widget parameters (in Python) for datasets to use, typically used if the widget parameters are not specified in the [squirrels.yml] file (in YAML, which can be more verbose)|
 |pyconfigs|[context.py](./context)|Python script that processes real-time parameter selections into meaningful Python variables (or "context variables") that can be used by models|
 |pyconfigs|[auth.py](./auth)|Lets you create your own user model and method for authenticating against your source of users|

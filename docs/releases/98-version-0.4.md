@@ -26,6 +26,35 @@ Settings for "dashboards.cache.size" and "dashboards.cache.ttl_minutes" have als
 
 See the [Settings](../docs/topics/settings) page for more details.
 
+### SquirrelsProject Class in Python
+
+You can now interact with the Squirrels project in Python by creating a [SquirrelsProject](../references/python/project/SquirrelsProject) object. This allows you to access the Squirrels project's datasets, dashboards, or other resources programmatically. This makes it easier to experiment with the Squirrels project in a Jupyter notebook or a Python script.
+
+See the [Interact with Squirrels in Python](../docs/topics/interact-in-python) page for more details.
+
+### CLI Options for File Logging
+
+New CLI options have been added to all command to allow logging to a file. See [this page](../references/cli/sqrl) for more details.
+
+### CLI Command for Getting Example Files
+
+The [sqrl get-file] command has been introduced to get a single example file that is common for Squirrels projects. See the [sqrl get-file] page for more details.
+
+### Changes to the `sqrl init` CLI
+
+Due to the addition of the [sqrl get-file] command, the [sqrl init] command has been changed to always create a fully working Squirrels project.
+
+For example, before v0.4.0, running `sqrl init --auth` meant only creating the `auth.py` file in the `pyconfigs/` folder. Now, it creates the full Squirrels project with the `auth.py` file.
+
+See the [sqrl init] page for more details.
+
+### Automatically Imported Jinja Macros for SQL Models
+
+Before v0.4.0, you had to explicitly import Jinja macros in SQL models using [Jinja's import statement](https://ttl255.com/jinja2-tutorial-part-6-include-and-import/). Now, the Jinja macros can be called directly (in any SQL model) as long as they are in the `macros/` folder in a file with one of these extensions: `.sql`, `.j2`, `.jinja`, or `.jinja2`. 
+
+See the "Using Custom Jinja Macros" section of the [SQL Models](../docs/topics/models-sql#using-custom-jinja-macros) page for more details.
+
 
 [squirrels.yml]: ../docs/topics/project-file
 [sqrl init]: ../references/cli/init
+[sqrl get-file]: ../references/cli/get-file

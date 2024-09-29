@@ -8,9 +8,9 @@ For those familiar with [dbt](https://www.getdbt.com/), Squirrels uses a similar
 
 ## Main Features
 
-#### API Access to Datasets
+#### API Access to Datasets and Dashboards
 
-Applications can access "datasets" and their associated parameters via well-defined API endpoints. Each dataset can be configured with a target model, a set of applicable widget parameters, and access permissions. A testing UI is available to conveniently test your APIs, and OpenAPI documentation is auto-generated for you.
+Applications can access datasets and their associated parameters via well-defined API endpoints. Each dataset can be configured with a target model, a set of applicable widget parameters, and access permissions. Same applies to dashboards as well. A testing UI is available to conveniently test your APIs, and comprehensive OpenAPI documentation is automatically generated for you.
 
 #### Dynamic Queries with SQL Jinja or Python
 

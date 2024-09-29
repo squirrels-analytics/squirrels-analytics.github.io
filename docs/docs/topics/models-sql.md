@@ -2,10 +2,11 @@
 
 The "data model" can simply be thought of as a table or view in a database, derived from pre-existing tables or views. All models are defined somewhere in the `models/` folder, and all SQL model files use the **.sql** extension. The part of the file name before the extension becomes the name of the model. In Squirrels, we split this into two categories: **dbview models** and **federate models**.
 
-You can use the [sqrl init] command to create example SQL models from an empty project:
+You can use the [sqrl get-file](../../references/cli/get-file) command to create example SQL models. The following commands let you create example SQL models for dbview models and federate models:
 
 ```bash
-sqrl init --core --dbview sql --federate sql
+sqrl get-file dbview_example
+sqrl get-file federate_example
 ```
 
 Like [dbt], all SQL models in Squirrels can be templated with [Jinja]. However, some of the Squirrels features available in [Jinja] are different between dbview models and federate models.
@@ -113,20 +114,26 @@ SELECT
 FROM mytable
 ```
 
-Or, you can write the macro in a file somewhere in your Squirrels project (such as `macros/utils.j2`) and use [Jinja's include or import](https://ttl255.com/jinja2-tutorial-part-6-include-and-import/) statement to share the macro across multiple SQL model files. For example:
+Or, you can write the macro in a ".sql" file in the `macros` folder (such as `macros/utils.sql`) and any macros contained in these files can be used by any model file (without having to [import/include the file using Jinja](https://ttl255.com/jinja2-tutorial-part-6-include-and-import/) explicit). For example:
 
 ```sql
-{%- import 'macros/utils.j2' as u -%}
+-- macros/utils.sql
+{%- macro safe_divide(numerator, denominator) -%}
+(CASE WHEN {{ denominator }} = 0 THEN 0 ELSE {{ numerator }} / {{ denominator }} END)
+{%- endmacro -%}
 
+-- my_model.sql
 SELECT
-    {{ u.safe_divide("num1", "denom") }} as ratio1
-    {{ u.safe_divide("num2", "denom") }} as ratio2
+    {{ safe_divide("num1", "denom") }} as ratio1
+    {{ safe_divide("num2", "denom") }} as ratio2
 FROM mytable
 ```
 
-Notice that the path to import/include Jinja files from is relative to the project root. The benefit of reusable macros is more apparent for larger projects, especially if the same underlying logic is repeated many times (instead of just twice). For instance, if there are a hundred columns that calculate division the same way with the CASE WHEN statement above, then if we needed to change our division by zero to result in **null**, it's easier to change one place instead of a hundred places.
+Although ".sql" is preferred, the macros file may also end in ".j2", ".jinja", or ".jinja2" for it to be recognized by Squirrels.
 
-To share Jinja macros across projects, use the [sqrl deps] command to download a git repo into the `sqrl_packages/` folder, and import/include the required macro files in the `sqrl_packages/` folder.
+The benefit of reusable macros is more apparent for larger projects, especially if the same underlying logic is repeated many times (instead of just twice). For instance, if there are a hundred columns that calculate division the same way with the CASE WHEN statement above, then if we needed to change our division by zero to result in **null**, it's easier to change one place instead of a hundred places.
+
+To share Jinja macros across Squirrels projects, use the [sqrl deps] command to download a git repo into the `sqrl_packages/` folder. If these repos have a `macros/` folder with macro files, the macros in these files are automatically imported as well.
 
 :::note
 
@@ -138,24 +145,11 @@ In Squirrels, Jinja macro files can use any extension, and can be contained in a
 
 :::
 
-:::warning
-
-By default, imported macros are cached and do not have access to Squirrels variables such as **ctx**. To get around this, either pass the variable as a parameter to the macro, use include instead of import, or import **with context** (example below).
-
-```
-{%- import '...' as macros with context -%}
-```
-
-However, using include or importing **with context** are not recommended since these methods avoid caching the imported macros.
-
-:::
-
 
 [squirrels.yml]: ./project-file
 [env.yml]: ./environcfg
 [Project Setting]: ./settings
-[connections.py]: ./database
-[sqrl init]: ../../references/cli/init
+[connections.py]: ./connections
 [sqrl deps]: ../../references/cli/deps
 [context.py]: ./context
 [auth.py]: ./auth

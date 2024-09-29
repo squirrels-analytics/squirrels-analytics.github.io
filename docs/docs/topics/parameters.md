@@ -5,7 +5,7 @@ The set of all widget parameters for all datasets can be defined in Python in th
 It is recommended to specify parameters in Python. To create a sample `pyconfigs/parameters.py` file, you can run:
 
 ```bash
-sqrl init --core --parameters py
+sqrl get-file parameters.py
 ```
 
 Currently, Squirrels support the following parameter types (you may click on them to see its Python reference page):
@@ -21,18 +21,18 @@ We will consider [SingleSelectParameter] and [MultiSelectParameter] as "select p
 
 Each of these parameter types come with 3 factory methods:
 
-- **Create** 
-    - use this to specify parameter options in code with the option to specify parent parameters (for cascading effects)
 - **CreateSimple**
-    - use this to specify parameter attributes in code without cascading effects. Has simpler arguments than **Create**
+    - Use this to specify parameter attributes in code without cascading effects
+- **CreateWithOptions** 
+    - Use this to specify parameter options in code with the option to specify parent parameters (for cascading effects)
 - **CreateFromSource**
-    - use this to create parameter options based on a lookup table in a database
+    - Use this to create parameter options based on a lookup table in a database
 
 All 3 factory methods require **name** and **label** as the first two string arguments of the parameter. The **name** is used to set or reference real-time parameter selections (set using query parameters of API requests and referenced with the **prms** dictionary in the Squirrels project). The **label** is a human-friendly name that front-end applications can use to show their users.
 
 Outside of **name** and **label**, each factory method takes different required arguments. 
-- For **Create**, the third required argument is **all_options**, which is a sequence of parameter option classes. 
 - For **CreateSimple**, the additional required arguments are different for each parameter type. 
+- For **CreateWithOptions**, the third required argument is **all_options**, which is a sequence of parameter option classes. 
 - For **CreateFromSource**, the third required argument is **data_source**, which is a data source class that specifies properties for the lookup table. All data source classes take **table_or_query** as the first required argument, which must be a table name (of the lookup table), or a query that starts with "SELECT " (case-insensitive). 
 
 More details on the parameter option and data source classes are discussed in the sections below.
@@ -41,7 +41,7 @@ At runtime, after parameter selections are made, each parameter contains method 
 
 ## Select Parameters
 
-The **Create** and **CreateSimple** factory methods are very similar for select parameters. Both take **all_options** as the third required argument. The main difference is that **Create** also accepts optional arguments for **parent_name** and **user_attribute**.
+The **CreateSimple** and **CreateWithOptions** factory methods are very similar for select parameters. Both take **all_options** as the third required argument. The main difference is that **CreateWithOptions** also accepts optional arguments for **parent_name** and **user_attribute**.
 
 The **all_options** argument for select parameters requires a sequence of [SelectParameterOption] instances. This class requires two arguments: **id** and **label**.
 - The **id** is used for the front-end to specify selected parameter option(s). Once the **id** is set for a parameter option, it should never change in future versions of the Squirrels project.
@@ -59,7 +59,7 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.SelectParameterOption("s01", "Option 1"),
         sr.SelectParameterOption("s02", "Option 2", is_default=True)
     ]
-    sr.SingleSelectParameter.Create("single_param", "Single Select Parameter", select_options)
+    sr.SingleSelectParameter.CreateWithOptions("single_param", "Single Select Parameter", select_options)
 ```
 
 For the **CreateFromSource** factory method, the **data_source** argument for [SingleSelectParameter] and [MultiSelectParameter] must be of type [SelectDataSource], which takes 3 required arguments: **table_or_query**, **id_col**, and **options_col**. An optional argument for **is_default_col** is available as well. When the API server activates, each row (with a unique **id_col** value) in the data source gets converted to a parameter option. 
@@ -96,7 +96,7 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.SelectParameterOption("g2", "Category", columns=["category"]),
         sr.SelectParameterOption("g3", "Subcategory", columns=["category", "subcat"], aliases=["category", "subcategory"]),
     ]
-    sr.SingleSelectParameter.Create("group_by", "Group By", group_by_options)
+    sr.SingleSelectParameter.CreateWithOptions("group_by", "Group By", group_by_options)
 ```
 
 In this example, we want to set the custom field called "columns" to an empty list by default, and make the custom field called "aliases" to be the same as the "columns" field by default. We can achieve this as such in [context.py] or in the model files:
@@ -115,7 +115,7 @@ For non-select parameters, the **CreateSimple** factory method take different ar
 sr.DateParameter.CreateSimple("my_date_param", "My Date Parameter", "2024-01-01")
 ```
 
-The **all_options** argument for the **Create** factory method is a list of parameter options for non-select parameters as well. The parameter option class to use depends on the parameter type. For instance, for [DateParameter], the **all_options** argument must be a list of [DateParameterOption]. Similar to the arguments for **CreateSimple**, the [DateParameterOption] also takes **default_date** as a required argument and **date_format** as an optional argument. If a parent parameter is specified for the date parameter, then specifying multiple date parameter options can be useful for the date parameter to use a different default date based on the selected value of the parent parameter.
+The **all_options** argument for the **CreateWithOptions** factory method is a list of parameter options for non-select parameters as well. The parameter option class to use depends on the parameter type. For instance, for [DateParameter], the **all_options** argument must be a list of [DateParameterOption]. Similar to the arguments for **CreateSimple**, the [DateParameterOption] also takes **default_date** as a required argument and **date_format** as an optional argument. If a parent parameter is specified for the date parameter, then specifying multiple date parameter options can be useful for the date parameter to use a different default date based on the selected value of the parent parameter.
 
 For the **CreateFromSource** factory method, the **data_source** argument type also differs based on the parameter type. For instance, for [DateParameter], the **data_source** argument must be of type [DateDataSource].
 
@@ -130,7 +130,7 @@ sr.DateParameter.CreateFromSource("my_date_param", "My Date Parameter", my_date_
 
 Squirrels lets you create cascadable parameters. This means that the selection of one parameter (the "parent parameter") can affect the available options shown for another parameter (the "child parameter").
 
-To create this dependency, use the **parent_name** argument in the **Create** or **CreateFromSource** factory method of the child parameter (the **CreateSimple** factory method does not include this argument). This is an optional string argument that is None by default.
+To create this dependency, use the **parent_name** argument in the **CreateWithOptions** or **CreateFromSource** factory method of the child parameter (the **CreateSimple** factory method does not include this argument). This is an optional string argument that is None by default.
 
 In addition, if using parameter option classes, each of the parameter options of the child parameter must use the **parent_option_ids** argument to specify the list of parameter option IDs from the parent parameter that would allow the child parameter option to show. This is an optional argument with an empty set as default (which would mean the parameter option never shows if the associated parameter has a parent). If using a data source class, then use the **parent_id_col** to specify the column that contains the parent option IDs.
 
@@ -154,7 +154,7 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.SelectParameterOption("cs02", "Child Option 2", parent_option_ids=["pr02"]),
         sr.SelectParameterOption("cs03", "Child Option 3", parent_option_ids=["pr01", "pr02"])
     ]
-    sr.MultiSelectParameter.Create(
+    sr.MultiSelectParameter.CreateWithOptions(
         "child_select", "Child Select Parameter", child_select_options, parent_name=child_select_parent_name
     )
 
@@ -164,7 +164,7 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.DateParameterOption("2024-01-01", parent_option_ids=["pr01"]),
         sr.DateParameterOption("2024-07-01", parent_option_ids=["pr02"])
     ]
-    sr.DateParameter.Create(
+    sr.DateParameter.CreateWithOptions(
         "child_date", "Child Date Parameter", child_date_options, parent_name=child_date_parent_name
     )
 ```

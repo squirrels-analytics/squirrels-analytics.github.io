@@ -1,7 +1,7 @@
 {
   "docs": [
     "docs/intro",
-    "docs/quickstart",
+    "docs/tutorial",
     {
       "type": "category",
       "label": "Squirrels Developer Topics",

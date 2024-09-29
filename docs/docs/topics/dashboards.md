@@ -2,28 +2,26 @@
 
 With Squirrels, you can create visualization dashboards from your datasets and serve them as API endpoints with parameters.
 
-You can use the [sqrl init] command to create an example dashboard from an empty project:
+You can use the [sqrl get-file](../../references/cli/get-file) command to create an example dashboard:
 
 ```bash
-sqrl init --core --dashboard
+sqrl get-file dashboard_example
 ```
 
-This creates a "dashboards" section in [squirrels.yml] and a "dashboard_example.py" file in the "dashboards" folder.
+This creates a dashboard `dashboard_example.py` file in the `dashboards/` folder.
 
-Or, run this to create the sample "dashboard_example.py" file in an existing project:
+However, you also need a "dashboards" section in [squirrels.yml] file. You can create a sample [squirrels.yml] file with a dashboards section by running:
 
 ```bash
-sqrl init --dashboard
+sqrl get-file squirrels.yml --dashboards
 ```
 
-However, this approach does not add the "dashboards" section in [squirrels.yml]. Fortunately, this is straightforward to add yourself. See the "dashboards" section in the [Squirrels Project File](./project-file) page for more details.
+## Working with the Python File
 
-## Creating Dashboards in Python
-
-The contents of dashboards are Python files under the "dashboards" folder in the Squirrels project. The name of the Python file must match the name of the dashboard defined in [squirrels.yml].
+The contents of dashboards are Python files under the `dashboards/` folder in the Squirrels project. The name of the Python file must match the name of the dashboard defined in [squirrels.yml].
 
 The main ideas are simple. In the main function of the Python file, you:
-1. Use the `sqrl.dataset` function to retrieve dataset(s) as a pandas DataFrame(s).
+1. Use the `sqrl.dataset` method to retrieve dataset(s) as a pandas DataFrame(s).
 2. Create plots from the dataset(s) as either a matplotlib figure, bytes/bytes buffer for a PNG image, or string/string buffer for an HTML representation.
 3. Return the plots as an instance of one of the Dashboard classes from `squirrels.dashboards`. For example, a [PngDashboard] can be constructed by passing either a matplotlib figure or bytes/bytes buffer as the only argument, or an [HtmlDashboard] can be constructed by passing either a string/string buffer as the only argument.
 

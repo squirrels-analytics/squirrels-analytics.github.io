@@ -130,7 +130,7 @@ my_data_source = SelectDataSource("my_lookup_table", id_col="my_ids", options_co
 MultiSelectParameter.CreateFromSource("my_filter", "My Filter", data_source=my_data_source)
 ```
 
-If the argument is **all_options** (which is required for all **Create** factory methods and the **CreateFromSimple** factory methods for select parameters), then use the arguments of the corresponding parameter option class constructor for each item in the list. For instance, the corresponding parameter option class for both **SingleSelectParameter** or **MultiSelectParameter** is **SelectParameterOption**. As shown in the example below, **SelectParameterOption** requires arguments **id**, and **label**.
+If the argument is **all_options** (which is required for all **Create** factory methods and the **CreateSimple** factory methods for select parameters), then use the arguments of the corresponding parameter option class constructor for each item in the list. For instance, the corresponding parameter option class for both **SingleSelectParameter** or **MultiSelectParameter** is **SelectParameterOption**. As shown in the example below, **SelectParameterOption** requires arguments **id**, and **label**.
 
 ```yaml
 parameters:

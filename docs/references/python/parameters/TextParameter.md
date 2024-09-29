@@ -6,7 +6,7 @@ Can be found in the classpath `squirrels.parameters.TextParameter` or `squirrels
 
 ## Static / Class Methods
 
-### Create
+### CreateWithOptions
 
 Creates the configurations for a text parameter by providing a list of [TextParameterOption](../parameter_options/TextParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from.
 
@@ -29,7 +29,7 @@ Creates the configurations for a text parameter by providing a list of [TextPara
 
 Creates the configurations for a text parameter without specifying [TextParameterOption](../parameter_options/TextParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from.
 
-Unlike the **Create** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
+Unlike the **CreateWithOptions** factory method, this factory method assumes only one parameter option is needed with no arguments for "user_attribute" and "parent_name".
 
 **Required Arguments:**
 
@@ -58,7 +58,7 @@ Creates the configurations for a text parameter by providing a lookup table to q
 
 **Optional Keyword Arguments:**
 
-Same optional arguments as the **Create** static method.
+Same optional arguments as the **CreateWithOptions** static method.
 
 **Returns:** None
 

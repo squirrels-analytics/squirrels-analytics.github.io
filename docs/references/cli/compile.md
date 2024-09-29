@@ -7,7 +7,9 @@ All the details on command line arguments can be found using `sqrl compile --hel
 ```bash
 usage: sqrl compile [-h] (-d DATASET | -D) [-t TEST_SET | -T] [-s SELECT] [-r]
 
-optional arguments:
+Create rendered SQL files in the folder "./target/compile"
+
+options:
   -h, --help            Show this help message and exit
   -d DATASET, --dataset DATASET
                         Select dataset to use for dataset traits. Is required, unless using --all-datasets
@@ -16,7 +18,7 @@ optional arguments:
                         The selection test set to use. If not specified, default selections are used, unless using --all-test-sets
   -T, --all-test-sets   Compile models for all selection test sets
   -s SELECT, --select SELECT
-                        Select single model to compile. If not specified, all models for the dataset are compiled. Ignored if using --all-datasets    
+                        Select single model to compile. If not specified, all models for the dataset are compiled. Ignored if using --all-datasets
   -r, --runquery        Runs all target models, and produce the results as csv files
 ```
 

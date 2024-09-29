@@ -14,9 +14,9 @@ if sqrl.param_exists("my_ss_param"):
 
 ## Static / Class Methods
 
-The definitions of the **Create** and **CreateFromSource** factory methods are very similar (if not, the same) between Parameter classes.
+The definitions of the **CreateWithOptions** and **CreateSimple** factory methods are very similar (if not, the same) between Parameter classes.
 
-### Create
+### CreateWithOptions
 
 Creates the configurations for a widget parameter by providing a list of the parameter option objects, and adds it to a pool of parameter configurations that datasets can pick from.
 
@@ -46,6 +46,6 @@ Creates the configurations for a widget parameter by providing a lookup table to
 
 **Optional Keyword Arguments:**
 
-Same optional arguments as the **Create** static method.
+Same optional arguments as the **CreateWithOptions** static method.
 
 **Returns:** None

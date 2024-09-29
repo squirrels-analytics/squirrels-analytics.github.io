@@ -15,7 +15,15 @@ Only the **project_variables** section is required (though there isn't much purp
 
 This file can be templated with Jinja. For instance, you can write a section in a separate file and use [Jinja's include](https://ttl255.com/jinja2-tutorial-part-6-include-and-import/) to include it into "squirrels.yml".
 
-The sections are described in detail below. Use the right sidebar to jump to a specific section.
+You can create a sample squirrels.yml file by running:
+
+```bash
+sqrl get-file squirrels.yml
+```
+
+By default, this file omits the **parameters** and **dashboards** section. You can add them by using the `--parameters` or `--dashboards` options on the command. You can also omit the **connections** section by adding the `--no-connections` option (if for instance, you are using the [connections.py](./connections) file instead).
+
+All sections are described in detail below. Use the right sidebar to jump to a specific section.
 
 ### project_variables
 
@@ -63,16 +71,16 @@ This section can be used to specify database connections by assigning a name to 
 ```yaml
 connections:
   - name: default
-    url: 'sqlite:///./database/mydatabase.db'
+    url: 'sqlite:///{project_path}/database/mydatabase.db'
   - name: postgres_example
     credential: postgres_user
     url: 'postgresql+psycopg2://{username}:{password}@localhost:5432/mydatabase'
 ```
 
-The fields **name** and **url** are required. The field **credential** is only required if `{username}` and `{password}` are in the **url**, but otherwise optional.
+The fields **name** and **url** are required.
 - **name** - The assigned name of the connection to make it easy to reference elsewhere. The connection name `default` should be defined (either here or in the `connections.py` file), where it becomes the database connection used by default if the connection name is not specified explicitly for the dbview model or widget parameter source.
-- **credential** - Select a credential name defined in [env.yml].
-- **url** - The SQLAlchemy URL. Placeholders for `{username}` and `{password}` can be included in the URL to substitute the username and password from the specified **credential**.
+- **credential** - Select a credential name defined in [env.yml]. Although this field is optional, it should be provided if `{username}` and `{password}` are in the **url** field.
+- **url** - The SQLAlchemy URL. Placeholders for `{username}` and `{password}` can be included in the URL to substitute the username and password from the specified **credential**. If the database is a local file on disk, you can use the placeholder `{project_path}` to substitute the path to the Squirrels project.
 
 If you need to use a different URL based on the environment, you can set an environment variable in [env.yml] and use the "env_vars" dictionary in Jinja to substitute environment variables into "squirrels.yml". For example, `url: {{ env_vars.my_conn_str }}`.
 
@@ -104,7 +112,7 @@ DateParameter.CreateSimple("my_date_param", "Sample Date Parameter", default_dat
 
 Each parameter must define the fields **type**, **factory**, and **arguments**.
 - **type** - The parameter type. The type must match one of the [Python parameter classes].
-- **factory** - One of `Create`, `CreateSimple`, or `CreateFromSource` which are factory methods that exist for all [Python parameter classes]. See the docs for the parameter class and factory method to see what arguments they take.
+- **factory** - One of `CreateSimple`, `CreateWithOptions`, or `CreateFromSource` which are factory methods that exist for all [Python parameter classes]. See the docs for the parameter class and factory method to see what arguments they take.
 - **arguments** - The arguments for the factory method. This always takes **name** and **label** as required arguments, while the remaining arguments depend on the parameter class and factory method.
 
 Most arguments are typical key-value pairs (where yaml can represent the type for the value). However, this is not quite the case for argument types of **datasource** (a parameter data source class) and **all_options** (a list of parameter option classes).
@@ -131,12 +139,12 @@ my_data_source = SelectDataSource("my_lookup_table", id_col="my_ids", options_co
 MultiSelectParameter.CreateFromSource("my_filter", "My Filter", data_source=my_data_source)
 ```
 
-If the argument is **all_options** (which is required for all **Create** factory methods and the **CreateFromSimple** factory methods for select parameters), then use the arguments of the corresponding parameter option class constructor for each item in the list. For instance, the corresponding parameter option class for both **SingleSelectParameter** or **MultiSelectParameter** is **SelectParameterOption**. As shown in the example below, **SelectParameterOption** requires arguments **id**, and **label**.
+If the argument is **all_options** (which is required for all **CreateWithOptions** factory methods and the **CreateSimple** factory methods for select parameters), then use the arguments of the corresponding parameter option class constructor for each item in the list. For instance, the corresponding parameter option class for both **SingleSelectParameter** or **MultiSelectParameter** is **SelectParameterOption**. As shown in the example below, **SelectParameterOption** requires arguments **id**, and **label**.
 
 ```yaml
 parameters:
   - type: SingleSelectParameter
-    factory: Create
+    factory: CreateWithOptions
     arguments:
       name: my_select
       label: My Single Select
@@ -154,10 +162,10 @@ my_param_options = [
     SelectParameterOption("x0", "Option 1"),
     SelectParameterOption("x1", "Option 2")
 ]
-SingleSelectParameter.Create("my_select", "My Single Select", all_options=my_param_options)
+SingleSelectParameter.CreateWithOptions("my_select", "My Single Select", all_options=my_param_options)
 ```
 
-For non-select parameter types like **DateParameter**, it may seem unintuitive why multiple parameter options may be needed (using the **Create** factory method), but it's useful when parent parameters are defined and for instance, you want to change the default date based on the selection of the parent parameter. More details can be found in the [Widget Parameters](./parameters) page.
+For non-select parameter types like **DateParameter**, it may seem unintuitive why multiple parameter options may be needed (using the **CreateWithOptions** factory method), but it's useful when parent parameters are defined and for instance, you want to change the default date based on the selection of the parent parameter. More details can be found in the [Widget Parameters](./parameters) page.
 
 ### datasets
 
@@ -198,7 +206,7 @@ dbviews:
 
 The **name** field is required and other fields are optional.
 - **name** - The name of the dbview model, which should also be the name of a SQL file in the `models/dbviews/` folder
-- **connection_name** - The connection name of the database this model runs on. See [Database Connections](./database) for more information on defining connection names.
+- **connection_name** - The connection name of the database this model runs on. See [Database Connections](./connections) for more information on defining connection names.
 
 ### federates
 

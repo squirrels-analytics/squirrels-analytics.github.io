@@ -6,7 +6,7 @@ Can be found in the classpath `squirrels.parameters.MultiSelectParameter` or `sq
 
 ## Static / Class Methods
 
-### Create
+### CreateWithOptions
 
 Creates the configurations for a multi-select parameter by providing a list of the parameter option objects, and adds it to a pool of parameter configurations that datasets can pick from.
 
@@ -31,7 +31,7 @@ Creates the configurations for a multi-select parameter by providing a list of t
 
 Creates the configurations for a multi-select parameter by providing a list of [SelectParameterOption](../parameter_options/SelectParameterOption) instances, and adds it to a pool of parameter configurations that datasets can pick from. 
 
-Similar to the **Create** factory method, but without the optional arguments for **user_attribute** and **parent_name**.
+Similar to the **CreateWithOptions** factory method, but without the optional arguments for **user_attribute** and **parent_name**.
 
 ### CreateFromSource
 
@@ -45,7 +45,7 @@ Creates the configurations for a multi-select parameter by providing a lookup ta
 
 **Optional Keyword Arguments:**
 
-Same optional arguments as the **Create** static method.
+Same optional arguments as the **CreateWithOptions** static method.
 
 **Returns:** None
 

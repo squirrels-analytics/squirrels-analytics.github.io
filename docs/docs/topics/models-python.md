@@ -2,10 +2,11 @@
 
 Similar to [SQL models], all Python model files must be in the `models/dbviews/` or `models/federates/` folder, and use the **.py** extension. There is actually no difference in functionality between Python models in either folder. The folder you choose for each Python model is simply personal preference based on its purpose.
 
-You can use the [sqrl init] command to create example Python models from an empty project:
+You can use the [sqrl get-file](../../references/cli/get-file) command to create example Python models. The following commands let you create example Python models for dbview models and federate models:
 
 ```bash
-sqrl init --core --dbview py --federate py
+sqrl get-file dbview_example --format py
+sqrl get-file federate_example --format py
 ```
 
 ## File Contents
@@ -36,7 +37,7 @@ Both also have access to the **sqrl.ctx** member variable, which lets you access
 
 The **sqrl** argument of [ModelArgs] also include a few additional methods and member variables not included in [ModelDepsArgs]. Two common ones include the **sqrl.connections** dictionary and the **sqrl.ref** method.
 
-- The **connections** dictionary contains database connection names as keys and SQLAlchemy engines as values. More details on defining database connections can be found in [Database Connections](./database) page.
+- The **connections** dictionary contains database connection names as keys and SQLAlchemy engines as values. More details on defining database connections can be found in [Database Connections](./connections) page.
 - The **ref** method takes a single string argument for model name and returns the pandas dataframe for that model. The model name must be defined in the **dependencies** function.
 
 More details can be found in the Python reference for [ModelDepsArgs] and [ModelArgs].
@@ -70,4 +71,3 @@ It's also easy to share Python code across Squirrels projects. If you have a Pyt
 [context.py]: ./context
 [ModelDepsArgs]: ../../references/python/arguments/ModelDepsArgs
 [ModelArgs]: ../../references/python/arguments/ModelArgs
-[sqrl init]: ../../references/cli/init

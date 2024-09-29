@@ -14,7 +14,7 @@ import type {SidebarsConfig} from "@docusaurus/plugin-content-docs";
 const sidebars: SidebarsConfig = {
   docs: [
     "docs/intro",
-    "docs/quickstart",
+    "docs/tutorial",
     {
       type: "category",
       label: "Squirrels Developer Topics",
@@ -30,7 +30,7 @@ const sidebars: SidebarsConfig = {
         "docs/topics/project-file",
         "docs/topics/settings",
         "docs/topics/environcfg",
-        "docs/topics/database",
+        "docs/topics/connections",
         "docs/topics/parameters",
         "docs/topics/context",
         "docs/topics/models-sql",
@@ -79,7 +79,9 @@ const sidebars: SidebarsConfig = {
         slug: "references/cli"
       },
       items: [
+        "references/cli/sqrl",
         "references/cli/init",
+        "references/cli/get-file",
         "references/cli/deps",
         "references/cli/compile",
         "references/cli/run",

@@ -3,7 +3,7 @@
 Squirrels lets you integrate with your own user authentication system in Python with a `pyconfigs/auth.py` file. To create a sample file, simply run:
 
 ```bash
-sqrl init --auth
+sqrl get-file auth.py
 ```
 
 The `auth.py` file lets you define two things:
@@ -85,7 +85,7 @@ When **None** is returned instead of a [WrongPassword] object, Squirrels will co
 
 The attributes defined in the User model can be used to change the visible parameters options for different groups of user. This is done using the following parameter arguments:
 
-- The **user_attribute** argument of the **Create** or **CreateFromSource** factory methods of the [parameter classes](../../references/python/parameters/Parameter). This is an optional string, and defines the attribute of the user model to consider.
+- The **user_attribute** argument of the **CreateWithOptions** or **CreateFromSource** factory methods of the [parameter classes](../../references/python/parameters/Parameter). This is an optional string, and defines the attribute of the user model to consider.
 - The **user_groups** argument of the constructor for [parameter option classes](../../references/python/parameter_options/ParameterOption). This is usually a string or sequence of strings. The parameter option is only enabled when the value of the **user_attribute** (from the point above) of the current user is one of the values defined in **user_groups**.
 - The **user_group_col** argument of the constructor for [parameter datasource classes](../../references/python/data_sources/DataSource). This is an optional string, and works similarly to **user_groups** except it defines the column of a lookup table instead of the the values themselves.
 
@@ -99,7 +99,7 @@ region_options = [
     sr.SelectParameterOption("ch", "Chicago", user_groups=["sales"]),
     sr.SelectParameterOption("ny", "New York", user_groups=["engineering", "sales"])
 ]
-region_param = sr.SingleSelectParameter.Create(
+region_param = sr.SingleSelectParameter.CreateWithOptions(
     "region", "Region", region_options, user_attribute="department"
 )
 ```
@@ -157,5 +157,5 @@ However, in Python models, when the `sqrl.user` is None, attempting to access a 
 [AuthArgs]: ../../references/python/arguments/AuthArgs
 [User]: ../../references/python/user_base/User
 [WrongPassword]: ../../references/python/user_base/WrongPassword
-[Database Connections]: ./database
+[Database Connections]: ./connections
 [env.yml]: ./environcfg

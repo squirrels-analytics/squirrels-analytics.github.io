@@ -11,6 +11,12 @@ The `env.yml` file can either be saved in the `$HOME/.squirrels/` folder (to sha
 
 This file is included in `.gitignore`. NEVER COMMIT THIS FILE TO SOURCE CONTROL!
 
+You can create a sample env.yml file by running:
+
+```bash
+sqrl get-file env.yml
+```
+
 The sections are described in detail below. Use the right sidebar to jump to a specific section.
 
 ### users
