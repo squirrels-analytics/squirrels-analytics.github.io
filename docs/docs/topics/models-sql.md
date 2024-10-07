@@ -58,9 +58,9 @@ federates:
     materialized: view
 ```
 
-## Common Variables
+## Common Variables and Methods
 
-In addition to **ref** and **config**, there are other useful variables defined by Squirrels that are available for all SQL models (both dbviews and federates). These can be used to dynamically change the SQL query based on real-time context such as the parameter values selected or user authorized. They are as follows:
+In addition to **ref** and **config**, there are other useful variables or methods defined by Squirrels that are available for all SQL models (both dbviews and federates). These can be used to dynamically change the SQL query based on real-time context such as the parameter values selected or user authorized. They are as follows:
 
 - **ctx** - a dictionary of custom-defined values from the [context.py] file. This one is commonly used, and it's in fact possible to only using this without using the other variables below. 
 - **prms** - a dictionary of parameter names to their parameter objects. The selected values are accessible using methods on the parameter objects.
@@ -68,6 +68,9 @@ In addition to **ref** and **config**, there are other useful variables defined 
 - **traits** - a dictionary of the dataset traits defined in [squirrels.yml] for the requested dataset.
 - **proj_vars** - a dictionary of the project variables defined in [squirrels.yml].
 - **env_vars** - a dictionary of the environment variables defined in [env.yml].
+- **param_exists** - a function that takes a parameter name and returns a boolean indicating whether the parameter exists (and is enabled).
+- **is_placeholder** - a function that takes a placeholder name and returns a boolean indicating whether the placeholder exists.
+- **set_placeholder** - a function that takes a placeholder name and value. Sets the placeholder value (and returns an empty string).
 
 In Jinja, a dictionary value can be referenced by key with square brackets, the same way in Python, or by simply using dot notation. For example:
 

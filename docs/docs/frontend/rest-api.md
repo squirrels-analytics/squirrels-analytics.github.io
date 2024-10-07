@@ -63,8 +63,8 @@ If the username or password provided to the **Login API** are invalid, a 401 sta
 ### Data Catalog API
 
 - Request type: **GET**
-- Path: **/squirrels-v0/\{project_name\}/v\{major_version\}/datasets**
-- Path Example: **/squirrels-v0/my-project/v1/datasets**
+- Path: **/squirrels-v0/\{project_name\}/v\{major_version\}/data-catalog**
+- Path Example: **/squirrels-v0/my-project/v1/data-catalog**
 
 This API endpoint retrieves the list of datasets / dashboards that the user has access to. Only public datasets / dashboards are provided if the user is not authenticated.
 

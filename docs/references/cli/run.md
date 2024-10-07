@@ -27,7 +27,7 @@ There are additional paths that return JSON results. Assume you have a project n
     - **Path**: POST **/squirrels-v0/my-proj/v1/token**
     - **Description**: Given username and password, provides an auth token and expiry time if the credentials are valid.
 - The Datasets Catalog API
-    - **Path**: GET **/squirrels-v0/my-proj/v1/datasets**
+    - **Path**: GET **/squirrels-v0/my-proj/v1/data-catalog**
     - **Description**: Given project name and major version in path, returns the list of datasets available. Only public datasets are shown if auth token is not provided.
 - The Parameters API
     - **Path**: GET/POST **/squirrels-v0/my-proj/v1/dataset/my-ds/parameters**

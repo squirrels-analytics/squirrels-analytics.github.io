@@ -1,4 +1,4 @@
-# What's New in v0.4 (TBD)
+# What's New in v0.4 (2024-10-06)
 
 The following are changes and new features introduced in v0.4 of Squirrels when compared to v0.3.
 
@@ -7,6 +7,14 @@ Note that Squirrels Analytics is committed to minimizing breaking changes across
 ## Project Changes for Version Compatibility
 
 The filename "environcfg.yml" was deprecated in v0.3.1 and replaced with "env.yml" instead. As of v0.4.0, the "environcfg.yml" file is no longer supported. Any existing files named "environcfg.yml" must be renamed to "env.yml".
+
+In addition, the "datasets catalog API" is now known as the "data catalog API" to include dashboards as well (See new feature "Dashboard APIs" below). Before v0.4.0, the endpoint use to be like this: 
+
+`/squirrels-v0/{project_name}/v{major_version}/datasets`. 
+
+Now, the endpoint is like this: 
+
+`/squirrels-v0/{project_name}/v{major_version}/data-catalog`
 
 ## New Features
 

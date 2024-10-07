@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
 
 type FeatureItem = {
   title: string;
@@ -59,7 +59,7 @@ function Feature({title, image, description}: FeatureItem) {
 
 export default function HomepageFeatures(): JSX.Element {
   return (
-    <section className={styles.features}>
+    <section className={styles.section}>
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (
