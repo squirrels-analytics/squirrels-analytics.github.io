@@ -62,6 +62,12 @@ Before v0.4.0, you had to explicitly import Jinja macros in SQL models using [Ji
 
 See the "Using Custom Jinja Macros" section of the [SQL Models](../docs/topics/models-sql#using-custom-jinja-macros) page for more details.
 
+## Fixes in v0.3.1
+
+The following fix was applied in the 0.4.1 release:
+
+- Fixed a Testing UI issue where it was not working when a dataset contained a date range parameter without a min date or max date.
+
 
 [squirrels.yml]: ../docs/topics/project-file
 [sqrl init]: ../references/cli/init
