@@ -37,7 +37,7 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageVideos />
+        {/* <HomepageVideos /> */}
       </main>
     </Layout>
   );

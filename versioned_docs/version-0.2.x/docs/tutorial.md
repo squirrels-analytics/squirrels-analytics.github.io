@@ -434,7 +434,7 @@ Congratulations, you have reached the end of the tutorial! We will leave it up t
 
 ## What's Next?
 
-For an expanded version of the "weather example" project, see the "weather_analytics" folder in the "squirrels-examples" github repo found here:
+For an expanded version of the "weather example" project, see the "sqrl-weather-analytics" folder in the "squirrels-examples" github repo found here:
 
 https://github.com/squirrels-analytics/squirrels-examples
 

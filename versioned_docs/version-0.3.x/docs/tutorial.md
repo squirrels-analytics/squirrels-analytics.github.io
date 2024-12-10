@@ -563,9 +563,9 @@ ORDER BY {{ ctx.order_col }}
 
 ## What's Next?
 
-For an expanded version of the "weather example" project, see the "weather_analytics" folder in our "squirrels-examples" github repo found here:
+For an expanded version of the "weather example" project, see the "sqrl-weather-analytics" folder in our "squirrels-examples" github repo found here:
 
-https://github.com/squirrels-analytics/squirrels-examples/tree/main/weather_analytics
+https://github.com/squirrels-analytics/squirrels-examples/tree/main/sqrl-weather-analytics
 
 This is a revised example that demonstrates:
 - Sharing common SQL functionality across multiple datasets across multiple models or datasets using Jinja macros
