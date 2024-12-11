@@ -24,7 +24,7 @@
 <li>Show how to handle incremental data updates</li>
 </ol>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="setting-up-the-environment">Setting Up the Environment<a href="https://squirrels-analytics.github.io/blog/1brc-postgres#setting-up-the-environment" class="hash-link" aria-label="Direct link to Setting Up the Environment" title="Direct link to Setting Up the Environment">​</a></h2>
-<p>I provisioned the following AWS resources in the same region/AZ:</p>
+<p>I provisioned the following AWS resources in the same region and availability zone:</p>
 <ul>
 <li>An RDS PostgreSQL database (db.r6g.large: 2 vCPUs, 16GB RAM)</li>
 <li>An EC2 instance (r8g.large: 2 vCPUs, 16GB RAM)</li>
