@@ -21,7 +21,7 @@ The original [One Billion Row Challenge](https://www.morling.dev/blog/one-billio
 
 ## Setting Up the Environment
 
-I provisioned the following AWS resources in the same region/AZ:
+I provisioned the following AWS resources in the same region and availability zone:
 - An RDS PostgreSQL database (db.r6g.large: 2 vCPUs, 16GB RAM)
 - An EC2 instance (r8g.large: 2 vCPUs, 16GB RAM)
 
@@ -89,9 +89,9 @@ GROUP BY city
 ORDER BY city;
 ```
 
-The `models/sources.yml` file is used to tell squirrels about the source named "src_weather_data", the table it corresponds to, and metadata about the table and columns.
+The `models/sources.yml` file is used to tell Squirrels details about the source named "src_weather_data" including metadata about the table and columns.
 
-The full squirrels project can be found on GitHub [here](https://github.com/squirrels-analytics/squirrels-examples/tree/main/sqrl-1brc-postgres). This includes all files except for the env.yml file which looks something like this:
+The full Squirrels project can be found on GitHub [here](https://github.com/squirrels-analytics/squirrels-examples/tree/main/sqrl-1brc-postgres). This includes all files except for the env.yml file which looks something like this:
 
 ```
 env_vars:
@@ -113,7 +113,7 @@ The following are the performance results:
 2. Running `sqrl build --stage`: 434.19 seconds
 3. API request after running the build: **15.93 seconds**
 
-We successfully reduced the query runtime from 7 minutes to 15.93 seconds, a **26x performance improvement!**
+**We successfully reduced the query runtime from 7 minutes to 15.93 seconds, a 26x performance improvement!**
 
 ## Handling Data Updates
 
@@ -134,7 +134,7 @@ To test this, I:
 2. Ran `sqrl build --stage` (took 41.84 seconds) and confirmed that the data artifact was updated
 3. Tested query performance (took **15.66 seconds** for 1.001 billion rows, similar to the 15.93 seconds for 1 billion rows)
 
-The `--stage` flag ensures zero downtime during updates by staging the development copy before swapping the data artifact once it's not in use by any ongoing queries.
+The `--stage` flag ensures zero downtime during updates by staging the development copy before swapping the data artifact once it's not in use by any ongoing queries. In addition, the `sqrl build` command can be run in the background at some time interval (e.g. every 10 minutes or every hour depending on data freshness requirements) to keep the data artifact up to date.
 
 ## Behind the Scenes of the "Data Artifact"
 
@@ -146,6 +146,6 @@ Using Squirrels together with DuckDB, we achieved:
 - **26x faster query performance** on 1 billion rows without changing the PostgreSQL query
 - Simple incremental updates with zero-downtime refreshes
 
-I have no doubt that the PostgreSQL table could be tuned for better performance, but a developer's time is too valuable to spend on that... especially when most improvements on the PostgreSQL database or table are not that ground-breaking. On the other hand, Squirrels is able to provide massive performance improvements with minimal effort!
+While it is possible to optimize the PostgreSQL table for better performance, it often requires significant time and effort with only modest gains. In contrast, using Squirrels can achieve substantial performance improvements with minimal effort.
 
 In Part 2, we'll explore dynamic parameterized queries that change based on user input for date ranges, and demonstrate how to join results from multiple databases and unstructured data from S3 in a single API request!
