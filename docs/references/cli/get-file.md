@@ -1,58 +1,64 @@
 # sqrl get-file
 
-The `sqrl get-file` command allows you to create individual file examples for common file types used in Squirrels projects.
+The `get-file` command retrieves sample files for your Squirrels project. If the file already exists, it will be suffixed with a timestamp.
 
-When running `sqrl get-file -h`, you will see the following help text:
-
-```bash
-usage: sqrl get-file [-h] {env.yml,squirrels.yml,auth.py,connections.py,parameters.py,context.py,dbview_example,federate_example,dashboard_example,expenses.db,weather.db} ...
-
-Get a sample file for the squirrels project. If the file name already exists, it will be prefixed with a timestamp.
-
-options:
-  -h, --help            Show this help message and exit
-
-file_name:
-  {env.yml,squirrels.yml,auth.py,connections.py,parameters.py,context.py,dbview_example,federate_example,dashboard_example,expenses.db,weather.db}
-    env.yml             Get a sample env.yml file
-    squirrels.yml       Get a sample squirrels.yml file
-    auth.py             Get a sample auth.py file
-    connections.py      Get a sample connections.py file
-    parameters.py       Get a sample parameters.py file
-    context.py          Get a sample context.py file
-    dbview_example      Get a sample dbview model file
-    federate_example    Get a sample federate model file
-    dashboard_example   Get a sample dashboard file
-    expenses.db         Get the sample SQLite database on expenses
-    weather.db          Get the sample SQLite database on weather
-```
-
-The file names that include command line options are `squirrels.yml`, `dbview_example`, and `federate_example`. All other files do not have command line options.
-
-Here is the help text when running `sqrl get-file squirrels.yml -h` file:
+## Usage
 
 ```bash
-usage: sqrl get-file squirrels.yml [-h] [--no-connections] [--parameters] [--dashboards]
-
-Get a sample squirrels.yml file
-
-options:
-  -h, --help        Show this help message and exit
-  --no-connections  Exclude the connections section
-  --parameters      Include the parameters section
-  --dashboards      Include the dashboards section
+sqrl get-file <file_name> [options]
 ```
 
-And here is the help text when running `sqrl get-file dbview_example -h` file (same options for `federate_example`):
+## Available Files
 
+| File Name | Description |
+|-----------|-------------|
+| `.env` | Get sample `.env` and `.env.example` files |
+| `.gitignore` | Get a sample `.gitignore` file |
+| `squirrels.yml` | Get a sample `squirrels.yml` file |
+| `user.py` | Get a sample `user.py` file |
+| `connections.py` | Get a sample `connections.py` file |
+| `parameters.py` | Get a sample `parameters.py` file |
+| `context.py` | Get a sample `context.py` file |
+| `macros_example.sql` | Get a sample `macros_example.sql` file |
+| `sources.yml` | Get a sample `sources.yml` file |
+| `build_example` | Get a sample build model file |
+| `dbview_example` | Get a sample dbview model file |
+| `federate_example` | Get a sample federate model file |
+| `dashboard_example` | Get a sample dashboard file |
+| `expenses.db` | Get the sample SQLite database on expenses |
+| `weather.db` | Get the sample SQLite database on weather |
+| `seed_categories` | Get the sample seed files for categories lookup |
+| `seed_subcategories` | Get the sample seed files for subcategories lookup |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--format {sql,py}` | Create model as sql (default) or python file. Only applicable for build and federate model files |
+| `--no-connections` | Exclude the connections section from squirrels.yml |
+| `--parameters` | Include the parameters section in squirrels.yml |
+| `--dashboards` | Include the dashboards section in squirrels.yml |
+
+## Examples
+
+Get sample `.env` and `.env.example` files:
 ```bash
-usage: sqrl get-file dbview_example [-h] [--format {sql,py}]
-
-Get a sample dbview model file
-
-options:
-  -h, --help         Show this help message and exit
-  --format {sql,py}  Create model as sql (default) or python file
+sqrl get-file .env
 ```
 
-See the CLI reference page for [sqrl init](./init) for more information on each file.
+Get a sample build model in Python:
+```bash
+sqrl get-file build_example --format py
+```
+
+Get a sample `squirrels.yml` with parameters section:
+```bash
+sqrl get-file squirrels.yml --parameters
+```
+
+## Notes
+
+- If a file already exists, a new file will be created with a timestamp suffix
+- The `.env` file contains sensitive information and should not be committed to version control
+- Build and federate model files can be created in either SQL or Python format (dbview models are always SQL)
+- Getting a sample file can be useful to enhance existing projects with new file types

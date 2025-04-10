@@ -37,10 +37,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // lastVersion: 'current',
+          lastVersion: 'current',
           versions: {
             current: {
-              label: 'Canary 🚧'
+              // label: 'Canary 🚧'
+              label: '0.5.x'
             }
           }
         },
@@ -73,11 +74,11 @@ const config: Config = {
     },
     image: 'img/squirrels.jpg',
     metadata: [
-      {name: 'keywords', content: 'squirrels,data,api,framework,data engineer,data analytics,analytics,analytics engineer'}
+      {name: 'keywords', content: 'python, squirrels, data, analytics, api, framework'}
     ],
     docs: {
       sidebar: {
-        autoCollapseCategories: true,
+        // autoCollapseCategories: true,
       },
     },
     navbar: {
@@ -99,12 +100,12 @@ const config: Config = {
           position: 'left',
           label: 'References',
         },
-        {
-          type: 'docSidebar',
-          sidebarId: 'releases', 
-          label: 'Release Notes', 
-          position: 'left'
-        },
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'releases', 
+        //   label: 'Release Notes', 
+        //   position: 'left'
+        // },
         {
           type: 'docsVersionDropdown',
           position: 'left'
@@ -128,16 +129,8 @@ const config: Config = {
               to: '/docs/docs/intro',
             },
             {
-              label: 'Tutorial',
-              to: '/docs/docs/tutorial',
-            },
-            {
-              label: 'Squirrels Developer Topics',
-              to: '/docs/docs/topics',
-            },
-            {
-              label: 'Frontend Topics',
-              to: '/docs/docs/frontend',
+              label: 'Getting Started',
+              to: '/docs/docs/start',
             },
           ],
         },
@@ -148,10 +141,10 @@ const config: Config = {
               label: 'CLI References',
               to: '/docs/references/cli',
             },
-            {
-              label: 'Python Classes',
-              to: '/docs/references/python',
-            },
+            // {
+            //   label: 'Python Classes',
+            //   to: '/docs/references/python',
+            // },
           ],
         },
         {

@@ -14,56 +14,34 @@ import type {SidebarsConfig} from "@docusaurus/plugin-content-docs";
 const sidebars: SidebarsConfig = {
   docs: [
     "docs/intro",
-    "docs/tutorial",
     {
       type: "category",
-      label: "Squirrels Developer Topics",
+      label: "Getting Started",
+      collapsed: false,
       link: { 
-        type: "generated-index", 
-        title: "Squirrels Developer Topics",
-        description: 
-          `Topics on developing projects with the Squirrels framework`,
-        slug: "docs/topics"
+        type: "doc", 
+        id: "docs/start/index"
       },
       items: [
-        "docs/topics/project",
-        "docs/topics/project-file",
-        "docs/topics/settings",
-        "docs/topics/environcfg",
-        "docs/topics/connections",
-        "docs/topics/parameters",
-        "docs/topics/context",
-        "docs/topics/models-sql",
-        "docs/topics/models-python",
-        "docs/topics/placeholders",
-        "docs/topics/seeds",
-        "docs/topics/dashboards",
-        "docs/topics/auth",
-        "docs/topics/interact-in-python",
-        "docs/topics/dateutils",
-        {
-          type: "category",
-          label: "Tips & Tricks",
-          items: [
-            "docs/topics/tips/versioning",
-            "docs/topics/tips/deployment",
-          ],
-        },
+        "docs/start/install",
+        "docs/start/new-project",
+        "docs/start/run-project",
+        "docs/start/tutorial",
       ],
     },
     {
       type: "category",
-      label: "Frontend Topics",
+      label: "Concepts",
+      collapsed: false,
       link: { 
         type: "generated-index", 
-        title: "Frontend Topics",
+        title: "Concepts",
         description: 
-          `Topics on using REST APIs developed by a Squirrels project`,
-        slug: "docs/frontend"
+          `Concepts of the Squirrels framework.`,
+        slug: "docs/concepts"
       },
       items: [
-        "docs/frontend/rest-api",
-        "docs/frontend/best-practices",
+        "docs/concepts/project",
       ]
     }
   ],
@@ -72,140 +50,132 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "CLI References",
       link: { 
-        type: "generated-index", 
-        title: "CLI References",
-        description: 
-          `References for Squirrels CLI commands`,
-        slug: "references/cli"
+        type: "doc", 
+        id: "references/cli/index"
       },
       items: [
-        "references/cli/sqrl",
-        "references/cli/init",
+        "references/cli/new",
         "references/cli/get-file",
         "references/cli/deps",
         "references/cli/compile",
+        "references/cli/build",
+        "references/cli/duckdb",
         "references/cli/run",
       ]
     },
-    {
-      type: "category",
-      label: "Python Classes",
-      link: {
-        type: "generated-index", 
-        title: "Python Classes",
-        description: 
-          `References for Python classes and functions available in the Squirrels python library`,
-        slug: "references/python"
-      },
-      items: [
-        {
-          type: "category",
-          label: "from squirrels.argument",
-          items: [
-            "references/python/arguments/ConnectionsArgs",
-            "references/python/arguments/ParametersArgs",
-            "references/python/arguments/ContextArgs",
-            "references/python/arguments/ModelDepsArgs",
-            "references/python/arguments/ModelArgs",
-            "references/python/arguments/DashboardArgs",
-            "references/python/arguments/AuthArgs",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.parameter_options",
-          items: [
-            "references/python/parameter_options/ParameterOption",
-            "references/python/parameter_options/SelectParameterOption",
-            "references/python/parameter_options/DateParameterOption",
-            "references/python/parameter_options/DateRangeParameterOption",
-            "references/python/parameter_options/NumberParameterOption",
-            "references/python/parameter_options/NumberRangeParameterOption",
-            "references/python/parameter_options/TextParameterOption",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.data_sources",
-          items: [
-            "references/python/data_sources/DataSource",
-            "references/python/data_sources/SelectDataSource",
-            "references/python/data_sources/DateDataSource",
-            "references/python/data_sources/DateRangeDataSource",
-            "references/python/data_sources/NumberDataSource",
-            "references/python/data_sources/NumberRangeDataSource",
-            "references/python/data_sources/TextDataSource",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.parameters",
-          items: [
-            "references/python/parameters/Parameter",
-            "references/python/parameters/SingleSelectParameter",
-            "references/python/parameters/MultiSelectParameter",
-            "references/python/parameters/DateParameter",
-            "references/python/parameters/DateRangeParameter",
-            "references/python/parameters/NumberParameter",
-            "references/python/parameters/NumberRangeParameter",
-            "references/python/parameters/TextParameter",
-            "references/python/parameters/TextValue",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.dashboards",
-          items: [
-            "references/python/dashboards/Dashboard",
-            "references/python/dashboards/PngDashboard",
-            "references/python/dashboards/HtmlDashboard",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.user_base",
-          items: [
-            "references/python/user_base/User",
-            "references/python/user_base/WrongPassword",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.project",
-          items: [
-            "references/python/project/SquirrelsProject",
-          ]
-        },
-        {
-          type: "category",
-          label: "from squirrels.dateutils",
-          items: [
-            "references/python/dateutils/DayOfWeek",
-            "references/python/dateutils/Month",
-            "references/python/dateutils/DayIdxOfCalendarUnit",
-            "references/python/dateutils/DayIdxOfMonthsCycle",
-            "references/python/dateutils/DayIdxOfYear",
-            "references/python/dateutils/DayIdxOfQuarter",
-            "references/python/dateutils/DayIdxOfMonth",
-            "references/python/dateutils/DayIdxOfWeek",
-            "references/python/dateutils/OffsetUnits",
-            "references/python/dateutils/OffsetYears",
-            "references/python/dateutils/OffsetMonths",
-            "references/python/dateutils/OffsetWeeks",
-            "references/python/dateutils/OffsetDays",
-            "references/python/dateutils/DateModPipeline",
-            "references/python/dateutils/DateStringModifier",
-            "references/python/dateutils/TimestampModifier",
-          ]
-        }
-      ]
-    },
-  ],
-  releases: [
-    {
-      type: "autogenerated",
-      dirName: "releases",
-    },
+    // {
+    //   type: "category",
+    //   label: "Python Classes",
+    //   link: {
+    //     type: "generated-index", 
+    //     title: "Python Classes",
+    //     description: 
+    //       `References for Python classes and functions available in the Squirrels python library`,
+    //     slug: "references/python"
+    //   },
+    //   items: [
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.argument",
+    //       items: [
+    //         "references/python/arguments/ConnectionsArgs",
+    //         "references/python/arguments/ParametersArgs",
+    //         "references/python/arguments/ContextArgs",
+    //         "references/python/arguments/ModelDepsArgs",
+    //         "references/python/arguments/ModelArgs",
+    //         "references/python/arguments/DashboardArgs",
+    //         "references/python/arguments/AuthArgs",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.parameter_options",
+    //       items: [
+    //         "references/python/parameter_options/ParameterOption",
+    //         "references/python/parameter_options/SelectParameterOption",
+    //         "references/python/parameter_options/DateParameterOption",
+    //         "references/python/parameter_options/DateRangeParameterOption",
+    //         "references/python/parameter_options/NumberParameterOption",
+    //         "references/python/parameter_options/NumberRangeParameterOption",
+    //         "references/python/parameter_options/TextParameterOption",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.data_sources",
+    //       items: [
+    //         "references/python/data_sources/DataSource",
+    //         "references/python/data_sources/SelectDataSource",
+    //         "references/python/data_sources/DateDataSource",
+    //         "references/python/data_sources/DateRangeDataSource",
+    //         "references/python/data_sources/NumberDataSource",
+    //         "references/python/data_sources/NumberRangeDataSource",
+    //         "references/python/data_sources/TextDataSource",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.parameters",
+    //       items: [
+    //         "references/python/parameters/Parameter",
+    //         "references/python/parameters/SingleSelectParameter",
+    //         "references/python/parameters/MultiSelectParameter",
+    //         "references/python/parameters/DateParameter",
+    //         "references/python/parameters/DateRangeParameter",
+    //         "references/python/parameters/NumberParameter",
+    //         "references/python/parameters/NumberRangeParameter",
+    //         "references/python/parameters/TextParameter",
+    //         "references/python/parameters/TextValue",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.dashboards",
+    //       items: [
+    //         "references/python/dashboards/Dashboard",
+    //         "references/python/dashboards/PngDashboard",
+    //         "references/python/dashboards/HtmlDashboard",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.user_base",
+    //       items: [
+    //         "references/python/user_base/User",
+    //         "references/python/user_base/WrongPassword",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.project",
+    //       items: [
+    //         "references/python/project/SquirrelsProject",
+    //       ]
+    //     },
+    //     {
+    //       type: "category",
+    //       label: "from squirrels.dateutils",
+    //       items: [
+    //         "references/python/dateutils/DayOfWeek",
+    //         "references/python/dateutils/Month",
+    //         "references/python/dateutils/DayIdxOfCalendarUnit",
+    //         "references/python/dateutils/DayIdxOfMonthsCycle",
+    //         "references/python/dateutils/DayIdxOfYear",
+    //         "references/python/dateutils/DayIdxOfQuarter",
+    //         "references/python/dateutils/DayIdxOfMonth",
+    //         "references/python/dateutils/DayIdxOfWeek",
+    //         "references/python/dateutils/OffsetUnits",
+    //         "references/python/dateutils/OffsetYears",
+    //         "references/python/dateutils/OffsetMonths",
+    //         "references/python/dateutils/OffsetWeeks",
+    //         "references/python/dateutils/OffsetDays",
+    //         "references/python/dateutils/DateModPipeline",
+    //         "references/python/dateutils/DateStringModifier",
+    //         "references/python/dateutils/TimestampModifier",
+    //       ]
+    //     }
+    //   ]
+    // },
   ],
 };
 

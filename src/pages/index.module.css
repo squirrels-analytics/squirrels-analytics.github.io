@@ -5,19 +5,175 @@
 
 .heroBanner {
   padding: 4rem 0;
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(120deg, var(--ifm-color-primary-dark) 0%, var(--ifm-color-primary) 100%);
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heroDescription {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.heroCode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 1;
+  position: relative;
+}
+
+.heroCode * {
+  border: none;
+}
+
+/* Add some styling to make the code block pop in both light and dark modes */
+.codeBlock {
+  position: relative;
+  background-color: #2d2d2d;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.codeBlock:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
+}
+
+.codeBlock pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.95rem;
+  color: #f8f8f8;
+}
+
+.comment {
+  color: #6a9955;
+}
+
+.command {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+/* Dollar sign styling */
+.command::before {
+  content: "$ ";
+  color: #888;
+  font-weight: normal;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
+    text-align: center;
+  }
+  
+  .heroCode {
+    margin-top: 2rem;
   }
 }
 
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .buttons {
+    justify-content: center;
+  }
+}
+
+.featuresSection {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-surface-color);
+}
+
+.featureRows {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+}
+
+.featureRows > div {
+  margin-bottom: 2rem; /* Additional space between rows */
+}
+
+.sectionSubtitle {
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  opacity: 0.7;
+}
+
+.featureCard {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--ifm-card-background-color);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.featureIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Animation for staggered appearance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.featureCard {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* Staggered animation delays for feature cards */
+.featureCard:nth-child(3n+1) {
+  animation-delay: 0.1s;
+}
+
+.featureCard:nth-child(3n+2) {
+  animation-delay: 0.2s;
+}
+
+.featureCard:nth-child(3n+3) {
+  animation-delay: 0.3s;
+}
+
+/* Ensure the section has proper spacing */
+.section {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
 }

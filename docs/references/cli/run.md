@@ -1,41 +1,60 @@
 # sqrl run
 
-The `sqrl run` command is activates the API server to interact with the datasets, such as retrieving their parameters and results.
+The `run` command starts the Squirrels API server, making your datasets available through REST API endpoints.
 
-The run command provides the following options (this can be found from `sqrl run -h`):
+## Usage
 
 ```bash
-usage: sqrl run [-h] [--no-cache] [--host HOST] [--port PORT]
-
-optional arguments:
-  -h, --help   Show this help message and exit
-  --no-cache   Do not cache any api results
-  --host HOST  The host to run on
-  --port PORT  The port to run on
+sqrl run [options]
 ```
 
-The default host is `127.0.0.1` and the default port is `4465`. Behind the scenes, Squirrels run a FastAPI app. While running, you can access:
-- http://127.0.0.1:4465 or http://localhost:4465 to interact with the Squirrels Testing UI
-- http://127.0.0.1:4465/docs or http://localhost:4465/docs to see the auto-generated OpenAPI docs
+## Options
 
-There are additional paths that return JSON results. Assume you have a project named "my_proj" with a sample dataset named "my_ds". You can use the following REST APIs to retrieve the results:
+| Option | Description |
+|--------|-------------|
+| `--build` | Build the virtual data environment (with DuckDB) first before running the API server |
+| `--no-cache` | Do not cache any API results |
+| `--host` | The host to run on. Default is 127.0.0.1 |
+| `--port` | The port to run on. Default is 4465 |
 
-- The Projects Catalog API
-    - **Path**: GET **/squirrels-v0**
-    - **Description**: Returns list of projects and list of major versions for each project. When running `sqrl run` locally in a single project, this only provides one project ("my_proj") and one major version. In the future, a platform may be provided for hosting Squirrels projects where the platform will come with a catalog API that lists all projects deployed within the account (with a similar API interface as this one).
-- The Login API
-    - **Path**: POST **/squirrels-v0/my-proj/v1/token**
-    - **Description**: Given username and password, provides an auth token and expiry time if the credentials are valid.
-- The Datasets Catalog API
-    - **Path**: GET **/squirrels-v0/my-proj/v1/data-catalog**
-    - **Description**: Given project name and major version in path, returns the list of datasets available. Only public datasets are shown if auth token is not provided.
-- The Parameters API
-    - **Path**: GET/POST **/squirrels-v0/my-proj/v1/dataset/my-ds/parameters**
-    - **Description**: Provides the widget parameter properties for the dataset. Can provide selected value of a widget parameter (in query parameters if GET request or body if POST request) to show cascaded options of dependent parameters.
-- The Dataset Result API
-    - **Path**: GET/POST **/squirrels-v0/my-proj/v1/dataset/my-ds**
-    - **Description**: Provides the tabular results of the dataset. Selected values of widget parameters can be provided (through query parameters if GET request or body if POST request).
+## Description
 
-More details on these API endpoints can be found at [REST API Types](../../docs/frontend/rest-api).
+The run command:
+1. Optionally builds the virtual data environment if `--build` is specified
+2. Starts a FastAPI server
+3. Makes all configured datasets available through REST endpoints
+4. Enables parameter-based querying of your data
+5. Provides API documentation at `/docs` and `/redoc`
 
-To shut down the API server, press Ctrl + C.
+## Examples
+
+Start the server with default settings:
+```bash
+sqrl run
+```
+
+Start the server on a specific host and port:
+```bash
+sqrl run --host 0.0.0.0 --port 8080
+```
+
+Build and then run the server:
+```bash
+sqrl run --build
+```
+
+Run without caching:
+```bash
+sqrl run --no-cache
+```
+
+## Notes
+
+- The server runs on `127.0.0.1:4465` by default
+- Use `--host 0.0.0.0` to make the server accessible from other machines
+- The `--build` option ensures your data is up to date before starting
+- Caching improves performance but may show stale data. Cache size and TTL can be configured with [environment variables]
+- The server uses FastAPI, providing automatic API documentation
+
+
+[environment variables]: ../../tba

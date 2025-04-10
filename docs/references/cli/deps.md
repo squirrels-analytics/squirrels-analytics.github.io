@@ -1,18 +1,45 @@
 # sqrl deps
 
-The `sqrl deps` command loads all the packages specified in the **packages** section of `squirrels.yml`.
+The `deps` command loads all packages specified in the `squirrels.yml` file from their Git repositories.
 
-For instance, suppose we have the following in the `squirrels.yml` file.
+## Usage
+
+```bash
+sqrl deps
+```
+
+## Description
+
+This command:
+1. Reads the `packages` section from your `squirrels.yml` file
+2. Downloads each package from its Git repository
+3. Stores the packages in the `sqrl_packages` directory
+4. Makes the packages available for use in your project
+
+## Package Configuration
+
+Packages are configured in the `squirrels.yml` file under the `packages` section. Each package should specify:
 
 ```yaml
 packages:
-    - git: https://github.com/org/myrepo.git
-      revision: v0.1.0       ## tag or branch or commit hash
-      directory: custom_name ## optional if same name as git repo
+  - git: https://github.com/owner/repo.git
+    revision: v1.0.0  # Optional: tag, branch, or commit hash
+    directory: custom_name  # Optional: custom directory name
 ```
 
-Running `sqrl deps` will create a new `sqrl_packages/` folder with subfolder `custom_name/`. Inside `custom_name/` is the contents of the `https://github.com/org/myrepo.git` repo at the `v0.1.0` git tag.
+## Examples
 
-Then, you can import python modules or Jinja macros defined in the `sqrl_packages/` folder.
+Load all packages specified in squirrels.yml:
 
-Note that the `sqrl_packages/` folder is in the `.gitignore` file.
+```bash
+sqrl deps
+```
+
+## Notes
+
+- Packages are downloaded into the `sqrl_packages` directory
+- The `sqrl_packages` directory should be added to `.gitignore`
+- Each package must be a valid Git repository
+- If no revision is specified, the default branch will be used
+- The directory name defaults to the repository name if not specified
+- Packages can be used to share common macros or Python functions across projects 
