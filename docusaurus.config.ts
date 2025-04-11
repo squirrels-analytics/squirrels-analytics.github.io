@@ -132,6 +132,10 @@ const config: Config = {
               label: 'Getting Started',
               to: '/docs/docs/start',
             },
+            {
+              label: 'Concepts',
+              to: '/docs/docs/concepts'
+            },
           ],
         },
         {

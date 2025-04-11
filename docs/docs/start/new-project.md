@@ -14,13 +14,17 @@ Use the following command to set up the Squirrels project in the current directo
 sqrl new --curr-dir --use-defaults
 ```
 
-In most cases, creating the directory first allows you to set your virtual environment for installing Squirrels before running this command.
+:::note
+
+In most cases, creating an empty directory first allows you to set your virtual environment in the directory for installing Squirrels before running the command above.
 
 However, if you wish to create a new folder for your project, you can specify a positional argument for the folder name instead of using the `--curr-dir` option.
 
 ```bash
 sqrl new my-project-folder --use-defaults
 ```
+
+:::
 
 ### Option 2: Use interactive prompts to set up with custom options
 

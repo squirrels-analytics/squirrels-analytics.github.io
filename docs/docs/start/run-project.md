@@ -6,7 +6,7 @@ First, pre-build any static data models that the Squirrels project rely on by ru
 sqrl build
 ```
 
-This will create the static data models in a [DuckDB](https://duckdb.org/) database.
+This will create the static data models in a [DuckDB](https://duckdb.org/) database. We call this database the "virtual data environment".
 
 :::tip
 
@@ -32,9 +32,13 @@ D SHOW TABLES;
 D .exit
 ```
 
-You can also run `sqrl duckdb --ui` to explore the database in a web browser.
+If you have installed the DuckDB CLI but `sqrl duckdb` still complains that the DuckDB CLI cannot be found, try restarting your terminal or IDE before running the command again.
+
+If the version of the DuckDB CLI installed is 1.2.0 or later, it has access to a local UI on a web browser. After running `duckdb -ui` for the first time, you can run `sqrl duckdb --ui` to explore the virtual data environment in the local UI.
 
 :::
+
+Now open the [.env] file and set the `SQRL_SECRET__ADMIN_PASSWORD` environment variable to something of your choice. We will use this password to log in as the admin user later.
 
 Next, activate the API server by running [sqrl run].
 
@@ -61,9 +65,11 @@ Open either of the "API Docs" links to navigate the APIs that are generated auto
 
 Open the "Application UI" link to access Squirrels Studio, a web application that can be connected to any Squirrels server (including ones running on localhost) and interact with it in various ways such as exploring available datasets / dashboards, querying data models, and exploring data lineage.
 
-You must log in as an admin user to query data models and explore data lineage. Use the username "admin" and the password specified in the .env file (find environment variable "SQRL_SECRET__ADMIN_PASSWORD") to log in with the admin user that comes with your project by default.
+You must log in as an admin user to query data models and explore data lineage. Use the username "admin" and the admin password you set earlier. To see the data lineage for example, change the "Explore" dropdown to "Data Lineage".
 
 ![Squirrels Studio Lineage](/img/squirrels-studio-lineage.png)
+
+Play around with Squirrels Studio to find other ways you can interact with your Squirrels project! For instance, you can add new users to your Squirrels project by clicking "Menu" > "Manage Users".
 
 :::tip
 
@@ -76,3 +82,4 @@ You can also build and run the API server in one command by running `sqrl run --
 [sqrl build]: ../../references/cli/build
 [sqrl duckdb]: ../../references/cli/duckdb
 [sqrl run]: ../../references/cli/run
+[.env]: ../../tba

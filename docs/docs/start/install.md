@@ -1,5 +1,7 @@
 # Installation
 
+Create an empty project directory and open it with your favorite IDE. Also, open the terminal in the same directory.
+
 **Python 3.10 or higher is required to install Squirrels**. Confirm the appropriate version of [Python](https://www.python.org/downloads/) is installed by running:
 
 ```bash
@@ -8,10 +10,10 @@ python --version
 
 This should print something like `Python 3.X.Y` in the terminal. Confirm that X >= 10.
 
-To install the Python library for Squirrels, run the following (preferably in a virtual environment - see the TIP below if you don't know what it is or how to create one):
+To install the Python library for Squirrels, run the following (preferably in a virtual environment - see the tip below if you don't know how to create one):
 
 ```bash
-pip install --pre "squirrels>=0.5.0,<1"
+pip install "squirrels>=0.5.0b,<1"
 ```
 
 To confirm it installed properly, run:

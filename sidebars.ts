@@ -42,6 +42,19 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         "docs/concepts/project",
+        // "docs/concepts/squirrels-yml",
+        // "docs/concepts/environment",
+        // "docs/concepts/connections",
+        // "docs/concepts/parameters",
+        // "docs/concepts/context",
+        // "docs/concepts/macros",
+        // "docs/concepts/models",
+        // "docs/concepts/models-source",
+        // "docs/concepts/models-seed",
+        // "docs/concepts/models-build",
+        // "docs/concepts/models-dbview",
+        // "docs/concepts/models-federate",
+        // "docs/concepts/user"
       ]
     }
   ],
