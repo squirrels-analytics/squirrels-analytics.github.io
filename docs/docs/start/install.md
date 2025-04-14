@@ -1,6 +1,6 @@
 # Installation
 
-Create an empty project directory and open it with your favorite IDE. Also, open the terminal in the same directory.
+Create an empty project directory (e.g. `squirrels-tutorial`) and open it with your favorite IDE. Also, open the terminal in the same directory.
 
 **Python 3.10 or higher is required to install Squirrels**. Confirm the appropriate version of [Python](https://www.python.org/downloads/) is installed by running:
 
