@@ -57,10 +57,12 @@ columns:
 - **depends_on**: List of models this model depends on (source models are automatically added when using the `source()` macro)
 - **columns**: Definitions of columns produced by the model
   - **name**: Column name
-  - **type**: Data type for the column. This is metadata exposed through API endpoints, and not enforced if the query produces a different type
+  - **type**: Data type for the column. See the [Column Types] documentation for supported types
   - **description**: Human-readable description of the column
   - **category**: Category of the column (dimension, measure, misc)
   - **depends_on**: List of upstream columns this column depends on
+
+If `connection` is not specified, the source will be loaded from the default connection (usually `default`) specified with the [environment variable] `SQRL_CONNECTIONS__DEFAULT_NAME_USED`.
 
 ## How Dbview Models Work
 
@@ -137,4 +139,6 @@ Dbview models are particularly useful for:
 - Reducing data transfer by pre-aggregating data at the source
 
 
+[Column Types]: ./column-types
+[environment variable]: ./environment
 [federate models]: ./models-federate

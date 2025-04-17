@@ -41,7 +41,7 @@ Build a specific model:
 sqrl build --select my_model
 ```
 
-Stage a new build while the current one is in use:
+Stage a new build if the current one is in use:
 ```bash
 sqrl build --stage
 ```

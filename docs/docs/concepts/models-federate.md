@@ -108,7 +108,7 @@ columns:
 - **eager**: Whether to materialize as a table (true) or view (false, default) in memory before proceeding to downstream models
 - **columns**: Definitions of columns produced by the model
   - **name**: Column name
-  - **type**: Data type for the column. This is metadata exposed through API endpoints, and not enforced if the query produces a different type
+  - **type**: Data type for the column. See the [Column Types] documentation for supported types
   - **description**: Human-readable description of the column
   - **category**: Category of the column (dimension, measure, misc)
   - **depends_on**: List of upstream columns this column depends on
@@ -168,6 +168,7 @@ Example:
    - Keep column conditions consistent with the actual code logic
 
 
+[Column Types]: ./column-types
 [sources]: ./models-source
 [seeds]: ./models-seed
 [build models]: ./models-build

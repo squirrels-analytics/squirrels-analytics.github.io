@@ -14,13 +14,15 @@ To create a dashboard, follow these steps:
 The Python file should contain an async `main` function that:
 - Takes a `DashboardArgs` parameter
 - Returns a Dashboard object (either `PngDashboard` or `HtmlDashboard`)
+  - The constructor for `PngDashboard` takes either a matplotlib.figure.Figure object or bytes / io.BytesIO object containing the PNG image
+  - The constructor for `HtmlDashboard` takes a string / io.StringIO object containing the HTML content
 - **Important**: The return type of your `main` function must match the `format` specified in the YAML configuration file
 
 You can use any Python visualization library to create your dashboards, including:
-- Matplotlib (for PNG dashboards)
-- Plotly (for interactive HTML dashboards)
-- Seaborn (for PNG dashboards)
-- Bokeh (for HTML dashboards)
+- Matplotlib
+- Plotly
+- Seaborn
+- Bokeh
 - Any other library that can generate visual output
 
 ```python
@@ -63,13 +65,15 @@ depends_on:
       - param_name: param_value
 ```
 
+The `parameters` field is for parameters that end users can interact with, while the `fixed_parameters` field is for parameter selections that are fixed for specific dependencies / charts in the dashboard.
+
 ## Dashboard Formats
 
 Squirrels supports two dashboard formats:
 
 ### PNG Dashboards
 
-PNG dashboards are created using Matplotlib figures:
+PNG dashboards can be created using Matplotlib figures directly:
 
 ```python
 from squirrels import DashboardArgs, dashboards as d
@@ -79,6 +83,12 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
     fig, ax = plt.subplots()
     # ... create visualization ...
     return d.PngDashboard(fig)
+```
+
+PNG dashboards can also be created from bytes / io.BytesIO objects containing the PNG image:
+
+```python
+return d.PngDashboard(bytes_io)
 ```
 
 ### HTML Dashboards
@@ -105,6 +115,8 @@ async def main(sqrl: DashboardArgs) -> d.HtmlDashboard:
     return d.HtmlDashboard(html_str)
 ```
 
+In general, HTML dashboards can be created from any string / io.StringIO object containing the HTML content.
+
 ## Dashboard Dependencies
 
 Dashboards can depend on datasets. Define these dependencies in your YAML configuration:
@@ -121,6 +133,8 @@ depends_on:
     fixed_parameters:
       - group_by: category
 ```
+
+This is metadata that is made available to the data catalog API endpoint without having to run the dashboard Python code.
 
 ## Examples
 
@@ -169,6 +183,7 @@ depends_on:
     dataset: spending_data
     fixed_parameters:
       - group_by: month
+  
   - name: category_breakdown
     dataset: spending_data
     fixed_parameters:

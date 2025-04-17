@@ -87,17 +87,17 @@ Models can depend on other models, creating a directed acyclic graph (DAG) of da
 ### Materialization
 
 Models can be materialized in different ways:
-- **Source Models**: Loaded into DuckDB or accessed directly
+- **Source Models**: Loaded into DuckDB or accessed directly based on the `load_to_duckdb` setting
 - **Seed Models**: Stored in memory as Polars dataframes and materialized as tables during the build process
-- **Build Models**: Materialized as tables or views during the build process
-- **Dbview Models**: Executed on the source database or in DuckDB
+- **Build Models**: Materialized as tables or views during the build process based on the `materialization` setting
+- **Dbview Models**: Executed on the source database or in DuckDB based on the `translate_to_duckdb` setting
 - **Federate Models**: Stored in a temporary in-memory DuckDB database as tables or views based on the `eager` setting
 
 ### Column Metadata
 
 Each model defines its columns with rich metadata:
 - **name**: Column name
-- **type**: Data type (string, integer, float, etc.)
+- **type**: Data type for the column. See the [Column Types] documentation for supported types
 - **description**: Human-readable description
 - **category**: Dimension, measure, or misc
 - **depends_on**: List of upstream columns
@@ -114,3 +114,6 @@ Models can inherit column metadata from upstream models using pass-through colum
 Build models and federate models support both SQL and Python implementations:
 - **SQL Models**: Use Jinja templating and SQL
 - **Python Models**: Python functions that return Polars or Pandas DataFrames
+
+
+[Column Types]: ./column-types

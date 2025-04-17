@@ -57,4 +57,4 @@ sqrl run --no-cache
 - The server uses FastAPI, providing automatic API documentation
 
 
-[environment variables]: ../../tba
+[environment variables]: ../../docs/concepts/environment

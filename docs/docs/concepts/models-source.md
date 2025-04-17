@@ -46,6 +46,8 @@ sources:
 - **table**: The table or view name in the source database (defaults to the source name if not provided)
 - **load_to_duckdb**: Whether to load the data into DuckDB (required for models other than dbview models to reference this source)
 
+If `connection` is not specified, the source will be loaded from the default connection (usually `default`) specified with the [environment variable] `SQRL_CONNECTIONS__DEFAULT_NAME_USED`.
+
 ### Keys and Incremental Loading
 
 - **primary_key**: Columns that uniquely identify a record, used for upserts during incremental loads
@@ -60,7 +62,7 @@ If `increasing_column` is not specified, the source model will always do a full 
 
 - **columns**: Definitions of columns to load from the source
   - **name**: Column name in the source
-  - **type**: Data type for the column (string, integer, float, date, etc.)
+  - **type**: Data type for the column. See the [Column Types] documentation for supported types
   - **description**: Human-readable description of the column
   - **category**: Category of the column (dimension, measure, misc)
 
@@ -213,6 +215,8 @@ In a future version of Squirrels, we may automatically detect these changes and 
     - Categorize columns properly (dimension, measure, misc)
 
 
+[environment variable]: ./environment
+[Column Types]: ./column-types
 [Dbview models]: ./models-dbview
 [Build models]: ./models-build
 [Federate models]: ./models-federate

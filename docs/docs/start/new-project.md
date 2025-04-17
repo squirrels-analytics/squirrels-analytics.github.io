@@ -16,7 +16,7 @@ sqrl new --curr-dir --use-defaults
 
 :::note
 
-In most cases, creating an empty directory first allows you to set your virtual environment in the directory for installing Squirrels before running the command above.
+In most cases, creating an empty directory allows you to set up your virtual environment in the directory first before installing Squirrels and running the command above.
 
 However, if you wish to create a new folder for your project, you can specify a positional argument for the folder name instead of using the `--curr-dir` option.
 

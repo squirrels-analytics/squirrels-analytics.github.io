@@ -48,9 +48,11 @@ const sidebars: SidebarsConfig = {
         "docs/concepts/parameters",
         "docs/concepts/context",
         "docs/concepts/macros",
+        "docs/concepts/column-types",
         {
           type: "category",
           label: "Data Models",
+          collapsed: false,
           link: { 
             type: "doc", 
             id: "docs/concepts/models"
@@ -77,9 +79,11 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         "docs/guides/sql-injection",
-        "docs/guides/deployment",
+        "docs/guides/deploy",
         "docs/guides/ml-models",
-        "docs/guides/join-data",
+        "docs/guides/merge-data",
+        "docs/guides/interact-in-python",
+        "docs/guides/data-freshness",
       ]
     },
   ],

@@ -6,7 +6,7 @@ We will start by running the [sqrl new] command to quickly create a working Squi
 
 ## Step 1: Bootstrapping a new project
 
-Create a new folder for your project, and open it up in your favourite coding editor (such as VSCode). The name of the folder is your choice (such as calling it `sqrl-tutorial`).
+Create a new folder for your project, and open it up in your favourite coding editor (such as VSCode). The name of the folder is your choice (one example is `squirrels-tutorial`).
 
 Follow instructions for [Installation](./install) and [Create a new project](./new-project) to quickly get a sample working project going. 
 
@@ -199,6 +199,16 @@ In this example, we define context variables "dim_col" and "order_col" based on 
 
 See the [Context Variables] page for more information on the context file.
 
+:::note
+
+The available methods on the parameter object depends on the parameter type. For example, **SingleSelectParameter** objects have a `get_selected` method to get a custom field from the selected option.
+
+By asserting the parameter object is of type **SingleSelectParameter**, it makes it easier to explore the available methods on the parameter through an IDE.
+
+For more information on available methods on different parameter types, see the Python API reference page for the [squirrels.parameters] module.
+
+:::
+
 ## Step 6: Create sources
 
 The `models/sources.yml` file lets us document the metadata of sources from our database tables.
@@ -245,7 +255,7 @@ sources:
         category: dimension
 ```
 
-In addition to developing downstream data models, documenting sources can be very useful for the Squirrels framework. See the [Sources] page for more details.
+See the [Sources] page for more information on creating sources.
 
 ## Step 7: Create seeds
 
@@ -297,11 +307,15 @@ For data models that are created by code, the Squirrels framework supports:
 - Creating dbview models (queries that run on an external database in real-time) from SQL files (dialect of the database connection used)
 - Creating federate models (queries that run in the API server in real-time) from SQL (DuckDB dialect) or Python files
 
-The "source", "seed", and "build" models are known as "static data models". The "dbview" and "federate" models are known as "dynamic data models".
+Sources, seeds, and build models are known as "static data models". 
+
+Dbview models and federate models are known as "dynamic data models".
 
 We have already configured the "source" and "seed" models. For this tutorial, we will create a build model and a federate model with SQL, but will not create any dbview models.
 
-Since we have replaced the source model in [sources.yml], data models that are downstream of the replaced source model will no longer work. **Remove the existing files in the `models/builds/`, `models/dbviews/`, and `models/federates/` folders.** Feel free to remove the existing files in the `macros/` folder as well.
+Since we have replaced the source model in [sources.yml], data models that are downstream of the replaced source model will no longer work. 
+
+**Remove the existing files in the `models/builds/`, `models/dbviews/`, and `models/federates/` folders.** Feel free to remove the existing files in the `macros/` folder as well.
 
 ### Define a macro
 
@@ -364,10 +378,10 @@ This query finds the total precipitation, max/min temperature, and average wind 
 :::info
 
 The SQL file is templated with Jinja. It calls the macros:
-- `get_metrics()` which we defined in the `macros/metrics.sql` file we created earlier
+- `get_metrics()` which is defined in the `macros/metrics.sql` file we created earlier
 - `ref("src_weather")` which references the "src_weather" source we defined earlier
 
-Build models are able to call `ref` on sources (that have `load_to_duckdb` set to true), seeds, and other build models.
+Build models are able to call `ref` on sources (that have `load_to_duckdb: true`), seeds, and other build models.
 
 :::
 
@@ -505,7 +519,7 @@ The `{{ ctx.dim_col }}` and `{{ ctx.order_col }}` variables are used to referenc
 
 Just like the build model, we use the `get_metrics` macro again. We also use the `ref` macro to reference the build model created earlier.
 
-Federate models are able to call the `ref` macro on sources (that have `load_to_duckdb` set to true), seeds, build models, dbview models, and other federate models.
+Federate models are able to call the `ref` macro on sources (that have `load_to_duckdb: true`), seeds, build models, dbview models, and other federate models.
 
 :::
 
@@ -560,6 +574,12 @@ columns:
 
 For more information on federate models, see the [Federate Models] page.
 
+:::info
+
+For SQL models that use the `ref` macro, the `depends_on` field is optional. However, it is required for Python models, and it is recommended to specify it for SQL models as well.
+
+:::
+
 :::note
 
 Similar to federate models, dbview models are also run in real-time and can change behaviour based on parameter selections or authenticated user.
@@ -572,7 +592,13 @@ See the [Dbview Models] page for more information on dbview models.
 
 ## Step 9: Development testing
 
-See [Running the project](./run-project) for more information on how to test the project, which includes building static data models and running the API server.
+You can build the static data models and run the API server by running:
+
+```bash
+sqrl run --build
+```
+
+See [Running the project](./run-project) for more information on exploring the project in Squirrels Studio.
 
 ### Compiling SQL queries
 
@@ -627,7 +653,7 @@ selection_test_sets:
       group_by_dim: 'month'
 ```
 
-The "datasets" field defines the list of datasets that this test set can be applied to, and the "parameters" field defines parameter selections. The selected value for "group_by_dim" is "2", which is the ID for the "Month" option defined in [parameters.py]. You can use the `--test-set` or `-t` option on the **compile** command to specify the test set to compile with:
+The "datasets" field defines the list of datasets that this test set can be applied to, and the "parameters" field defines parameter selections. The selected value for "group_by_dim" ("month"), which is the ID for the option labeled "Month" in the [parameters.py] file. You can use the `--test-set` or `-t` option to specify the test set to compile with:
 
 ```bash
 sqrl compile --dataset weather_by_period --test-set group_by_month
@@ -636,6 +662,92 @@ sqrl compile --dataset weather_by_period --test-set group_by_month
 This creates new files in the `target/compile/weather_by_period/group_by_month` folder (not the "target/compile/weather_by_period/**default**" folder we were looking at before).
 
 See `sqrl compile --help` or the [sqrl compile] page for more details. 
+
+## Step 10: Create a dashboard (optional)
+
+With Squirrels, you can use any Python visualization library (that can produce visualizations in png and/or html format) together with the widget parameters and datasets configured in your Squirrels project to create interactive dashboards.
+
+Dashboards are created in the `dashboards` folder with a Python file and a YAML file. You can retrieve sample dashboard code by running:
+
+```bash
+sqrl get-file dashboard_example
+```
+
+This will add the `dashboards/dashboard_example.py` and `dashboards/dashboard_example.yml` files to your project. Currently, these sample dashboards do not work since they depend on datasets that no longer exist in the project.
+
+For a working example, replace the `dashboards/dashboard_example.py` file with the following code:
+
+```python
+from squirrels import DashboardArgs, dashboards as d
+from matplotlib import pyplot as plt, figure as f, axes as a
+
+async def main(sqrl: DashboardArgs) -> d.PngDashboard:
+    weather_by_group = await sqrl.dataset("weather_by_period")
+    weather_by_condition = await sqrl.dataset("weather_by_period", fixed_parameters={"group_by_dim": "cond"})
+
+    # Create a figure with two subplots
+    fig, (ax0, ax1) = plt.subplots(2, 1, figsize=(8, 8), height_ratios=(1, 2))
+    fig: f.Figure; ax0: a.Axes; ax1: a.Axes
+    fig.tight_layout(pad=4, h_pad=6)
+
+    # Create a line chart of weather by group
+
+    # Plot temperature min and max
+    ax0.plot(weather_by_group["dimension_value"], weather_by_group["temperature_max"], color='darkorange', label="Max Temperature")
+    ax0.plot(weather_by_group["dimension_value"], weather_by_group["temperature_min"], color='blue', label="Min Temperature")
+    ax0.set_xlabel(weather_by_group["dimension_type"][0])  # Use the first value as label
+    ax0.set_ylabel("Temperature (°C)")
+    ax0.legend()
+
+    # Create a bar chart of temperature by condition
+
+    # Plot precipitation by condition
+    ax1.bar(weather_by_condition["dimension_value"], weather_by_condition["temperature_max"], color='darkorange', label="Max Temperature")
+    ax1.bar(weather_by_condition["dimension_value"], weather_by_condition["temperature_min"], color='blue', label="Min Temperature")
+    ax1.set_xlabel("Weather Condition")
+    ax1.set_ylabel("Temperature (°C)")
+    ax1.legend()
+
+    # Rotate x-axis labels for better readability
+    plt.setp(ax0.get_xticklabels(), rotation=45, ha="right")
+    plt.setp(ax1.get_xticklabels(), rotation=45, ha="right")
+    
+    return d.PngDashboard(fig)
+```
+
+And replace the `dashboards/dashboard_example.yml` file with the following contents:
+
+```yaml
+label: Dashboard Example
+
+description: This is an example dashboard
+
+scope: public
+
+format: png
+
+parameters:
+  - group_by_dim
+
+depends_on:
+  - name: weather_by_group
+    dataset: weather_by_period
+  
+  - name: weather_by_condition
+    dataset: weather_by_period
+    fixed_parameters:
+      - group_by_dim: cond (Condition)
+```
+
+Now, you should be able to see API docs for dashboard API endpoints, or explore the dashboard in Squirrels Studio.
+
+See the [Dashboards] page for more information on creating dashboards.
+
+:::note
+
+You must reactivate the API server the test out the new changes. Since there were no changes to the static data models you can simply run `sqrl run` instead of `sqrl run --build`.
+
+:::
 
 **Congratulations, you have reached the end of the tutorial!**
 
@@ -650,9 +762,12 @@ This is a revised example that demonstrates:
 - Using a Python data model that loads a machine learning (ML) model to create a column for ML model predictions
 
 In addition, the following topics may also useful for your Squirrels projects:
-- TBA
+- [User Model](../concepts/user) - Configure custom user attributes and use them to control behaviour of data models
+- [Context Variables & Placeholders](../concepts/context) - We briefly touched on context variables in this tutorial, but not placeholders
+- [Date Utils](../concepts/dateutils) - Use the `date_utils` module to apply a series of date transformations to parameter selections
+- [Deploy with Docker](../guides/deploy) - Deploy your Squirrels project with Docker
 
-You can also check out the [CLI References] to understand the commands available with Squirrels, or check out the [Python Classes] available in the Squirrels library.
+You can also check out the [CLI References] to understand the commands available with Squirrels, or check out the [Python APIs] available in the Squirrels library.
 
 
 [python virtual environments]: https://realpython.com/python-virtual-environments-a-primer/
@@ -661,20 +776,22 @@ You can also check out the [CLI References] to understand the commands available
 [sqlalchemy database URLs]: https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls
 [sqrl new]: ../../references/cli/new
 [sqrl compile]: ../../references/cli/compile
-[squirrels.yml]: ../../tba
-[.env]: ../../tba
-[parameters.py]: ../../tba
-[context.py]: ../../tba
-[sources.yml]: ../../tba
-[seeds]: ../../tba
-[Database Connections]: ../../tba
-[Widget Parameters]: ../../tba
-[Context Variables]: ../../tba
-[Macros]: ../../tba
-[Sources]: ../../tba
-[Seeds]: ../../tba
-[Build Models]: ../../tba
-[Federate Models]: ../../tba
-[Dbview Models]: ../../tba
+[squirrels.yml]: ../concepts/squirrels-yml
+[.env]: ../concepts/environment
+[parameters.py]: ../concepts/parameters
+[context.py]: ../concepts/context
+[sources.yml]: ../concepts/models-source
+[seeds]: ../concepts/models-seed
+[Database Connections]: ../concepts/connections
+[Widget Parameters]: ../concepts/parameters
+[Context Variables]: ../concepts/context
+[Macros]: ../concepts/macros
+[Sources]: ../concepts/models-source
+[Seeds]: ../concepts/models-seed
+[Build Models]: ../concepts/models-build
+[Federate Models]: ../concepts/models-federate
+[Dbview Models]: ../concepts/models-dbview
+[Dashboards]: ../concepts/dashboards
 [CLI References]: ../../references/cli
-[Python Classes]: ../../tba
+[Python APIs]: ../../references/python
+[squirrels.parameters]: ../../tba

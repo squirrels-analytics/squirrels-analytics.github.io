@@ -97,7 +97,7 @@ columns:
 - **depends_on**: List of models this model depends on (automatically populated for SQL models when using `ref()`)
 - **columns**: Definitions of columns produced by the model
   - **name**: Column name
-  - **type**: Data type for the column. This is metadata exposed through API endpoints, and not enforced if the query produces a different type
+  - **type**: Data type for the column. See the [Column Types] documentation for supported types
   - **description**: Human-readable description of the column
   - **category**: Category of the column (dimension, measure, misc)
   - **depends_on**: List of upstream columns this column depends on
@@ -190,6 +190,7 @@ Currently, incremental loading is not supported for build models. This will be s
    - Python models require explicit dependency declarations
 
 
+[Column Types]: ./column-types
 [sqrl build]: ../../references/cli/build
 [sources]: ./models-source
 [seeds]: ./models-seed

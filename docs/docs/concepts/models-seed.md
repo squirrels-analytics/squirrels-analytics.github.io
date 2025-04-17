@@ -43,7 +43,7 @@ columns:
 - **cast_column_types**: Whether to apply the column types defined in the YAML file (default: false)
 - **columns**: Definitions of columns in the seed data
   - **name**: Column name (must match the CSV header)
-  - **type**: Data type for the column
+  - **type**: Data type for the column. See the [Column Types] documentation for supported types
   - **description**: Human-readable description of the column
   - **category**: Category of the column (dimension, measure, etc.)
 
@@ -54,8 +54,6 @@ Squirrels provides two ways to handle column types in seed files:
 1. **Automatic Schema Inference**: By default, Squirrels attempts to infer the schema from the CSV data. This behavior is controlled by the [environment variable] `SQRL_SEEDS__INFER_SCHEMA` (defaults to "true").
 
 2. **Explicit Type Casting**: When you set `cast_column_types: true` in the YAML file, Squirrels will use the column types you've defined, overriding the schema inference.
-
-For explicit type casting, the supported types are the same as the "general-purpose" data types supported by DuckDB, which can be found [here](https://duckdb.org/docs/stable/sql/data_types/overview.html#general-purpose-data-types). One exception is that the "decimal" type is treated as "double" since the seed gets stored in memory as a Polars DataFrame, and the "decimal" type for Polars is not stable according to the [Polars documentation](https://docs.pola.rs/api/python/stable/reference/api/polars.datatypes.Decimal.html).
 
 If both `SQRL_SEEDS__INFER_SCHEMA` and `cast_column_types` are false, the columns will be loaded as strings.
 
@@ -110,3 +108,4 @@ Seeds are materialized as tables in the virtual data environment during the buil
 
 
 [environment variable]: ./environment
+[Column Types]: ./column-types
