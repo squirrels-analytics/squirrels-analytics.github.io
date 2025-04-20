@@ -1,4 +1,4 @@
-# Offset...
+# Offset... (classes)
 
 All classes in dateutils that start with "Offset" can be used for offseting the input date by some number of time units (years, months, weeks, days, etc.). These classes are:
 

@@ -598,7 +598,7 @@ You can build the static data models and run the API server by running:
 sqrl run --build
 ```
 
-See [Running the project](./run-project) for more information on exploring the project in Squirrels Studio.
+See [Running the project](./run-project) for more information on exploring the project in [Squirrels Studio].
 
 ### Compiling SQL queries
 
@@ -739,7 +739,7 @@ depends_on:
       - group_by_dim: cond (Condition)
 ```
 
-Now, you should be able to see API docs for dashboard API endpoints, or explore the dashboard in Squirrels Studio.
+Now, you should be able to see API docs for dashboard API endpoints, or explore the dashboard in [Squirrels Studio].
 
 See the [Dashboards] page for more information on creating dashboards.
 
@@ -769,6 +769,8 @@ In addition, the following topics may also useful for your Squirrels projects:
 
 You can also check out the [CLI References] to understand the commands available with Squirrels, or check out the [Python APIs] available in the Squirrels library.
 
+Got any questions or feedback? Come join our [Discord server](https://discord.gg/AXYn9rxTgP) and let us know!
+
 
 [python virtual environments]: https://realpython.com/python-virtual-environments-a-primer/
 [yaml]: https://yaml.org/
@@ -795,3 +797,4 @@ You can also check out the [CLI References] to understand the commands available
 [CLI References]: ../../references/cli
 [Python APIs]: ../../references/python
 [squirrels.parameters]: ../../tba
+[Squirrels Studio]: ../concepts/studio

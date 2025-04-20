@@ -67,6 +67,7 @@ const sidebars: SidebarsConfig = {
         },
         "docs/concepts/dashboards",
         "docs/concepts/dateutils",
+        "docs/concepts/studio",
       ]
     },
     {
@@ -209,7 +210,7 @@ const sidebars: SidebarsConfig = {
             "references/python/dateutils/Month",
             {
               type: "category",
-              label: "DayIdxOf...",
+              label: "DayIdxOf... (classes)",
               link: {
                 type: "doc",
                 id: "references/python/dateutils/DayIdxOf"
@@ -224,7 +225,7 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
-              label: "Offset...",
+              label: "Offset... (classes)",
               link: {
                 type: "doc",
                 id: "references/python/dateutils/Offset"
@@ -240,9 +241,26 @@ const sidebars: SidebarsConfig = {
             "references/python/dateutils/DateStringModifier",
             "references/python/dateutils/TimestampModifier",
           ]
-        }
+        },
       ]
     },
+    {
+      type: "category",
+      label: "REST APIs",
+      collapsed: false,
+      link: {
+        type: "doc", 
+        id: "references/rest/index"
+      },
+      items: [
+        "references/rest/authentication",
+        "references/rest/user-management",
+        "references/rest/project-metadata",
+        "references/rest/data-management",
+        "references/rest/datasets-dashboards",
+        "references/rest/parameters",
+      ]
+    }
   ],
 };
 

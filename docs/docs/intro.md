@@ -23,3 +23,7 @@ First, check out [Installation](./start/install) and [Creating a new project](./
 Explore the new Squirrels project to learn by example. The page on [Running the project](./start/run-project) provides details on activating the API server for the project
 
 Finally, see the [Tutorial](./start/tutorial) page to follow a step-by-step guide on creating a new Squirrels project from the ground up. This should help you get a deeper understanding on the main concepts of the Squirrels framework.
+
+## Join the community
+
+Got any questions or feedback? Come join us on our [Discord server](https://discord.gg/AXYn9rxTgP)!

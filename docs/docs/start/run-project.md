@@ -69,13 +69,13 @@ INFO:     Uvicorn running on http://127.0.0.1:4465 (Press CTRL+C to quit)
 
 Open either of the "API Docs" links to navigate the APIs that are generated automatically for your Squirrels project. The API docs with Swagger allows you to test the APIs directly in the browser.
 
-Open the "Application UI" link to access Squirrels Studio, a web application that can be connected to any Squirrels server (including ones running on localhost) and interact with it in various ways such as exploring available datasets / dashboards, querying data models, and exploring data lineage.
+Open the "Application UI" link to access [Squirrels Studio], a web application that can be connected to any Squirrels server (including ones running on localhost) and interact with it in various ways such as exploring available datasets / dashboards, querying data models, and exploring data lineage.
 
 You must log in as an admin user to query data models and explore data lineage. Use the username "admin" and the admin password you set earlier to log in. To see the data lineage for example, change the "Explore" dropdown to "Data Lineage".
 
 ![Squirrels Studio Lineage](/img/squirrels-studio-lineage.png)
 
-Play around with Squirrels Studio to find other ways you can interact with your Squirrels project. For instance, you can add new users to your Squirrels project by clicking "Menu" > "Manage Users".
+Play around with [Squirrels Studio] to find other ways you can interact with your Squirrels project. For instance, you can add new users to your Squirrels project by clicking "Menu" > "Manage Users".
 
 :::tip
 
@@ -89,3 +89,4 @@ You can also build and run the API server in one command by running `sqrl run --
 [sqrl duckdb]: ../../references/cli/duckdb
 [sqrl run]: ../../references/cli/run
 [.env]: ../concepts/environment
+[Squirrels Studio]: ../concepts/studio

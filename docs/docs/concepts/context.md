@@ -109,7 +109,7 @@ if sqrl.param_exists("category"):
     category_param = sqrl.prms["category"]
     assert isinstance(category_param, p.MultiSelectParameter)
     ctx["has_categories"] = category_param.has_non_empty_selection() # boolean
-    ctx["categories"] = category_param.get_selected_ids() # list of strings
+    ctx["categories"] = category_param.get_selected_ids_as_list() # list of strings
 else:
     ctx["has_categories"] = False
 ```

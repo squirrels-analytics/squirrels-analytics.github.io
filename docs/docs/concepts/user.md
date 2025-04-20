@@ -52,10 +52,18 @@ Use the `Literal` type from the `typing` module to create fields with a fixed se
 
 ```python
 # Field that only accepts specific values
-role: Literal["admin", "manager", "employee"] = "employee"
+role: Literal["manager", "employee"] = "employee"
 ```
 
 **All fields must have a default value.** When adding a new field to the User model, the field for all existing users in the database will be set to the default value.
+
+:::note
+
+If the `SQRL_SECRET__ADMIN_PASSWORD` [environment variable] is set, the "admin" user (i.e., username = "admin") will be created for you automatically using the default values from the User model.
+
+If the fields of the "admin" user should be different than the default values, you can change it in [Squirrels Studio] ("Menu" -> "Manage Users") when authenticated as an admin user, or by using the [Update User] REST API.
+
+:::
 
 ## Reserved and Disallowed Fields
 
@@ -89,10 +97,6 @@ class User(BaseUser):
     return ["old_field"]
 ```
 
-## Managing Users in Squirrels Studio
-
-Squirrels Studio provides a user management interface that allows you to create, edit, and delete users. When authenticated as an admin user, you can access the user management interface by navigating to "Menu" > "Manage Users". This will show all user fields and the values for each user.
-
 ## Best Practices
 
 1. Always provide meaningful default values for required fields
@@ -100,3 +104,8 @@ Squirrels Studio provides a user management interface that allows you to create,
 3. Consider using `Literal` types to enforce valid options
 4. Document your User model fields with comments
 5. When removing fields, add them to `dropped_columns()` rather than deleting them from the model
+
+
+[environment variable]: ./environment
+[Update User]: ../../references/rest/user-management#update-user-
+[Squirrels Studio]: ../concepts/studio

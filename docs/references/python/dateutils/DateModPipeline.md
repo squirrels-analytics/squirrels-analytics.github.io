@@ -1,4 +1,4 @@
-# DateModPipeline
+# DateModPipeline (class)
 
 The class to chain together a series of date modifier classes into a pipeline where the pipeline can be used to apply multiple modifications to an input date. A date modifier class is any class in dateutils that starts with "DayIdxOf", "Offset", or "DateModPipeline".
 

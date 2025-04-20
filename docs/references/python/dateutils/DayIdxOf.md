@@ -1,4 +1,4 @@
-# DayIdxOf...
+# DayIdxOf... (classes)
 
 All classes in dateutils that start with "DayIdxOf" can be used for getting the i-th day of some calendar cycle (such as year, quarter, month, week, etc.) that the input date resides in. These classes are:
 

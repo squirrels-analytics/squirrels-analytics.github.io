@@ -1,4 +1,4 @@
-# DateStringModifier
+# DateStringModifier (class)
 
 Similar to [DateModPipeline] except all input and output dates are strings instead of datetime.date.
 
