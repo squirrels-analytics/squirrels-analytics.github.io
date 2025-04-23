@@ -118,19 +118,117 @@ const sidebars: SidebarsConfig = {
         slug: "references/python"
       },
       items: [
-        // {
-        //   type: "category",
-        //   label: "squirrels.argument (module)",
-        //   items: [
-        //     "references/python/arguments/ConnectionsArgs",
-        //     "references/python/arguments/ParametersArgs",
-        //     "references/python/arguments/ContextArgs",
-        //     "references/python/arguments/ModelDepsArgs",
-        //     "references/python/arguments/ModelArgs",
-        //     "references/python/arguments/DashboardArgs",
-        //     "references/python/arguments/AuthArgs",
-        //   ]
-        // },
+        {
+          type: "category",
+          label: "dateutils (module)",
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes and enums below are available to import from the \"dateutils\" module.",
+            slug: "references/python/dateutils"
+          },
+          items: [
+            "references/python/dateutils/DayOfWeekEnum",
+            "references/python/dateutils/MonthEnum",
+            {
+              type: "category",
+              label: "DayIdxOf... (classes)",
+              link: {
+                type: "doc",
+                id: "references/python/dateutils/DayIdxOf"
+              },
+              items: [
+                "references/python/dateutils/DayIdxOfMonthsCycle",
+                "references/python/dateutils/DayIdxOfYear",
+                "references/python/dateutils/DayIdxOfQuarter",
+                "references/python/dateutils/DayIdxOfMonth",
+                "references/python/dateutils/DayIdxOfWeek",
+              ]
+            },
+            {
+              type: "category",
+              label: "Offset... (classes)",
+              link: {
+                type: "doc",
+                id: "references/python/dateutils/Offset"
+              },
+              items: [
+                "references/python/dateutils/OffsetYears",
+                "references/python/dateutils/OffsetMonths",
+                "references/python/dateutils/OffsetWeeks",
+                "references/python/dateutils/OffsetDays",
+              ]
+            },
+            "references/python/dateutils/DateModPipeline",
+            "references/python/dateutils/DateStringModifier",
+            "references/python/dateutils/TimestampModifier",
+            "references/python/dateutils/types",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.arguments (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.arguments\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/arguments"
+          },
+          items: [
+            "references/python/arguments/ConnectionsArgs",
+            "references/python/arguments/ParametersArgs",
+            "references/python/arguments/BuildModelArgs",
+            "references/python/arguments/ContextArgs",
+            "references/python/arguments/ModelArgs",
+            "references/python/arguments/DashboardArgs",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.connections (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.connections\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/connections"
+          },
+          items: [
+            "references/python/connections/ConnectionTypeEnum",
+            "references/python/connections/ConnectionProperties",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.dashboards (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.dashboards\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/dashboards"
+          },
+          items: [
+            "references/python/dashboards/PngDashboard",
+            "references/python/dashboards/HtmlDashboard",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from only the \"squirrels\" module and no other submodule.",
+            slug: "references/python/squirrels"
+          },
+          items: [
+            "references/python/SquirrelsProject",
+          ]
+        },
+        
         // {
         //   type: "category",
         //   label: "squirrels.parameter_options (module)",
@@ -196,52 +294,6 @@ const sidebars: SidebarsConfig = {
         //     "references/python/project/SquirrelsProject",
         //   ]
         // },
-        {
-          type: "category",
-          label: "dateutils (module)",
-          link: {
-            type: "generated-index",
-            description: 
-              "All classes and enums below are available to import from the dateutils module.",
-            slug: "references/python/dateutils"
-          },
-          items: [
-            "references/python/dateutils/DayOfWeek",
-            "references/python/dateutils/Month",
-            {
-              type: "category",
-              label: "DayIdxOf... (classes)",
-              link: {
-                type: "doc",
-                id: "references/python/dateutils/DayIdxOf"
-              },
-              items: [
-                "references/python/dateutils/DayIdxOfMonthsCycle",
-                "references/python/dateutils/DayIdxOfYear",
-                "references/python/dateutils/DayIdxOfQuarter",
-                "references/python/dateutils/DayIdxOfMonth",
-                "references/python/dateutils/DayIdxOfWeek",
-              ]
-            },
-            {
-              type: "category",
-              label: "Offset... (classes)",
-              link: {
-                type: "doc",
-                id: "references/python/dateutils/Offset"
-              },
-              items: [
-                "references/python/dateutils/OffsetYears",
-                "references/python/dateutils/OffsetMonths",
-                "references/python/dateutils/OffsetWeeks",
-                "references/python/dateutils/OffsetDays",
-              ]
-            },
-            "references/python/dateutils/DateModPipeline",
-            "references/python/dateutils/DateStringModifier",
-            "references/python/dateutils/TimestampModifier",
-          ]
-        },
       ]
     },
     {

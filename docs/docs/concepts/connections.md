@@ -69,7 +69,7 @@ For more complex connection setups, you can use Python code in `pyconfigs/connec
 
 ```python
 from typing import Any
-from squirrels import ConnectionsArgs, ConnectionProperties, ConnectionType
+from squirrels import ConnectionsArgs, ConnectionProperties, ConnectionTypeEnum
 
 def main(connections: dict[str, ConnectionProperties | Any], sqrl: ConnectionsArgs) -> None:
     """
@@ -85,7 +85,7 @@ def main(connections: dict[str, ConnectionProperties | Any], sqrl: ConnectionsAr
     # Add connection using ConnectionProperties
     connections["default"] = ConnectionProperties(
         label="SQLite Expenses Database",
-        type=ConnectionType.SQLALCHEMY,
+        type=ConnectionTypeEnum.SQLALCHEMY,
         uri=conn_str
     )
 ```

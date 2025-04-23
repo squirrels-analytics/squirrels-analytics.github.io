@@ -22,7 +22,7 @@ All commands support the following common options:
 |--------|-------------|
 | `--log-level` | Level of logging to use (DEBUG, INFO, WARNING). Default is INFO |
 | `--log-format` | Format of the log records (text, json). Default is text |
-| `--log-file` | Name of log file to write to in the "logs/" folder. Default is squirrels.log |
+| `--log-file` | Name of log file to write to in the "logs/" folder. Default is "squirrels.log" |
 
 ## Getting Help
 

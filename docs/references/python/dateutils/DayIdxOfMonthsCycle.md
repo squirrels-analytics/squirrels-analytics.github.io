@@ -21,7 +21,7 @@ Creates a DayIdxOfMonthsCycle object.
 
 **Optional Keyword Arguments:**
 
-- **first_month_of_cycle**: A [Month] for the first month of the cycle (January, February, March, etc.). Optional, default is January
+- **first_month_of_cycle**: A [MonthEnum] for the first month of the cycle (January, February, March, etc.). Optional, default is January
 
 ## Methods
 
@@ -32,10 +32,10 @@ See [DayIdxOf...] for all methods.
 Suppose you have 4-month "trimesters" starting in either March, July, or November. Given an input date, you want to find the 66th day of the current trimester. This can be done as follows:
 
 ```python
-from dateutils import DayIdxOfMonthsCycle, Month
+from dateutils import DayIdxOfMonthsCycle, MonthEnum
 import datetime
 
-date_modifier = DayIdxOfMonthsCycle(idx=95, num_months_in_cycle=4, first_month_of_cycle=Month.March)
+date_modifier = DayIdxOfMonthsCycle(idx=95, num_months_in_cycle=4, first_month_of_cycle=MonthEnum.March)
 
 input_date = datetime.date(2025, 4, 5)
 output_date = date_modifier.modify(input_date)
@@ -43,5 +43,5 @@ print(output_date) # prints 2025-06-03, 95th day of period "March 1st to June 30
 ```
 
 
-[Month]: ./Month
+[MonthEnum]: ./MonthEnum
 [DayIdxOf...]: ./DayIdxOf

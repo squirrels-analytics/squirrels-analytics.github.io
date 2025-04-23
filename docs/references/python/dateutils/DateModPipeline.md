@@ -58,7 +58,7 @@ from dateutils import DateModPipeline, DayIdxOfWeek, DayIdxOfMonth, OffsetDays
 import datetime
 
 date_modifier = DateModPipeline([
-    DayIdxOfWeek(idx=1, first_day_of_week=DayOfWeek.Monday),
+    DayIdxOfWeek(idx=1, first_day_of_week=DayOfWeekEnum.Monday),
     OffsetDays(offset=-10),
     DayIdxOfMonth(idx=1),
 ])

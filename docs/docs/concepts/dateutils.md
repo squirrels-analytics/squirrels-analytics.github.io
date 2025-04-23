@@ -47,7 +47,7 @@ Each of their constuctors take an argument **idx** to specify the day number of 
 
 For [DayIdxOfMonthsCycle], the length of the cycle in months can be specified with the argument **num_months_in_cycle**. This is unlike [DayIdxOfMonth] where the length of the cycle is always one month. [DayIdxOfYear], [DayIdxOfQuarter], and [DayIdxOfMonth] are equivalent to [DayIdxOfMonthsCycle] when the **num_months_in_cycle** argument is 12, 3, or 1 respectively.
 
-For DayIdxOfWeek, the first day of the week (using the [DayOfWeek] enum which contains values Monday, Tuesday, etc. until Sunday) can be specified using the **first_day_of_week** argument. The first month of the cycle/year/quarter can be specified (using the [Month] enum which contains values January, February, etc. until December) with the argument **first_month_of_cycle** for [DayIdxOfMonthsCycle], **first_month_of_year** for [DayIdxOfYear], and **first_month_of_quarter** for [DayIdxOfQuarter].
+For DayIdxOfWeek, the first day of the week (using the [DayOfWeekEnum] enum which contains values Monday, Tuesday, etc. until Sunday) can be specified using the **first_day_of_week** argument. The first month of the cycle/year/quarter can be specified (using the [MonthEnum] enum which contains values January, February, etc. until December) with the argument **first_month_of_cycle** for [DayIdxOfMonthsCycle], **first_month_of_year** for [DayIdxOfYear], and **first_month_of_quarter** for [DayIdxOfQuarter].
 
 Each of these classes contain a modify method to modify an input date as well.
 
@@ -55,11 +55,11 @@ Here are some problems and solutions in code using these classes.
 
 |Problem|Solution|
 |:------|:-------|
-|Get the same or prior Friday|`du.DayIdxOfWeek(idx=1, first_day_of_week=du.DayOfWeek.Friday).modify(date_obj)`|
-|Get the same or next Friday|`du.DayIdxOfWeek(idx=-1, first_day_of_week=du.DayOfWeek.Saturday).modify(date_obj)`|
-|If Wednesday to Friday, round up to Friday. Otherwise round down to Friday|`du.DayIdxOfWeek(idx=3, first_day_of_week=du.DayOfWeek.Wednesday).modify(date_obj)`|
+|Get the same or prior Friday|`du.DayIdxOfWeek(idx=1, first_day_of_week=du.DayOfWeekEnum.Friday).modify(date_obj)`|
+|Get the same or next Friday|`du.DayIdxOfWeek(idx=-1, first_day_of_week=du.DayOfWeekEnum.Saturday).modify(date_obj)`|
+|If Wednesday to Friday, round up to Friday. Otherwise round down to Friday|`du.DayIdxOfWeek(idx=3, first_day_of_week=du.DayOfWeekEnum.Wednesday).modify(date_obj)`|
 |Get the third last day of month|`du.DayIdxOfMonth(idx=-3).modify(date_obj)`|
-|Suppose a "Third Year" occurs every 4 months from February 1st. Get the beginning of current Third Year|`du.DayIdxOfMonthsCycle(idx=1, num_months_in_cycle=4, first_month_of_cycle=du.Month.February).modify(date_obj)`|
+|Suppose a "Third Year" occurs every 4 months from February 1st. Get the beginning of current Third Year|`du.DayIdxOfMonthsCycle(idx=1, num_months_in_cycle=4, first_month_of_cycle=du.MonthEnum.February).modify(date_obj)`|
 
 ## Date Modification Pipeline
 
@@ -69,11 +69,11 @@ Here are some more examples of problems and solutions.
 
 |Problem|Solution|
 |:------|:-------|
-|Get the prior or same Friday|`du.DateModPipeline([du.DayIdxOfWeek(1, du.DayOfWeek.Friday)]).modify(date_obj)`|
-|Get the next or same Friday|`du.DateModPipeline([du.DayIdxOfWeek(-1, du.DayOfWeek.Saturday)]).modify(date_obj)`|
-|Get the prior Friday|`du.DateModPipeline([du.DayIdxOfWeek(-1, du.DayOfWeek.Saturday), du.OffsetWeeks(-1)]).modify(date_obj)`|
-|Get the next Friday|`du.DateModPipeline([du.DayIdxOfWeek(1, du.DayOfWeek.Friday), du.OffsetWeeks(1)]).modify(date_obj)`|
-|Get the second Friday of the current quarter. First month of quarter is January|`du.DateModPipeline([du.DayIdxOfQuarter(1), du.DayIdxOfWeek(-1, du.DayOfWeek.Saturday), du.OffsetWeeks(1)]).modify(date_obj)`|
+|Get the prior or same Friday|`du.DateModPipeline([du.DayIdxOfWeek(1, du.DayOfWeekEnum.Friday)]).modify(date_obj)`|
+|Get the next or same Friday|`du.DateModPipeline([du.DayIdxOfWeek(-1, du.DayOfWeekEnum.Saturday)]).modify(date_obj)`|
+|Get the prior Friday|`du.DateModPipeline([du.DayIdxOfWeek(-1, du.DayOfWeekEnum.Saturday), du.OffsetWeeks(-1)]).modify(date_obj)`|
+|Get the next Friday|`du.DateModPipeline([du.DayIdxOfWeek(1, du.DayOfWeekEnum.Friday), du.OffsetWeeks(1)]).modify(date_obj)`|
+|Get the second Friday of the current quarter. First month of quarter is January|`du.DateModPipeline([du.DayIdxOfQuarter(1), du.DayIdxOfWeek(-1, du.DayOfWeekEnum.Saturday), du.OffsetWeeks(1)]).modify(date_obj)`|
 
 In addition to the **modify** method, this class also lets you get a list of date objects with the method **get_date_list**. It takes an input start date and a step (as an "offset date modifier"), modifies the start date to get the end date, and returns the dates from start to end by step. Below is an example of going back every week from "June 15th, 2023" and stopping before we pass the first Friday of the Quarter that "June 15th, 2023" is in (i.e. "April 7th, 2023"). Since "June 15th, 2023" is on a Thursday, the last date in the returned date list would be "April 13th, 2023" (also a Thursday).
 
@@ -81,7 +81,7 @@ In addition to the **modify** method, this class also lets you get a list of dat
 from datetime import datetime
 from squirrels import dateutils as du
 ...
-modifier = du.DateModPipeline([du.DayIdxOfQuarter(1), du.DayIdxOfWeek(-1, du.DayOfWeek.Saturday)])
+modifier = du.DateModPipeline([du.DayIdxOfQuarter(1), du.DayIdxOfWeek(-1, du.DayOfWeekEnum.Saturday)])
 date_list = modifier.get_date_list(datetime(2023, 6, 15), du.OffsetWeeks(-1))
 # date_list == [datetime(2023, 6, 15), datetime(2023, 6, 8), ..., datetime(2023, 4, 13)]
 ```
@@ -96,8 +96,8 @@ For [TimestampModifier], the input date for methods **modify** and **get_date_li
 
 
 [context.py]: ./context
-[DayOfWeek]: ../../references/python/dateutils/DayOfWeek
-[Month]: ../../references/python/dateutils/Month
+[DayOfWeekEnum]: ../../references/python/dateutils/DayOfWeekEnum
+[MonthEnum]: ../../references/python/dateutils/MonthEnum
 [OffsetYears]: ../../references/python/dateutils/OffsetYears
 [OffsetMonths]: ../../references/python/dateutils/OffsetMonths
 [OffsetWeeks]: ../../references/python/dateutils/OffsetWeeks

@@ -48,6 +48,12 @@ sources:
 
 If `connection` is not specified, the source will be loaded from the default connection (usually `default`) specified with the [environment variable] `SQRL_CONNECTIONS__DEFAULT_NAME_USED`.
 
+:::important
+
+Currently, setting `load_to_duckdb` to true is only supported if the connection uses `sqlite`, `postgres`, and `mysql`. Support for additional dialects will be included in future releases. **Do not set this to true for other dialects!**
+
+:::
+
 ### Keys and Incremental Loading
 
 - **primary_key**: Columns that uniquely identify a record, used for upserts during incremental loads

@@ -1,7 +1,7 @@
-# Month (enum)
+# MonthEnum (enum)
 
 ```python
-class Month(Enum):
+class MonthEnum(Enum):
     January = 1
     February = 2
     March = 3

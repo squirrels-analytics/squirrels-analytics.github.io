@@ -1,7 +1,7 @@
-# DayOfWeek (enum)
+# DayOfWeekEnum (enum)
 
 ```python
-class DayOfWeek(Enum):
+class DayOfWeekEnum(Enum):
     Sunday = 0
     Monday = 1
     Tuesday = 2

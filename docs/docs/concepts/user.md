@@ -106,6 +106,7 @@ class User(BaseUser):
 5. When removing fields, add them to `dropped_columns()` rather than deleting them from the model
 
 
+[sqrl get-file]: ../../references/cli/get-file
 [environment variable]: ./environment
 [Update User]: ../../references/rest/user-management#update-user-
 [Squirrels Studio]: ../concepts/studio

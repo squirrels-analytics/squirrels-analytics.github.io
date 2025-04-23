@@ -12,7 +12,7 @@ Creates a DayIdxOfQuarter object.
 
 **Optional Keyword Arguments:**
 
-- **first_month_of_quarter**: A [Month] for the first month of one of the quarters (January, February, March, etc.). The first month of other quarters are implied based on this value. Optional, default is January
+- **first_month_of_quarter**: A [MonthEnum] for the first month of one of the quarters (January, February, March, etc.). The first month of other quarters are implied based on this value. Optional, default is January
 
 ## Methods
 
@@ -23,15 +23,15 @@ See [DayIdxOf...] for all methods.
 Suppose you have a date that you want to find the 15th day of the quarter where the first month is March. This can be done as follows:
 
 ```python
-from dateutils import DayIdxOfQuarter, Month
+from dateutils import DayIdxOfQuarter, MonthEnum
 import datetime
 
-date_modifier = DayIdxOfQuarter(idx=15, first_month_of_quarter=Month.March)
+date_modifier = DayIdxOfQuarter(idx=15, first_month_of_quarter=MonthEnum.March)
 
 input_date = datetime.date(2025, 4, 5)
 output_date = date_modifier.modify(input_date)
 print(output_date) # prints 2025-03-15
 ```
 
-[Month]: ./Month
+[MonthEnum]: ./MonthEnum
 [DayIdxOf...]: ./DayIdxOf
