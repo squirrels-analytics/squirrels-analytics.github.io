@@ -1,8 +1,12 @@
-# DayIdxOfMonth
+# DayIdxOfMonth (class)
 
 The class to get the i-th day of the month. See [DayIdxOf...] for more details.
 
 ## Constructor
+
+```python
+def __init__(self, idx: int) -> None:
+```
 
 Creates a DayIdxOfMonth object.
 

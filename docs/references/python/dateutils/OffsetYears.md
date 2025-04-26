@@ -1,8 +1,12 @@
-# OffsetYears
+# OffsetYears (class)
 
 The class to offset an input date by some number of years. See [Offset...] for more details.
 
 ## Constructor
+
+```python
+def __init__(self, offset: int) -> None:
+```
 
 Creates an OffsetYears object.
 

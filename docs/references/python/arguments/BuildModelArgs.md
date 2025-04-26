@@ -1,8 +1,8 @@
 # BuildModelArgs (class)
 
-The class for the "sqrl" argument of the main function of Python [build models], which runs at build time.
+BuildModelArgs is the class type of the "sqrl" argument for the main function of [build models], which runs at build time.
 
-Can be imported from the module `squirrels.arguments` or `squirrels`.
+The class can be imported from the `squirrels.arguments` or `squirrels` module.
 
 ## Attributes
 
@@ -12,27 +12,41 @@ Attributes of BuildModelArgs that can be accessed.
 
 The path to the project directory.
 
+**Type:** `str`
+
 ### proj_vars
     
 A dictionary to access a project variable defined in [squirrels.yml].
+
+**Type:** `dict[str, Any]`
 
 ### env_vars
 
 A dictionary of [environment variables].
 
+**Type:** `dict[str, str]`
+
 ### connections
 
 A dictionary of connection keys to database connections, which are typically [ConnectionProperties] objects. Can also be used to store other in-memory objects in advance such as ML models.
 
+**Type:** `dict[str, Any]`
+
 ### dependencies
 
 The set of dependent data model names.
+
+**Type:** `set[str]`
 
 ## Methods
 
 Methods that can be invoked with BuildModelArgs.
 
 ### ref
+
+```python
+def ref(self, model: str) -> polars.LazyFrame:
+```
 
 Returns the result (as polars DataFrame) of a dependent model.
 
@@ -46,6 +60,10 @@ Note: This is different behaviour than the "ref" function for SQL models, which 
 
 ### run_external_sql
 
+```python
+def run_external_sql(self, connection_name: str, sql_query: str) -> polars.DataFrame:
+```
+
 Runs a SQL query against an external database, with option to specify the connection name. Placeholder values are provided automatically.
 
 **Required Arguments:**
@@ -56,6 +74,12 @@ Runs a SQL query against an external database, with option to specify the connec
 **Returns:** The query result as a polars DataFrame
 
 ### run_sql_on_dataframes
+
+```python
+def run_sql_on_dataframes(
+    self, sql_query: str, *, dataframes: dict[str, polars.LazyFrame] | None = None
+) -> polars.DataFrame:
+```
 
 Uses a dictionary of dataframes to execute a SQL query in an embedded in-memory DuckDB database.
 
@@ -73,4 +97,4 @@ Uses a dictionary of dataframes to execute a SQL query in an embedded in-memory 
 [build models]: ../../../docs/concepts/models-build
 [squirrels.yml]: ../../../docs/concepts/squirrels-yml
 [environment variables]: ../../../docs/concepts/environment
-[ConnectionProperties]: ../../../tba
+[ConnectionProperties]: ../types/ConnectionProperties

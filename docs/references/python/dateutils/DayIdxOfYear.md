@@ -1,8 +1,14 @@
-# DayIdxOfYear
+# DayIdxOfYear (class)
 
 The class to get the i-th day of the year. See [DayIdxOf...] for more details.
 
 ## Constructor
+
+```python
+def __init__(
+    self, idx: int, *, first_month_of_year: dateutils.MonthEnum = dateutils.MonthEnum.January
+) -> None:
+```
 
 Creates a DayIdxOfYear object.
 

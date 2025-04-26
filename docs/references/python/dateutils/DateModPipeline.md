@@ -4,6 +4,10 @@ The class to chain together a series of date modifier classes into a pipeline wh
 
 ## Constructor
 
+```python
+def __init__(self, date_modifiers: typing.Sequence[dateutils.types.DateModifier]) -> None:
+```
+
 Creates a DateModPipeline object.
 
 **Required Arguments:**
@@ -13,6 +17,10 @@ Creates a DateModPipeline object.
 ## Methods
 
 ### modify
+
+```python
+def modify(self, date: datetime.date) -> datetime.date:
+```
 
 Modify an input date by applying the series of date modifiers
 
@@ -24,6 +32,12 @@ Modify an input date by applying the series of date modifiers
 
 ### with_more_modifiers
 
+```python
+def with_more_modifiers(
+    self, date_modifiers: typing.Sequence[dateutils.types.DateModifier]
+) -> DateModPipeline:
+```
+
 Create a new DateModPipeline with more date modifiers
 
 **Required Arguments:**
@@ -33,6 +47,12 @@ Create a new DateModPipeline with more date modifiers
 **Returns:** A new DateModPipeline object
 
 ### get_date_list
+
+```python
+def get_date_list(
+    self, start_date: datetime.date, step: dateutils.types.OffsetUnits
+) -> typing.List[datetime.date]:
+```
 
 This method modifies the input date, and returns all dates from the input date to the modified date (inclusive), 
 incremented by a DateModifier step.

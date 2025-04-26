@@ -1,8 +1,14 @@
-# DayIdxOfWeek
+# DayIdxOfWeek (class)
 
 The class to get the i-th day of the week. See [DayIdxOf...] for more details.
 
 ## Constructor
+
+```python
+def __init__(
+    self, idx: int, *, first_day_of_week: dateutils.DayOfWeekEnum = dateutils.DayOfWeekEnum.Monday
+) -> None:
+```
 
 Creates a DayIdxOfWeek object.
 

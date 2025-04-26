@@ -109,6 +109,23 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "REST APIs",
+      collapsed: false,
+      link: {
+        type: "doc", 
+        id: "references/rest/index"
+      },
+      items: [
+        "references/rest/authentication",
+        "references/rest/user-management",
+        "references/rest/project-metadata",
+        "references/rest/data-management",
+        "references/rest/datasets-dashboards",
+        "references/rest/parameters",
+      ]
+    },
+    {
+      type: "category",
       label: "Python APIs",
       collapsed: false,
       link: {
@@ -201,6 +218,64 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "category",
+          label: "squirrels.parameter_options (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.parameter_options\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/parameter_options"
+          },
+          items: [
+            "references/python/parameter_options/SelectParameterOption",
+            "references/python/parameter_options/DateParameterOption",
+            "references/python/parameter_options/DateRangeParameterOption",
+            "references/python/parameter_options/NumberParameterOption",
+            "references/python/parameter_options/NumberRangeParameterOption",
+            "references/python/parameter_options/TextParameterOption",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.data_sources (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.data_sources\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/data_sources"
+          },
+          items: [
+            "references/python/data_sources/SelectDataSource",
+            "references/python/data_sources/DateDataSource",
+            "references/python/data_sources/DateRangeDataSource",
+            "references/python/data_sources/NumberDataSource",
+            "references/python/data_sources/NumberRangeDataSource",
+            "references/python/data_sources/TextDataSource",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.parameters (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.parameters\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/parameters"
+          },
+          items: [
+            "references/python/parameters/SingleSelectParameter",
+            "references/python/parameters/MultiSelectParameter",
+            "references/python/parameters/DateParameter",
+            "references/python/parameters/DateRangeParameter",
+            "references/python/parameters/NumberParameter",
+            "references/python/parameters/NumberRangeParameter",
+            "references/python/parameters/TextParameter",
+          ]
+        },
+        {
+          type: "category",
           label: "squirrels.dashboards (module)",
           collapsed: false,
           link: {
@@ -212,6 +287,29 @@ const sidebars: SidebarsConfig = {
           items: [
             "references/python/dashboards/PngDashboard",
             "references/python/dashboards/HtmlDashboard",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.types (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: `
+              All classes below are available to import from the \"squirrels.types\" module or directly from the \"squirrels\" module.
+              These classes should not be instantiated, and should only be used as type hints (which helps code editors to provide autocomplete suggestions) or to create derived classes from.
+            `,
+            slug: "references/python/types"
+          },
+          items: [
+            "references/python/types/BaseUser",
+            "references/python/types/DataSource",
+            "references/python/types/ParameterOption",
+            "references/python/types/Parameter",
+            "references/python/types/TextValue",
+            "references/python/types/DatasetMetadata",
+            "references/python/types/DatasetResult",
+            "references/python/types/Dashboard",
           ]
         },
         {
@@ -228,91 +326,8 @@ const sidebars: SidebarsConfig = {
             "references/python/SquirrelsProject",
           ]
         },
-        
-        // {
-        //   type: "category",
-        //   label: "squirrels.parameter_options (module)",
-        //   items: [
-        //     "references/python/parameter_options/ParameterOption",
-        //     "references/python/parameter_options/SelectParameterOption",
-        //     "references/python/parameter_options/DateParameterOption",
-        //     "references/python/parameter_options/DateRangeParameterOption",
-        //     "references/python/parameter_options/NumberParameterOption",
-        //     "references/python/parameter_options/NumberRangeParameterOption",
-        //     "references/python/parameter_options/TextParameterOption",
-        //   ]
-        // },
-        // {
-        //   type: "category",
-        //   label: "squirrels.data_sources (module)",
-        //   items: [
-        //     "references/python/data_sources/DataSource",
-        //     "references/python/data_sources/SelectDataSource",
-        //     "references/python/data_sources/DateDataSource",
-        //     "references/python/data_sources/DateRangeDataSource",
-        //     "references/python/data_sources/NumberDataSource",
-        //     "references/python/data_sources/NumberRangeDataSource",
-        //     "references/python/data_sources/TextDataSource",
-        //   ]
-        // },
-        // {
-        //   type: "category",
-        //   label: "squirrels.parameters (module)",
-        //   items: [
-        //     "references/python/parameters/Parameter",
-        //     "references/python/parameters/SingleSelectParameter",
-        //     "references/python/parameters/MultiSelectParameter",
-        //     "references/python/parameters/DateParameter",
-        //     "references/python/parameters/DateRangeParameter",
-        //     "references/python/parameters/NumberParameter",
-        //     "references/python/parameters/NumberRangeParameter",
-        //     "references/python/parameters/TextParameter",
-        //     "references/python/parameters/TextValue",
-        //   ]
-        // },
-        // {
-        //   type: "category",
-        //   label: "squirrels.dashboards (module)",
-        //   items: [
-        //     "references/python/dashboards/Dashboard",
-        //     "references/python/dashboards/PngDashboard",
-        //     "references/python/dashboards/HtmlDashboard",
-        //   ]
-        // },
-        // {
-        //   type: "category",
-        //   label: "squirrels.user_base (module)",
-        //   items: [
-        //     "references/python/user_base/User",
-        //     "references/python/user_base/WrongPassword",
-        //   ]
-        // },
-        // {
-        //   type: "category",
-        //   label: "squirrels.project (module)",
-        //   items: [
-        //     "references/python/project/SquirrelsProject",
-        //   ]
-        // },
       ]
     },
-    {
-      type: "category",
-      label: "REST APIs",
-      collapsed: false,
-      link: {
-        type: "doc", 
-        id: "references/rest/index"
-      },
-      items: [
-        "references/rest/authentication",
-        "references/rest/user-management",
-        "references/rest/project-metadata",
-        "references/rest/data-management",
-        "references/rest/datasets-dashboards",
-        "references/rest/parameters",
-      ]
-    }
   ],
 };
 

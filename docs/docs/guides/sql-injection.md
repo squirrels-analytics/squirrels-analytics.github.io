@@ -64,6 +64,15 @@ For dbview models, parameterizing queries is only supported if the corresponding
 
 For federate models, the syntax is like `$search_input` which uses DuckDB's parameter binding syntax instead.
 
+:::important
+
+Current versions of DuckDB has an issue with using parameterized queries for creating views. By default, Squirrels creates views instead of tables for federate models in an in-memory database. To be able to use placeholders in your federate model, set `eager: true` in the model's yaml file to create tables instead of views in the in-memory database.
+
+This will no longer be an issue after the following github issue from DuckDB is resolved:
+https://github.com/duckdb/duckdb/issues/13069
+
+:::
+
 For non-text parameters, using placeholders is optional since it is safe to substitute parameter selections directly when they are restrained to a set of values (e.g. dropdown values, numbers, dates, etc.). For example, we can define a context variable from the selected value of a number parameter:
 
 ```python

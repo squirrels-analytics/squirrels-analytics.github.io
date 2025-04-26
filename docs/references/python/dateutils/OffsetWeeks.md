@@ -1,8 +1,12 @@
-# OffsetWeeks
+# OffsetWeeks (class)
 
 The class to offset an input date by some number of weeks. See [Offset...] for more details.
 
 ## Constructor
+
+```python
+def __init__(self, offset: int) -> None:
+```
 
 Creates an OffsetWeeks object.
 

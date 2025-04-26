@@ -1,8 +1,14 @@
-# DayIdxOfQuarter
+# DayIdxOfQuarter (class)
 
 The class to get the i-th day of the quarter. See [DayIdxOf...] for more details.
 
 ## Constructor
+
+```python
+def __init__(
+    self, idx: int, *, first_month_of_quarter: dateutils.MonthEnum = dateutils.MonthEnum.January
+) -> None:
+```
 
 Creates a DayIdxOfQuarter object.
 

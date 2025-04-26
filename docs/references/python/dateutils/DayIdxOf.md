@@ -10,7 +10,7 @@ All classes in dateutils that start with "DayIdxOf" can be used for getting the 
 
 ## Constructor
 
-The constructor of these classes all take "idx" as the first argument:
+The constructor of the listed classes above all take "idx" as the first argument:
 
 - **idx**: An integer for the day index of the calendar cycle. Use positive numbers to count from the beginning or negative numbers to count backwards from the end. Cannot be zero
 
@@ -19,6 +19,10 @@ The constructor of these classes all take "idx" as the first argument:
 All these classes include the following methods.
 
 ### modify
+
+```python
+def modify(self, date: datetime.date) -> datetime.date:
+```
 
 Given an input date object, returns the output date as the i-th day of some calendar cycle. The index and type of calendar cycle is based on the derived class and the constructor arguments used.
 

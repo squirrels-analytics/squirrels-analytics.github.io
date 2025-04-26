@@ -18,6 +18,7 @@
   --ifm-card-background-color: #ffffff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --doc-sidebar-width: 350px !important;
 }
 
 /* Hero section light mode */

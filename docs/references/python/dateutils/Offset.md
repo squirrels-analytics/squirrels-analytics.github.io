@@ -13,6 +13,10 @@ Methods available in all derived classes of this class.
 
 ### modify
 
+```python
+def modify(self, date: datetime.date) -> datetime.date:
+```
+
 Given an input date object, returns the output date that is exactly some number of time units apart. The count and time unit used is based on the derived class and the constructor arguments.
 
 **Required Arguments:**

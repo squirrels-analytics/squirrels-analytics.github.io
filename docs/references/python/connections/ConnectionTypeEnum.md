@@ -1,19 +1,12 @@
 # ConnectionTypeEnum (enum)
 
-An enumeration class that defines the types of database connections supported by the Squirrels framework.
-
-## Values
-
-- `SQLALCHEMY`: Use SQLAlchemy for database connections.
-- `CONNECTORX`: Use ConnectorX for database connections.
-- `ADBC`: Use ADBC (Arrow Database Connectivity) for database connections.
-
-## Usage
+An enum that defines the types of database connections supported by the Squirrels framework.
 
 ```python
-from squirrels import connections as cn
-
-# Example usage:
-connection_type = cn.ConnectionTypeEnum.SQLALCHEMY
+class ConnectionTypeEnum(Enum):
+    SQLALCHEMY = "sqlalchemy"
+    CONNECTORX = "connectorx"
+    ADBC = "adbc" # Arrow Database Connectivity
 ```
 
+This enum can be imported from the `squirrels.connections` or `squirrels` module.

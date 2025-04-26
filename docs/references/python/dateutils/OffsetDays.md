@@ -1,8 +1,12 @@
-# OffsetDays
+# OffsetDays (class)
 
 The class to offset an input date by some number of days. See [Offset...] for more details.
 
 ## Constructor
+
+```python
+def __init__(self, offset: int) -> None:
+```
 
 Creates an OffsetDays object.
 

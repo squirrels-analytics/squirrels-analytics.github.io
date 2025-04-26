@@ -2,9 +2,13 @@
 
 Return an instance of this class in a [Python dashboard] to create a dashboard with HTML content.
 
-Can be imported from the module `squirrels.dashboards` or `squirrels`.
+The class can be imported from the `squirrels.dashboards` or `squirrels` module.
 
 ## Constructor
+
+```python
+def __init__(self, content: str | io.StringIO) -> None:
+```
 
 Creates a HtmlDashboard object.
 

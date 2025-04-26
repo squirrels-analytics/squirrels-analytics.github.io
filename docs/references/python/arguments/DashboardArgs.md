@@ -1,8 +1,8 @@
 # DashboardArgs (class)
 
-The class for the "sqrl" argument of the main function of a Python [dashboard], which runs per (uncached) API request for dashboard results.
+DashboardArgs is the class type of the "sqrl" argument for the main function of a Python [dashboard], which runs per (uncached) API request for dashboard results.
 
-Can be imported from the module `squirrels.arguments` or `squirrels`.
+The class can be imported from the `squirrels.arguments` or `squirrels` module.
 
 ## Attributes
 
@@ -12,13 +12,19 @@ Attributes of DashboardArgs that can be accessed.
 
 The path to the project directory.
 
+**Type:** `str`
+
 ### proj_vars
     
 A dictionary to access a project variable defined in [squirrels.yml].
 
+**Type:** `dict[str, Any]`
+
 ### env_vars
 
 A dictionary of [environment variables].
+
+**Type:** `dict[str, str]`
 
 ## Methods
 
@@ -26,7 +32,13 @@ Methods that can be invoked from DashboardArgs.
 
 ### dataset
 
-**Async method** to get the result of a dataset as polars DataFrame.
+```python
+async def dataset(
+    self, name: str, *, fixed_parameters: dict[str, Any] = {}
+) -> polars.DataFrame:
+```
+
+Async method to get the result of a dataset as polars DataFrame.
 
 **Required Arguments**
 
@@ -34,7 +46,7 @@ Methods that can be invoked from DashboardArgs.
 
 **Optional Keyword Arguments:**
 
-- **fixed_parameters**: A dictionary of parameter names to parameter selection values. If parameter selections are defined in  both this dictionary and the real-time parameter selections, the selected value from this dictionary takes precedence.
+- **fixed_parameters**: A dictionary of parameter names to parameter selection values. If parameter selections are defined in both this dictionary and the real-time parameter selections, the selected value from this dictionary takes precedence.
 
 **Returns:** A polars DataFrame.
 

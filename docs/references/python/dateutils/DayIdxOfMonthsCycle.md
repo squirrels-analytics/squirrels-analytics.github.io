@@ -1,8 +1,14 @@
-# DayIdxOfMonthsCycle
+# DayIdxOfMonthsCycle (class)
 
 The class to get the i-th day of a predefined cycle of months. See [DayIdxOf...] for more details.
 
 ## Constructor
+
+```python
+def __init__(
+    self, idx: int, num_months_in_cycle: int, *, first_month_of_cycle: dateutils.MonthEnum = dateutils.MonthEnum.January
+) -> None:
+```
 
 Creates a DayIdxOfMonthsCycle object.
 

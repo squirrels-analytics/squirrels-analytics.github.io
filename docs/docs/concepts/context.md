@@ -171,6 +171,15 @@ SELECT * FROM my_table
 WHERE description LIKE $search_input -- or :search_input for dbview models
 ```
 
+:::important
+
+Current versions of DuckDB has an issue with using parameterized queries for creating views. By default, Squirrels creates views instead of tables for federate models in an in-memory database. To be able to use placeholders in your federate model, set `eager: true` in the model's yaml file to create tables instead of views in the in-memory database.
+
+This will no longer be an issue after the following github issue from DuckDB is resolved:
+https://github.com/duckdb/duckdb/issues/13069
+
+:::
+
 For the [sqrl compile] command, placeholder values are not replaced with their actual values due to possible confusion if a SQL injection attack is attempted in the test set. Instead, the placeholder values are provided in a json file in the `target/compile/` directory.
 
 ```
