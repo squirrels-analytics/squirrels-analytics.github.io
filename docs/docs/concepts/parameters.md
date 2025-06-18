@@ -8,19 +8,32 @@ It is recommended to specify parameters in Python. To create a sample `pyconfigs
 sqrl get-file parameters.py
 ```
 
-The file has one main function that takes an argument called `sqrl`.
+## Parameter Definition with Decorators
+
+As of version 0.5.0, the preferred way to define parameters is using function decorators. This approach is cleaner and more intuitive:
 
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po, data_sources as ds
 
-def main(sqrl: ParametersArgs) -> None:
-    ...
+@p.SingleSelectParameter.create_simple(
+    name="group_by_dim", label="Group By", description="Dimension(s) to aggregate by"
+)
+def group_by_options():
+    return [
+        po.SelectParameterOption('year', 'Year', dim_col='year'),
+        po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
+        po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
+        po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
+        po.SelectParameterOption('cond', 'Condition', dim_col='condition')
+    ]
 ```
 
-The `sqrl` object contains:
-- `project_path`: Path to the project root
-- `env_vars`: Dictionary of environment variables
-- `project_variables`: Dictionary of project variables from `squirrels.yml`
+Each parameter type can be created with one of the following decorators:
+- **create_simple** - Specify parameter attributes in code without cascading effects
+- **create_with_options** - Specify parameter options with the option to define parent parameters (for cascading effects)
+- **create_from_source** - Create parameter options based on a lookup table in a database
+
+All decorators require **name** and **label** as required arguments.
 
 ## Parameter Types
 
@@ -36,58 +49,52 @@ Squirrels supports the following parameter types:
 
 We classify [SingleSelectParameter] and [MultiSelectParameter] as "selection parameters", and the other parameter types as "non-selection parameters".
 
-## Factory Methods
+## Creation Methods
 
-Each parameter type provides three factory methods:
+Each parameter type provides three creation methods:
 
-- **CreateSimple**
-    - Specify parameter attributes in code without cascading effects
-- **CreateWithOptions** 
-    - Specify parameter options with the option to define parent parameters (for cascading effects)
-- **CreateFromSource**
-    - Create parameter options based on a lookup table in a database
+- **create_simple** - Specify parameter attributes in code without cascading effects
+- **create_with_options** - Specify parameter options with the option to define parent parameters (for cascading effects)  
+- **create_from_source** - Create parameter options based on a lookup table in a database
 
-All factory methods require **name** and **label** as the first two string arguments. The **name** is used to set or reference parameter selections (set using query parameters of API requests and referenced with the **prms** dictionary in your code). The **label** is a human-friendly name shown to users in the frontend.
+All methods require **name** and **label** as arguments. The **name** is used to set or reference parameter selections (set using query parameters of API requests and referenced with the **prms** dictionary in your code). The **label** is a human-friendly name shown to users in the frontend.
 
 ## Selection Parameters
 
-The **CreateSimple** and **CreateWithOptions** methods for selection parameters take **all_options** as the third required argument. The main difference is that **CreateWithOptions** also accepts optional arguments for **parent_name** and **user_attribute**.
-
-The **all_options** argument requires a sequence of [SelectParameterOption] instances. This class requires two arguments:
+Selection parameters require a sequence of [SelectParameterOption] instances. This class requires two arguments:
 - **id** - Used for the frontend to specify selected parameter option(s). Once set, this should never change.
 - **label** - The human-friendly name shown in the dropdown widget.
 
 ### SingleSelectParameter Example
 
-Here's an example of creating a [SingleSelectParameter]:
-
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po
 
-def main(sqrl: ParametersArgs) -> None:
-    select_options = [
+@p.SingleSelectParameter.create_simple(
+    name="single_param", label="Single Select Parameter"
+)
+def single_select_options():
+    return [
         po.SelectParameterOption("s01", "Option 1"),
         po.SelectParameterOption("s02", "Option 2", is_default=True)
     ]
-    p.SingleSelectParameter.CreateWithOptions("single_param", "Single Select Parameter", select_options)
 ```
 
 ### MultiSelectParameter Example
 
-For [MultiSelectParameter], you can use additional options:
-
 ```python
-def main(sqrl: ParametersArgs) -> None:
-    select_options = [
-        ...
+@p.MultiSelectParameter.create_simple(
+    name="multi_param", label="Multi Select Parameter",
+    show_select_all=True,       # Show a "select all" option
+    order_matters=False,        # Whether selection order matters
+    none_is_all=True            # Whether having no options selected means all options are selected
+)
+def multi_select_options():
+    return [
+        po.SelectParameterOption("m01", "Option 1"),
+        po.SelectParameterOption("m02", "Option 2"),
+        po.SelectParameterOption("m03", "Option 3", is_default=True)
     ]
-    p.MultiSelectParameter.CreateWithOptions(
-        "multi_param", "Multi Select Parameter", 
-        select_options,
-        show_select_all=True,       # Show a "select all" option
-        order_matters=False,        # Whether selection order matters
-        none_is_all=True            # Whether having no options selected means all options are selected
-    )
 ```
 
 ### Custom Fields
@@ -116,19 +123,20 @@ Non-selection parameters have simpler usage patterns.
 ### DateParameter Example
 
 ```python
-## parameters.py ##
-
-# Simple date parameter with default date
-p.DateParameter.CreateSimple(
-    "my_date", "Select Date", 
-    "2024-01-01",                     # Default date
+@p.DateParameter.create_simple(
+    name="my_date", label="Select Date",
+    default_date="2024-01-01",        # Default date
     min_date="2023-01-01",            # Earliest selectable date
     max_date="2024-12-31",            # Latest selectable date
     date_format="%Y-%m-%d"            # Date format
 )
+def my_date_options():
+    return []  # No options needed for non-selection parameters
+```
 
-## context.py ##
+To access the selected date in your [context.py] file:
 
+```python
 # Access the selected date
 date_str = prms["my_date"].get_selected_date()
 # Or with quotes for SQL
@@ -138,19 +146,20 @@ quoted_date = prms["my_date"].get_selected_date_quoted()
 ### DateRangeParameter Example
 
 ```python
-## parameters.py ##
-
-# Date range with start and end dates
-p.DateRangeParameter.CreateSimple(
-    "date_range", "Date Range",
-    "2024-01-01",                     # Default start date
-    "2024-03-31",                     # Default end date
-    min_date="2023-01-01",            # Earliest selectable date
-    max_date="2024-12-31"             # Latest selectable date
+@p.DateRangeParameter.create_simple(
+    name="date_range", label="Date Range",
+    default_start_date="2024-01-01",   # Default start date
+    default_end_date="2024-03-31",     # Default end date
+    min_date="2023-01-01",             # Earliest selectable date
+    max_date="2024-12-31"              # Latest selectable date
 )
+def date_range_options():
+    return []  # No options needed for non-selection parameters
+```
 
-## context.py ##
+To access the selected dates in your [context.py] file:
 
+```python
 # Access the selected dates
 start_date = prms["date_range"].get_selected_start_date()
 end_date = prms["date_range"].get_selected_end_date()
@@ -159,19 +168,20 @@ end_date = prms["date_range"].get_selected_end_date()
 ### NumberParameter Example
 
 ```python
-## parameters.py ##
-
-# Number parameter with min, max and increment
-p.NumberParameter.CreateSimple(
-    "my_number", "Select Number",
+@p.NumberParameter.create_simple(
+    name="my_number", label="Select Number",
     min_value=0,                      # Minimum value
     max_value=100,                    # Maximum value
     increment=5,                      # Step size
     default_value=50                  # Default value
 )
+def my_number_options():
+    return []  # No options needed for non-selection parameters
+```
 
-## context.py ##
+To access the selected number in your [context.py] file:
 
+```python
 # Access the selected number
 value = prms["my_number"].get_selected_value()
 ```
@@ -179,20 +189,21 @@ value = prms["my_number"].get_selected_value()
 ### NumberRangeParameter Example
 
 ```python
-## parameters.py ##
-
-# Number range with lower and upper values
-p.NumberRangeParameter.CreateSimple(
-    "number_range", "Number Range",
+@p.NumberRangeParameter.create_simple(
+    name="number_range", label="Number Range",
     min_value=0,                       # Minimum value
     max_value=100,                     # Maximum value
     increment=5,                       # Step size
     default_lower_value=25,            # Default lower value
     default_upper_value=75             # Default upper value
 )
+def number_range_options():
+    return []  # No options needed for non-selection parameters
+```
 
-## context.py ##
+To access the selected values in your [context.py] file:
 
+```python
 # Access the selected values
 lower = prms["number_range"].get_selected_lower_value()
 upper = prms["number_range"].get_selected_upper_value()
@@ -203,10 +214,13 @@ upper = prms["number_range"].get_selected_upper_value()
 [TextParameter] allows users to input text with various formats:
 
 ```python
-# Simple text input
-p.TextParameter.CreateSimple(
-    "search_text", "Search", input_type="text", default_text="",
+@p.TextParameter.create_simple(
+    name="search_text", label="Search",
+    input_type="text",                # Input type
+    default_text=""                   # Default text
 )
+def search_text_options():
+    return []  # No options needed for non-selection parameters
 ```
 
 Available input types include: "text", "textarea", "number", "color", "date", "datetime-local", "month", "time", and "password".
@@ -219,19 +233,20 @@ text_value = prms["search_text"].get_entered_text()
 sqrl.set_placeholder("search", text_value)
 ```
 
-Using "set_placeholder" instead of using a context variable is a mechanism for preventing SQL injection for free-form text inputs. See the [Avoiding SQL Injection] page for details on using placeholders in data models.
+Using "set_placeholder" instead of using a context variable is a mechanism for preventing SQL injection for free-form text inputs. See the [Is SQL Injection Possible?] page for details on using placeholders in data models.
 
 ## Creating Parameters from Data Sources
 
 You can create parameters from database tables or queries:
 
 ```python
-from squirrels import ParametersArgs, parameters as p, data_sources as d
+from squirrels import parameters as p, data_sources as ds
 
-def main(sqrl: ParametersArgs) -> None:
-
-    # Single-select parameter from a lookup table
-    select_ds = d.SelectDataSource(
+@p.SingleSelectParameter.create_from_source(
+    name="param_name", label="Parameter Label"
+)
+def param_name_source():
+    return ds.SelectDataSource(
         "lookup_table",                   # Table or query
         "id_column",                      # Column for option IDs
         "label_column",                   # Column for option labels
@@ -239,17 +254,18 @@ def main(sqrl: ParametersArgs) -> None:
         order_by_col="sort_order",        # Column for ordering options
         custom_cols={"value": "value_col"}  # Map of custom fields to columns
     )
-    p.SingleSelectParameter.CreateFromSource("param_name", "Parameter Label", select_ds)
 
-    # Date parameter from database
-    date_ds = d.DateDataSource(
+@p.DateParameter.create_from_source(
+    name="date_param", label="Date Parameter"
+)
+def date_param_source():
+    return ds.DateDataSource(
         "date_lookup", 
         "default_date_col",
         min_date_col="min_date_col",      # Column for minimum date
         max_date_col="max_date_col",      # Column for maximum date
         date_format="%Y-%m-%d"            # Date format
     )
-    p.DateParameter.CreateFromSource("date_param", "Date Parameter", date_ds)
 ```
 
 This example shows how to use the [SelectDataSource] and [DateDataSource] classes. Other data sources include:
@@ -263,34 +279,33 @@ This example shows how to use the [SelectDataSource] and [DateDataSource] classe
 Squirrels supports cascading parameters, where the selection of a "parent parameter" affects the available options in a "child parameter".
 
 To create this dependency:
-1. Use the **parent_name** argument in the child parameter's factory method
+1. Use the **parent_name** argument in the child parameter's creation method
 2. Specify **parent_option_ids** in each child parameter option to define which parent selections make it available
 
 ### Selection Parameter Example
 
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po
 
-def main(sqrl: ParametersArgs) -> None:
-
-    # Parent parameter
-    parent_options = [
+@p.SingleSelectParameter.create_simple(
+    name="parent_param", label="Parent Parameter"
+)
+def parent_param_options():
+    return [
         po.SelectParameterOption("pr01", "Option 1"),
         po.SelectParameterOption("pr02", "Option 2")
     ]
-    p.SingleSelectParameter.CreateSimple("parent_param", "Parent Parameter", parent_options)
 
-    # Child parameter with dependencies
-    child_options = [
+@p.MultiSelectParameter.create_with_options(
+    name="child_param", label="Child Parameter",
+    parent_name="parent_param"
+)
+def child_param_options():
+    return [
         po.SelectParameterOption("ch01", "Child Option 1", parent_option_ids=["pr01"]),
         po.SelectParameterOption("ch02", "Child Option 2", parent_option_ids=["pr02"]),
         po.SelectParameterOption("ch03", "Child Option 3", parent_option_ids=["pr01", "pr02"])
     ]
-    p.MultiSelectParameter.CreateWithOptions(
-        "child_param", "Child Parameter", 
-        child_options, 
-        parent_name="parent_param"
-    )
 ```
 
 In this example, only child options 1 and 3 are available when parent option 1 is selected. And only child options 2 and 3 are available when parent option 2 is selected.
@@ -300,19 +315,24 @@ In this example, only child options 1 and 3 are available when parent option 1 i
 You can also create dependent non-selection parameters. This example shows a DateParameter that changes its default date based on the parent parameter selection:
 
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po
 
-def main(sqrl: ParametersArgs) -> None:
-
-    # Parent parameter (same as above)
-    parent_options = [
+@p.SingleSelectParameter.create_simple(
+    name="report_type", label="Report Type"
+)
+def report_type_options():
+    return [
         po.SelectParameterOption("pr01", "Q1 Report"),
         po.SelectParameterOption("pr02", "Q2 Report")
     ]
-    p.SingleSelectParameter.CreateSimple("report_type", "Report Type", parent_options)
 
-    # Child date parameter with dependencies
-    date_options = [
+@p.DateParameter.create_with_options(
+    name="as_of_date", label="As of Date",
+    description="The date to run the report for",
+    parent_name="report_type"
+)
+def as_of_date_options():
+    return [
         # For Q1 Report, default to March 31
         po.DateParameterOption(
             "2024-03-31", min_date="2024-01-01", max_date="2024-03-31",
@@ -325,12 +345,6 @@ def main(sqrl: ParametersArgs) -> None:
             parent_option_ids=["pr02"]
         )
     ]
-
-    p.DateParameter.CreateWithOptions(
-        "as_of_date", "As of Date", date_options,
-        description="The date to run the report for",
-        parent_name="report_type"
-    )
 ```
 
 In this example:
@@ -351,33 +365,27 @@ With database sources, use the **parent_id_col** to specify which column contain
 Parameters can also be cascaded by user attributes of the authorized user:
 
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po
 
-def main(sqrl: ParametersArgs) -> None:
-
-    # User attribute to filter options by
-    user_attribute = "department"
-
-    options = [
+@p.SingleSelectParameter.create_with_options(
+    name="my_param", 
+    label="Parameter With User-Based Options",
+    user_attribute="department"  # User attribute to filter options by
+)
+def my_param_options():
+    return [
         # Option that's only available to the "finance" user group
         po.SelectParameterOption("option1", "Finance Option", user_groups=["finance"]),
-        ...
+        po.SelectParameterOption("option2", "HR Option", user_groups=["hr"]),
+        po.SelectParameterOption("option3", "General Option", user_groups=["finance", "hr"])
     ]
-
-    # Parameter with options that depend on user group
-    p.SingleSelectParameter.CreateWithOptions(
-        "my_param", 
-        "Parameter With User-Based Options", 
-        options,
-        user_attribute=user_attribute 
-    )
 ```
 
 With database sources, use the **user_group_col** to specify which column contains the user group values.
 
 ## Configuring Parameters in squirrels.yml
 
-Parameters can also be configured in the "parameters" section of [squirrels.yml] instead of using `pyconfigs/parameters.py`. However, this approach is not recommended because it is an easier experience to use code suggestions by the Python code editor for which widget parameters and factory methods take which arguments.
+Parameters can also be configured in the "parameters" section of [squirrels.yml] instead of using `pyconfigs/parameters.py`. However, this approach is not recommended because it is an easier experience to use code suggestions by the Python code editor for which widget parameters and decorator methods take which arguments.
 
 The "parameters" section of [squirrels.yml] is a list of objects, each with the following fields:
 
@@ -387,14 +395,17 @@ The "parameters" section of [squirrels.yml] is a list of objects, each with the 
 | `factory` | string | Yes | Factory method to create the parameter |
 | `arguments` | object | Yes | Arguments for the factory method of the parameter type |
 
-So for example, the following parameter configuration in Python:
+So for example, the following parameter configuration using decorators in Python:
 
 ```python
-select_options = [
-    po.SelectParameterOption("s01", "Option 1"),
-    po.SelectParameterOption("s02", "Option 2", is_default=True)
-]
-p.SingleSelectParameter.CreateSimple("param_name", "Parameter Label", select_options)
+@p.SingleSelectParameter.create_simple(
+    name="param_name", label="Parameter Label"
+)
+def param_name_options():
+    return [
+        po.SelectParameterOption("s01", "Option 1"),
+        po.SelectParameterOption("s02", "Option 2", is_default=True)
+    ]
 ```
 
 Would be represented in [squirrels.yml] as:
@@ -418,19 +429,19 @@ parameters:
 [squirrels.yml]: ./squirrels-yml
 [context.py]: ./context
 [sqrl run]: ../../references/cli/run
-[Avoiding SQL Injection]: ../guides/sql-injection
-[SingleSelectParameter]: ../../tba
-[MultiSelectParameter]: ../../tba
-[DateParameter]: ../../tba
-[DateRangeParameter]: ../../tba
-[NumberParameter]: ../../tba
-[NumberRangeParameter]: ../../tba
-[TextParameter]: ../../tba
-[SelectParameterOption]: ../../tba
-[DateParameterOption]: ../../tba
-[SelectDataSource]: ../../tba
-[DateDataSource]: ../../tba
-[DateRangeDataSource]: ../../tba
-[NumberDataSource]: ../../tba
-[NumberRangeDataSource]: ../../tba
-[TextDataSource]: ../../tba
+[Is SQL Injection Possible?]: ../guides/sql-injection
+[SingleSelectParameter]: ../../references/python/parameters/SingleSelectParameter
+[MultiSelectParameter]: ../../references/python/parameters/MultiSelectParameter
+[DateParameter]: ../../references/python/parameters/DateParameter
+[DateRangeParameter]: ../../references/python/parameters/DateRangeParameter
+[NumberParameter]: ../../references/python/parameters/NumberParameter
+[NumberRangeParameter]: ../../references/python/parameters/NumberRangeParameter
+[TextParameter]: ../../references/python/parameters/TextParameter
+[SelectParameterOption]: ../../references/python/parameter_options/SelectParameterOption
+[DateParameterOption]: ../../references/python/parameter_options/DateParameterOption
+[SelectDataSource]: ../../references/python/data_sources/SelectDataSource
+[DateDataSource]: ../../references/python/data_sources/DateDataSource
+[DateRangeDataSource]: ../../references/python/data_sources/DateRangeDataSource
+[NumberDataSource]: ../../references/python/data_sources/NumberDataSource
+[NumberRangeDataSource]: ../../references/python/data_sources/NumberRangeDataSource
+[TextDataSource]: ../../references/python/data_sources/TextDataSource

@@ -29,7 +29,7 @@ Attributes of the SquirrelsProject object.
 
 ### User
 
-A reference to the User class defined in [user.py] of the Squirrels project. If no [user.py] file exist, then it's a reference to the default [BaseUser](../../tba) class that comes with Squirrels.
+A reference to the User class defined in [user.py] of the Squirrels project. If no [user.py] file exist, then it's a reference to the default [BaseUser](../../references/python/auth/BaseUser) class that comes with Squirrels.
 
 As an example, you can create a user object as such:
 

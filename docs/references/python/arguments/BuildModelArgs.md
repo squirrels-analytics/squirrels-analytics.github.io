@@ -97,4 +97,4 @@ Uses a dictionary of dataframes to execute a SQL query in an embedded in-memory 
 [build models]: ../../../docs/concepts/models-build
 [squirrels.yml]: ../../../docs/concepts/squirrels-yml
 [environment variables]: ../../../docs/concepts/environment
-[ConnectionProperties]: ../types/ConnectionProperties
+[ConnectionProperties]: ../connections/ConnectionProperties

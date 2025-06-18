@@ -1,4 +1,4 @@
-# User Model
+# User Model & Authentication
 
 The User model in Squirrels allows you to customize the attributes associated with each user in your application. By extending the `BaseUser` class, you can define additional custom fields that will be stored in the authentication database used by your Squirrels project.
 
@@ -14,10 +14,10 @@ The contents of the example file looks like this:
 
 ```python
 from typing import Literal
-from squirrels import BaseUser
+from squirrels import auth, arguments as args
 
 
-class User(BaseUser):
+class User(auth.BaseUser):
     """
     Extend the BaseUser class with custom attributes.
     """
@@ -26,6 +26,34 @@ class User(BaseUser):
     @classmethod
     def dropped_columns(cls) -> list[str]:
         return []
+
+
+# @auth.provider(name="google", label="Google", icon="https://www.google.com/favicon.ico")
+def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
+    """
+    Provider configs for authenticating a user using Google credentials.
+
+    See the following page for setting up the CLIENT_ID and CLIENT_SECRET for Google specifically: 
+    https://support.google.com/googleapi/answer/6158849?hl=en
+    """
+    def get_sqrl_user(claims: dict) -> User:
+        return User(
+            username=claims["email"],
+            is_admin=False,
+            role="employee"
+        )
+
+    # TODO: Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to the .env file
+    # Then, uncomment the @auth.provider decorator above and set the client_id and client_secret below
+    provider_configs = auth.ProviderConfigs(
+        client_id="", # sqrl.env_vars["GOOGLE_CLIENT_ID"],
+        client_secret="", # sqrl.env_vars["GOOGLE_CLIENT_SECRET"],
+        server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+        client_kwargs={"scope": "openid email profile"},
+        get_user=get_sqrl_user
+    )
+
+    return provider_configs
 ```
 
 ## Supported Field Types
@@ -83,9 +111,9 @@ The following fields are disallowed and cannot be used in your User model:
 If you need to remove previously defined columns, use the `dropped_columns` class method:
 
 ```python
-from squirrels import BaseUser
+from squirrels import auth
 
-class User(BaseUser):
+class User(auth.BaseUser):
     # ... other fields ...
     old_field: str | None = None  # Although this line can be safely removed, it is included as a record of what was removed
 
@@ -95,6 +123,45 @@ class User(BaseUser):
     List columns that should be dropped from the database.
     """
     return ["old_field"]
+```
+
+## Adding Authentication Providers
+
+Squirrels supports adding third-party authentication providers (such as Google, Facebook, etc.) that implement the [OpenID Connect] protocol to your application.
+
+To add an authentication provider, you must first register a client with the OpenID provider, and obtain the client ID and secret, as well as the server metadata URL and scope from the provider. For example, to register a client with Google, you can follow the instructions [here](https://support.google.com/googleapi/answer/6158849?hl=en).
+
+Save the client ID and secret as [environment variables] in the `.env` file.
+
+Then, for each authentication provider, you must create a function that returns a [ProviderConfigs] object. This object contains the client ID, client secret, server metadata URL, and scope for the provider. It also contains a function that maps the claims from the OpenID provider to a Squirrels user object. Each function must be decorated with the `@auth.provider` decorator to provide the name, label, and icon for the provider.
+
+For example, to add a Google authentication provider, you can create the [environment variables] `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and create a function like this:
+
+```python
+@auth.provider(name="google", label="Google", icon="https://www.google.com/favicon.ico")
+def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
+    """
+    Provider configs for authenticating a user using Google credentials.
+
+    See the following page for setting up the CLIENT_ID and CLIENT_SECRET for Google specifically: 
+    https://support.google.com/googleapi/answer/6158849?hl=en
+    """
+    def get_sqrl_user(claims: dict) -> User:
+        return User(
+            username=claims["email"],
+            is_admin=False,
+            role="employee"
+        )
+
+    provider_configs = auth.ProviderConfigs(
+        client_id=sqrl.env_vars["GOOGLE_CLIENT_ID"],
+        client_secret=sqrl.env_vars["GOOGLE_CLIENT_SECRET"],
+        server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+        client_kwargs={"scope": "openid email profile"},
+        get_user=get_sqrl_user
+    )
+
+    return provider_configs
 ```
 
 ## Best Practices
@@ -108,5 +175,8 @@ class User(BaseUser):
 
 [sqrl get-file]: ../../references/cli/get-file
 [environment variable]: ./environment
+[environment variables]: ./environment
 [Update User]: ../../references/rest/user-management#update-user-
 [Squirrels Studio]: ../concepts/studio
+[OpenID Connect]: https://openid.net/connect/
+[ProviderConfigs]: ../../references/python/auth/ProviderConfigs

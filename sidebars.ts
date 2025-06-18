@@ -35,8 +35,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: { 
         type: "generated-index",
-        description: 
-          `Concepts of the Squirrels framework.`,
+        description: `Concepts of the Squirrels framework.`,
         slug: "docs/concepts"
       },
       items: [
@@ -77,10 +76,12 @@ const sidebars: SidebarsConfig = {
       link: { 
         type: "generated-index",
         description: `Guides for using Squirrels.`,
+        slug: "docs/guides"
       },
       items: [
-        "docs/guides/sql-injection",
+        "docs/guides/mcp",
         "docs/guides/deploy",
+        "docs/guides/sql-injection",
         "docs/guides/ml-models",
         "docs/guides/merge-data",
         "docs/guides/interact-in-python",
@@ -194,6 +195,7 @@ const sidebars: SidebarsConfig = {
           },
           items: [
             "references/python/arguments/ConnectionsArgs",
+            "references/python/arguments/AuthProviderArgs",
             "references/python/arguments/ParametersArgs",
             "references/python/arguments/BuildModelArgs",
             "references/python/arguments/ContextArgs",
@@ -214,6 +216,22 @@ const sidebars: SidebarsConfig = {
           items: [
             "references/python/connections/ConnectionTypeEnum",
             "references/python/connections/ConnectionProperties",
+          ]
+        },
+        {
+          type: "category",
+          label: "squirrels.auth (module)",
+          collapsed: false,
+          link: {
+            type: "generated-index",
+            description: 
+              "All classes below are available to import from the \"squirrels.auth\" module or directly from the \"squirrels\" module.",
+            slug: "references/python/auth"
+          },
+          items: [
+            "references/python/auth/BaseUser",
+            "references/python/auth/provider",
+            "references/python/auth/ProviderConfigs",
           ]
         },
         {
@@ -302,7 +320,6 @@ const sidebars: SidebarsConfig = {
             slug: "references/python/types"
           },
           items: [
-            "references/python/types/BaseUser",
             "references/python/types/DataSource",
             "references/python/types/ParameterOption",
             "references/python/types/Parameter",

@@ -153,10 +153,11 @@ function HomepageHeader() {
             <Heading as="h1" className="hero__title">
               {siteConfig.title}
             </Heading>
-            <p className="hero__subtitle">{siteConfig.tagline || 'The Modern API Framework for Data Analytics'}</p>
+            <p className="hero__subtitle">{siteConfig.tagline}</p>
             <p className={styles.heroDescription}>
-              Build feature-rich data analytics applications with a powerful Python framework that simplifies connecting 
-              to data sources, modeling data, and creating interactive datasets or dashboards.
+              Build feature-rich data analytics applications with a powerful Python framework that simplifies data source connections, 
+              data models, and interactive datasets and dashboards. Includes built-in OAuth 2.1 and <b>MCP servers</b> to
+              power AI agents with user-permissioned business intelligence.
             </p>
             <div className={styles.buttons}>
               <Link

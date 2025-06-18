@@ -81,7 +81,7 @@ Checks whether a parameter exists and is enabled
 [context.py]: ../../../docs/concepts/context
 [squirrels.yml]: ../../../docs/concepts/squirrels-yml
 [environment variables]: ../../../docs/concepts/environment
-[BaseUser]: ../types/BaseUser
+[BaseUser]: ../auth/BaseUser
 [user.py]: ../../../docs/concepts/user
 [Parameter]: ../types/Parameter
 [TextValue]: ../types/TextValue

@@ -189,7 +189,7 @@ target/compile/<dataset>/<test_set>/
 └── placeholders.json
 ```
 
-These details are also available in the [Avoid SQL Injection] guide.
+These details are also available in the [Is SQL Injection Possible?] guide.
 
 ### In Python Models
 
@@ -212,7 +212,7 @@ def main(sqrl: ModelArgs) -> pl.LazyFrame | pl.DataFrame | pd.DataFrame:
 The `sqrl` argument also contains methods `is_placeholder(name)` and `get_placeholder_value(name)` for checking if a placeholder exists and getting the value for the placeholder.
 
 
-[ContextArgs]: ../../tba
+[ContextArgs]: ../../references/python/arguments/ContextArgs
 [user.py]: ./user
 [sqrl compile]: ../../references/cli/compile
-[Avoid SQL Injection]: ../guides/sql-injection
+[Is SQL Injection Possible?]: ../guides/sql-injection

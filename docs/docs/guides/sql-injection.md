@@ -1,4 +1,4 @@
-# Avoid SQL Injection
+# Is SQL Injection Possible?
 
 SQL injection is a critical security vulnerability that occurs when untrusted user input is directly incorporated into SQL queries.
 
@@ -145,7 +145,7 @@ SELECT * FROM products
 WHERE product_name LIKE '%{{ ctx.search_input }}%'
 ```
 
-The `_value_do_not_touch` attribute is meant to be a private field of `squirrels.TextValue`. No Squirrels developer should be accessing this field unless they are intentionally trying to be a bad actor. Look out for this during code reviews.
+The `_value_do_not_touch` attribute is meant to be a private field of `squirrels.TextValue`. No Squirrels developer should be accessing this field unless they are intentionally trying to be a bad actor. Look out for this during code reviews!
 
 ## Testing for SQL Injection
 

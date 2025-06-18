@@ -94,32 +94,26 @@ The model field is the name of the target data model that we will create later. 
 
 ## Step 4: Create the dataset parameters
 
-Go into the `pyconfigs/parameters.py` file. This file contains the definitions of all the widget parameters used in the dataset through a **main** function. 
+Go into the `pyconfigs/parameters.py` file. This file contains the definitions of all the widget parameters used in the dataset. As of version 0.5.0, the preferred way to define parameters is to use function decorators.
 
-We will rewrite this file. Remove all the existing code in the **main** function body such that the file starts off like this:
+### Define the parameters options
 
-```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po, data_sources as ds
-
-def main(sqrl: ParametersArgs) -> None:
-    # TBA
-```
-
-We will create a single-select parameter to specify the dimension to group by.
-
-### Define the parameter options
-
-We first need to specify the list of parameter options. Inside the **main** function, specify the list of options as such:
+We will rewrite this file. Remove all the existing code in the file and replace it with the following:
 
 ```python
-group_by_options = [
-    po.SelectParameterOption('year', 'Year', dim_col='year'),
-    po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
-    po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
-    po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
-    po.SelectParameterOption('cond', 'Condition', dim_col='condition')
-]
+from squirrels import parameters as p, parameter_options as po, data_sources as ds
+
+def group_by_options():
+    return [
+        po.SelectParameterOption('year', 'Year', dim_col='year'),
+        po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
+        po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
+        po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
+        po.SelectParameterOption('cond', 'Condition', dim_col='condition')
+    ]
 ```
+
+In this initial step, we defined a function that returns a list of parameter options as **SelectParameterOption** objects.
 
 The first two parameters to the **SelectParameterOption** constructors are the ID and label. The ID must be distinct across options and should never change in the future. If an API client associates ID "day" to mean "the dataset will be grouped by day of year", then the ID must always stay as "day" such that this association would never be broken... even if the label of the option changes to "Day Index of Year" in the future.
 
@@ -133,36 +127,40 @@ The **SelectParameterOption** class has an "is_default" attribute to specify the
 
 ### Define the parameters
 
-Create a single-select parameter with the parameter options defined above:
+Next, we simply add the following decorator to the "group_by_options" function:
 
 ```python
-p.SingleSelectParameter.CreateSimple("group_by_dim", "Group By", group_by_options)
+@p.SingleSelectParameter.create_simple(
+    name="group_by_dim", label="Group By", description="Dimension(s) to aggregate by"
+)
 ```
 
 This sets the name and label of the new parameter to "group_by_dim" and "Group By".
 
 :::info
 
-The possible widget parameter types supported today are **SingleSelectParameter**, **MultiSelectParameter**, **DateParameter**, **DateRangeParameter**, **NumberParameter**, **NumberRangeParameter**, and **TextParameter**. Each parameter type can be created with one of the following factory methods: **CreateSimple**, **CreateWithOptions**, or **CreateFromSource**. Every factory method takes "name" and "label" as required arguments.
+The possible widget parameter types supported today are **SingleSelectParameter**, **MultiSelectParameter**, **DateParameter**, **DateRangeParameter**, **NumberParameter**, **NumberRangeParameter**, and **TextParameter**. Each parameter type can be created with one of the following decorators: **create_simple**, **create_with_options**, or **create_from_source**. Every decorator takes "name" and "label" as required arguments.
 
-For **SingleSelectParameter**, the arguments for **CreateSimple** and **CreateWithOptions** are similar. The difference is that **CreateWithOptions** lets you specify a parent parameter for cascading the shown options. For non-select parameter types like **DateParameter**, there are more differences. Details can be found in the [Widget Parameters] page.
+For **SingleSelectParameter**, the arguments for **create_simple** and **create_with_options** are similar. The difference is that **create_with_options** lets you specify a parent parameter for cascading the shown options. For non-select parameter types like **DateParameter**, there are more differences. Details can be found in the [Widget Parameters] page.
 
 :::
 
 At this point, your [parameters.py] file should look something like this:
 
 ```python
-from squirrels import ParametersArgs, parameters as p, parameter_options as po, data_sources as ds
+from squirrels import parameters as p, parameter_options as po, data_sources as ds
 
-def main(sqrl: ParametersArgs) -> None:
-    group_by_options = [
+@p.SingleSelectParameter.create_simple(
+    name="group_by_dim", label="Group By", description="Dimension(s) to aggregate by"
+)
+def group_by_options():
+    return [
         po.SelectParameterOption('year', 'Year', dim_col='year'),
         po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
         po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
         po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
         po.SelectParameterOption('cond', 'Condition', dim_col='condition')
     ]
-    p.SingleSelectParameter.CreateSimple("group_by_dim", "Group By", group_by_options)
 ```
 
 ## Step 5: Create the context file
@@ -761,11 +759,12 @@ This is a revised example that demonstrates:
 - Querying multiple database systems with dbview models and joining the results together in a single dataset / API endpoint
 - Using a Python data model that loads a machine learning (ML) model to create a column for ML model predictions
 
-In addition, the following topics may also useful for your Squirrels projects:
-- [User Model](../concepts/user) - Configure custom user attributes and use them to control behaviour of data models
+In addition, the following topics may also be useful for your Squirrels projects:
+- [Answer Data Questions with AI and Squirrels MCP](../guides/mcp) - Use the built-in MCP server from your Squirrels project to allow AI chatbots (that support MCP) to interact with your Squirrels projects
+- [User Model & Authentication](../concepts/user) - Configure custom user attributes and use them to control behaviour of data models, and configure additional authentication providers (such as Google, GitHub, etc.) if needed
 - [Context Variables & Placeholders](../concepts/context) - We briefly touched on context variables in this tutorial, but not placeholders
-- [Date Utils](../concepts/dateutils) - Use the `date_utils` module to apply a series of date transformations to parameter selections
 - [Deploy with Docker](../guides/deploy) - Deploy your Squirrels project with Docker
+- [Date Utils](../concepts/dateutils) - Use the `date_utils` module to apply a series of date transformations to parameter selections
 
 You can also check out the [CLI References] to understand the commands available with Squirrels, or check out the [Python APIs] available in the Squirrels library.
 
@@ -796,5 +795,5 @@ Got any questions or feedback? Come join our [Discord server](https://discord.gg
 [Dashboards]: ../concepts/dashboards
 [CLI References]: ../../references/cli
 [Python APIs]: ../../references/python
-[squirrels.parameters]: ../../tba
+[squirrels.parameters]: ../../references/python/parameters
 [Squirrels Studio]: ../concepts/studio

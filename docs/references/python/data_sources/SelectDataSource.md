@@ -36,5 +36,5 @@ Creates a SelectDataSource object.
 - **connection_name**: A string for the connection name to the database that the datasource should come from. If None, uses the default connection name configured by the `SQRL_CONNECTIONS__DEFAULT_NAME_USED` [environment variable] (usually "default"). Default is None
 
 
-[DataSource]: ./DataSource
+[DataSource]: ../types/DataSource
 [environment variable]: ../../../docs/concepts/environment

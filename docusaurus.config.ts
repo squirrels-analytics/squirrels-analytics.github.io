@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Squirrels',
-  tagline: 'Create REST APIs for Data Analytics',
+  tagline: 'The Modern API Framework for Data Analytics',
   favicon: 'img/squirrels.ico',
 
   // Set the production url of your site here
@@ -62,10 +62,10 @@ const config: Config = {
   themeConfig: {
     algolia: {
       // The application ID provided by Algolia
-      appId: '4ROC9CBNYO',
+      appId: '75NQZQD98W',
 
       // Public API key: it is safe to commit it
-      apiKey: '211c27ce35edac97afd5837badeffd65',
+      apiKey: '196b977a6ab22ec26d442637211aee89',
 
       indexName: 'squirrels-analyticsio',
 
@@ -74,7 +74,7 @@ const config: Config = {
     },
     image: 'img/squirrels.jpg',
     metadata: [
-      {name: 'keywords', content: 'python, squirrels, data, analytics, api, framework'}
+      {name: 'keywords', content: 'squirrels, python, data, analytics, api, framework, mcp'}
     ],
     docs: {
       sidebar: {
@@ -136,6 +136,10 @@ const config: Config = {
               label: 'Concepts',
               to: '/docs/docs/concepts'
             },
+            {
+              label: 'Guides',
+              to: '/docs/docs/guides'
+            },
           ],
         },
         {
@@ -145,10 +149,14 @@ const config: Config = {
               label: 'CLI References',
               to: '/docs/references/cli',
             },
-            // {
-            //   label: 'Python Classes',
-            //   to: '/docs/references/python',
-            // },
+            {
+              label: 'REST APIs',
+              to: '/docs/references/rest',
+            },
+            {
+              label: 'Python APIs',
+              to: '/docs/references/python',
+            },
           ],
         },
         {

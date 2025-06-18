@@ -90,4 +90,4 @@ def main(sqrl: args.ContextArgs) -> None:
 ```
 
 
-[TextParameter]: ../../../tba
+[TextParameter]: ../parameters/TextParameter

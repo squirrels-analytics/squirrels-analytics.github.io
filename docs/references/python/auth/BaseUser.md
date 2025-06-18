@@ -2,7 +2,7 @@
 
 This is the base class for the User model in Squirrels. You can extend this class to create your own User model in [user.py].
 
-Can be imported from the module `squirrels.types` or `squirrels`.
+Can be imported from the module `squirrels.auth` or `squirrels`.
 
 ## Attributes
 

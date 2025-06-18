@@ -182,8 +182,8 @@ Uses a dictionary of dataframes to execute a SQL query in an embedded in-memory 
 [federate model]: ../../../docs/concepts/models-federate
 [squirrels.yml]: ../../../docs/concepts/squirrels-yml
 [environment variables]: ../../../docs/concepts/environment
-[BaseUser]: ../types/BaseUser
+[BaseUser]: ../auth/BaseUser
 [user.py]: ../../../docs/concepts/user
-[ConnectionProperties]: ../types/ConnectionProperties
+[ConnectionProperties]: ../connections/ConnectionProperties
 [context.py]: ../../../docs/concepts/context
 [Parameter]: ../types/Parameter

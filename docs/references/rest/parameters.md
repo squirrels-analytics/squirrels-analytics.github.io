@@ -95,7 +95,7 @@ The response for API endpoints that end in `/parameters` (and the "Get Data Cata
 }
 ```
 
-These objects can be used to create custom UI widgets for the end user to interact with. You can then pass the selected values to other endpoints such as [Querying Models](../../tba), [Getting Dataset Results](../../tba), or [Getting Dashboards](../../tba).
+These objects can be used to create custom UI widgets for the end user to interact with. You can then pass the selected values to other endpoints such as [Querying Models](./data-management), [Getting Dataset Results](./datasets-dashboards), or [Getting Dashboards](./datasets-dashboards).
 
 Parameter selections can even be passed to the `/parameters` endpoint to update available parameter options based on the selected values of parent parameters with `trigger_refresh: true`.
 
