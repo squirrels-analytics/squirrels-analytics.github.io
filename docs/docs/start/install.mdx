@@ -1,0 +1,111 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+Install the Squirrels Python library. This comes with the `sqrl` CLI tool to set up a Squirrels project and run the API server.
+
+## Installing Squirrels
+
+Create an empty project directory (e.g. `squirrels-tutorial`) and open it with your favorite IDE. Also, open the terminal in the same directory.
+
+Then, follow the instructions below based on your preferred package manager.
+
+<Tabs groupId="installer">
+
+  <TabItem value="pip" label="pip">
+
+  **1. Verify Python version (requires Python ≥ 3.10):**
+
+  ```bash
+  python --version
+  ```
+
+  Ensure it prints something like `Python 3.X.Y` where X ≥ 10. If not, install the latest Python from [python.org](https://www.python.org/downloads/).
+
+  **2. Create a virtual environment in your project folder:**
+
+  ```bash
+  python -m venv .venv
+  ```
+
+  **3. Activate the virtual environment:**
+  - Windows:
+
+  ```bash
+  .venv\\Scripts\\activate
+  ```
+
+  - macOS/Linux:
+
+  ```bash
+  source .venv/bin/activate
+  ```
+
+  **4. Install Squirrels:**
+
+  ```bash
+  pip install "squirrels"
+  ```
+
+  **5. Verify the installation:**
+
+  ```bash
+  squirrels --version
+  ```
+
+  Or run `sqrl --version`.
+
+  </TabItem>
+
+  <TabItem value="uv" label="uv">
+
+  **1. Install uv (if you don't have it yet)**
+  
+  Install uv by following the official [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+  **2. Initialize your project folder (creates a `pyproject.toml`):**
+
+  ```bash
+  uv init
+  ```
+
+  Open `pyproject.toml` and make sure it specifies Python ≥ 3.10 or higher, for example:
+
+  ```toml
+  [project]
+  requires-python = ">=3.10"
+  ```
+
+  Remove the other files in the project folder except for the `pyproject.toml` file.
+
+  **3. Add Squirrels to your project (uv will create/manage a virtual environment for the project):**
+
+  ```bash
+  uv add "squirrels"
+  ```
+
+  **4. Activate the project's virtual environment if you'd like to run commands directly:**
+  - Windows:
+
+  ```bash
+  .venv\Scripts\activate
+  ```
+
+  - macOS/Linux:
+
+  ```bash
+  source .venv/bin/activate
+  ```
+
+  **5. Verify the installation:**
+
+  ```bash
+  squirrels --version
+  ```
+
+  Or run `sqrl --version`.
+
+  </TabItem>
+  
+</Tabs>

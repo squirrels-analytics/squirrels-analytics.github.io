@@ -6,7 +6,7 @@ First, pre-build any static data models that the Squirrels project rely on by ru
 sqrl build
 ```
 
-This will create the static data models in a [DuckDB](https://duckdb.org/) database. We call this database the "virtual data environment".
+This will create the static data models in a "local data lake" using [DuckLake](https://ducklake.select/). We call this the "virtual data lake".
 
 :::tip
 
@@ -34,13 +34,13 @@ D .exit
 
 If you have installed the DuckDB CLI but `sqrl duckdb` still complains that the DuckDB CLI cannot be found, try restarting your terminal or IDE before running the command again.
 
-If the version of the DuckDB CLI installed is 1.2.0 or later, it has access to a local UI on a web browser. You can run the following to explore the virtual data environment in the local UI:
+In addition to the CLI interface, you can run the following to explore the virtual data lake in a web browser:
 
 ```bash
-duckdb target/venv.duckdb -ui
+sqrl duckdb --ui
 ```
 
-This assumes your virtual data environment is in `target/venv.duckdb` which may vary depending on the `SQRL_DUCKDB_VENV__DB_FILE_PATH` environment variable.
+The UI allows you to run queries in notebooks. Be sure to select "vdl" as the attached database to access tables in the virtual data lake.
 
 :::
 
@@ -57,9 +57,10 @@ This should print something like the following in the terminal:
 ```
 Welcome to the Squirrels Data Application!
 
-- Application UI: https://squirrels-analytics.github.io/squirrels-studio/#/login?host=http%3A%2F%2F127.0.0.1%3A4465&projectName=sample&projectVersion=v1
-- API Docs (with ReDoc): http://127.0.0.1:4465/api/squirrels-v0/project/sample/v1/redoc
-- API Docs (with Swagger UI): http://127.0.0.1:4465/api/squirrels-v0/project/sample/v1/docs
+- Application UI (aka Squirrels Studio): http://127.0.0.1:4465/project/sample-expenses/v1/studio
+- API Docs (with ReDoc): http://127.0.0.1:4465/api/squirrels/v0/project/sample-expenses/v1/redoc
+- API Docs (with Swagger UI): http://127.0.0.1:4465/api/squirrels/v0/project/sample-expenses/v1/docs
+- MCP Server URL: http://127.0.0.1:4465/api/squirrels/v0/project/sample-expenses/v1/mcp
 
 INFO:     Started server process [36480]
 INFO:     Waiting for application startup.
@@ -69,7 +70,7 @@ INFO:     Uvicorn running on http://127.0.0.1:4465 (Press CTRL+C to quit)
 
 Open either of the "API Docs" links to navigate the APIs that are generated automatically for your Squirrels project. The API docs with Swagger allows you to test the APIs directly in the browser.
 
-Open the "Application UI" link to access [Squirrels Studio], a web application that can be connected to any Squirrels server (including ones running on localhost) and interact with it in various ways such as exploring available datasets / dashboards, querying data models, and exploring data lineage.
+Open the "Application UI" link to access [Squirrels Studio] and interact with it in various ways such as exploring available datasets / dashboards, querying data models, and exploring data lineage.
 
 You must log in as an admin user to query data models and explore data lineage. Use the username "admin" and the admin password you set earlier to log in. To see the data lineage for example, change the "Explore" dropdown to "Data Lineage".
 
@@ -77,9 +78,13 @@ You must log in as an admin user to query data models and explore data lineage. 
 
 Play around with [Squirrels Studio] to find other ways you can interact with your Squirrels project. For instance, you can add new users to your Squirrels project by clicking "Menu" > "Manage Users".
 
+You can also logout and click "Explore as Guest" to interact with your Squirrels project as a guest user. You may notice that the datasets, parameters, and explorers you have access to are now different.
+
 :::tip
 
 You can also build and run the API server in one command by running `sqrl run --build`.
+
+Avoid doing builds unnecessarily if there are no changes to the data models.
 
 :::
 

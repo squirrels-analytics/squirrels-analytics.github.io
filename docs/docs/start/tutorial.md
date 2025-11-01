@@ -22,7 +22,7 @@ sqrl get-file weather.db
 
 This adds a `weather.db` file in the `assets` folder. Feel free to remove the other files in the `assets` folder.
 
-Note that this is mainly done for tutorial purposes. For most production use cases, you would simply specify the database connection string (more details on this soon) and not bring a copy of the database into your project.
+Note that this is mainly done for tutorial purposes. For most production use cases, you would simply specify the database connection string (more details on this soon) to an external database and not bring a copy of the database into your project.
 
 ## Step 3: Configure the [squirrels.yml] file
 
@@ -34,7 +34,7 @@ In this step, we will focus on the **project_variables**, **connections**, and *
 
 The project variables **name** and **major_version** are required. The **label** and **description** are optional. You are also free to add any of your own project variables here.
 
-In this tutorial, we will be making datasets for historical weather data (for an undisclosed location). Change the **name** to `weather`, **label** to `Weather Analytics`, and provide a description. We will leave **major_version** as is.
+In this tutorial, we will be making datasets for historical weather data. Change the **name** to `weather`, **label** to `Weather Analytics`, and provide a description. We will leave **major_version** as is.
 
 The **project_variables** section should now look like this:
 
@@ -85,7 +85,7 @@ datasets:
   - name: weather_by_period
     label: Weather by Time of Year
     description: Gather weather statistics (precipitation, temperature, wind speed, etc.) by time of year or condition
-    model: fdr_weather_by_period
+    model: weather_by_period  # optional if same as dataset name
     parameters:
       - group_by_dim
 ```
@@ -96,26 +96,46 @@ The model field is the name of the target data model that we will create later. 
 
 Go into the `pyconfigs/parameters.py` file. This file contains the definitions of all the widget parameters used in the dataset. As of version 0.5.0, the preferred way to define parameters is to use function decorators.
 
-### Define the parameters options
+### Define the parameters
 
 We will rewrite this file. Remove all the existing code in the file and replace it with the following:
 
 ```python
-from squirrels import parameters as p, parameter_options as po, data_sources as ds
+from squirrels import parameters as p, parameter_options as po
 
+
+@p.SingleSelectParameter.create_simple(
+    name="group_by_dim", label="Group By", 
+    description="Dimension(s) to aggregate by"
+)
 def group_by_options():
     return [
-        po.SelectParameterOption('year', 'Year', dim_col='year'),
-        po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
-        po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
-        po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
-        po.SelectParameterOption('cond', 'Condition', dim_col='condition')
+        po.SelectParameterOption(
+          id="year", label="Year", 
+          dim_col="year"
+        ),
+        po.SelectParameterOption(
+          id="quarter", label="Quarter", 
+          dim_col="quarter"
+        ),
+        po.SelectParameterOption(
+          id="month", label="Month", 
+          dim_col="month_name", order_by_col="month_order"
+        ),
+        po.SelectParameterOption(
+          id="day", label="Day of Year", 
+          dim_col="day_of_year"
+        ),
+        po.SelectParameterOption(
+          id="cond", label="Condition", 
+          dim_col="condition"
+        )
     ]
 ```
 
-In this initial step, we defined a function that returns a list of parameter options as **SelectParameterOption** objects.
+In this initial step, we defined a function decorated with `@p.SingleSelectParameter.create_simple` to create a single-select parameter. The function returns a list of parameter options as **SelectParameterOption** objects.
 
-The first two parameters to the **SelectParameterOption** constructors are the ID and label. The ID must be distinct across options and should never change in the future. If an API client associates ID "day" to mean "the dataset will be grouped by day of year", then the ID must always stay as "day" such that this association would never be broken... even if the label of the option changes to "Day Index of Year" in the future.
+The first two parameters to the **SelectParameterOption** constructors are the ID and label.
 
 Arbitrary keyword arguments such as "dim_col" and "order_by_col" can be specified to the **SelectParameterOption** constructor, which will be treated as custom fields to the parameter option. For more info, see the [Widget Parameters] page.
 
@@ -125,18 +145,6 @@ The **SelectParameterOption** class has an "is_default" attribute to specify the
 
 :::
 
-### Define the parameters
-
-Next, we simply add the following decorator to the "group_by_options" function:
-
-```python
-@p.SingleSelectParameter.create_simple(
-    name="group_by_dim", label="Group By", description="Dimension(s) to aggregate by"
-)
-```
-
-This sets the name and label of the new parameter to "group_by_dim" and "Group By".
-
 :::info
 
 The possible widget parameter types supported today are **SingleSelectParameter**, **MultiSelectParameter**, **DateParameter**, **DateRangeParameter**, **NumberParameter**, **NumberRangeParameter**, and **TextParameter**. Each parameter type can be created with one of the following decorators: **create_simple**, **create_with_options**, or **create_from_source**. Every decorator takes "name" and "label" as required arguments.
@@ -145,40 +153,25 @@ For **SingleSelectParameter**, the arguments for **create_simple** and **create_
 
 :::
 
-At this point, your [parameters.py] file should look something like this:
-
-```python
-from squirrels import parameters as p, parameter_options as po, data_sources as ds
-
-@p.SingleSelectParameter.create_simple(
-    name="group_by_dim", label="Group By", description="Dimension(s) to aggregate by"
-)
-def group_by_options():
-    return [
-        po.SelectParameterOption('year', 'Year', dim_col='year'),
-        po.SelectParameterOption('quarter', 'Quarter', dim_col='quarter'),
-        po.SelectParameterOption('month', 'Month', dim_col='month_name', order_by_col='month_order'),
-        po.SelectParameterOption('day', 'Day of Year', dim_col='day_of_year'),
-        po.SelectParameterOption('cond', 'Condition', dim_col='condition')
-    ]
-```
-
 ## Step 5: Create the context file
 
 The context file is a Python file that runs in real-time to transform parameter selections and/or authenticated user attributes into meaningful values that can be used by dynamic data models.
 
-Create a `pyconfigs/context.py` file with the following contents:
+Change the `pyconfigs/context.py` file to look like the following:
 
 ```python
 from typing import Any
 from squirrels import ContextArgs, parameters as p
 
+
 def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
+    """
+    Define context variables AFTER parameter selections are made by adding entries to the dictionary "ctx". 
+    These context variables can then be used in the models.
+    """
     
-    """
-    The param_exists method confirms whether the "group_by_dim" parameter exists for the current dataset.
-    If it does, we define two context variables called "dim_col" and "order_col".
-    """
+    # The param_exists method confirms whether the "group_by_dim" parameter exists for the current dataset.
+    # If it does, we define two context variables called "dim_col" and "order_col".
     if sqrl.param_exists("group_by_dim"):
         group_by_param = sqrl.prms["group_by_dim"]
         assert isinstance(group_by_param, p.SingleSelectParameter)
@@ -186,10 +179,8 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
         ctx["dim_col"] = group_by_param.get_selected("dim_col")
         ctx["order_col"] = group_by_param.get_selected("order_by_col", default_field="dim_col")
     
-    """
-    Define the context variable "role" based on whether the user is authenticated and its attribute(s). See "user.py" for defining user attributes.
-    This is shown for demonstration purposes - the "role" context variable will not be used in any data models in this tutorial.
-    """
+    # Define the context variable "role" based on whether the user is authenticated and its attribute(s). See "user.py" for defining user attributes.
+    # This is shown for demonstration purposes - the "role" context variable will not be used in any data models in this tutorial.
     ctx["role"] = getattr(sqrl.user, "role", "none")
 ```
 
@@ -201,7 +192,7 @@ See the [Context Variables] page for more information on the context file.
 
 The available methods on the parameter object depends on the parameter type. For example, **SingleSelectParameter** objects have a `get_selected` method to get a custom field from the selected option.
 
-By asserting the parameter object is of type **SingleSelectParameter**, it makes it easier to explore the available methods on the parameter through an IDE.
+By asserting the parameter object is of type **SingleSelectParameter**, it makes it easier to explore the available methods on the parameter through an IDE's linting and autocomplete features.
 
 For more information on available methods on different parameter types, see the Python API reference page for the [squirrels.parameters] module.
 
@@ -219,7 +210,7 @@ sources:
     description: Source table for weather metrics by day over time
     connection: default
     table: weather
-    load_to_duckdb: true
+    load_to_vdl: true
 
     columns:
       - name: date
@@ -282,8 +273,6 @@ In addition, create a `seeds/seed_month_names.yml` file to add metadata for the 
 ```yaml
 description: Month number to month name mapping
 
-cast_column_types: false
-
 columns:
   - name: month_order
     type: integer
@@ -332,9 +321,9 @@ First, create a `macros/metrics.sql` file with the following contents.
 
 ### Define the build model
 
-Build models are defined in the `models/builds/` folder.
+"Build models" are defined in the `models/builds/` folder.
 
-Create a `models/builds/bds_weather_by_date.sql` file with the following contents.
+Create a `models/builds/weather_by_date.sql` file with the following contents.
 
 ```sql
 WITH
@@ -379,11 +368,11 @@ The SQL file is templated with Jinja. It calls the macros:
 - `get_metrics()` which is defined in the `macros/metrics.sql` file we created earlier
 - `ref("src_weather")` which references the "src_weather" source we defined earlier
 
-Build models are able to call `ref` on sources (that have `load_to_duckdb: true`), seeds, and other build models.
+Build models are able to call `ref` on sources (that have `load_to_vdl: true`), seeds, and other build models.
 
 :::
 
-Let's also add metadata for the build model in the `models/builds/bds_weather_by_date.yml` file.
+Let's also add metadata for the build model in the `models/builds/weather_by_date.yml` file.
 
 ```yaml
 description: |
@@ -391,7 +380,7 @@ description: |
 
 materialization: TABLE  # one of "TABLE" or "VIEW" - defaults to "VIEW" for SQL models if not specified
 
-depends_on:
+depends_on:             # optional for SQL models - Squirrels can automatically track dependencies for SQL models via the `ref()` macro
   - src_weather
   - seed_month_names
 
@@ -480,7 +469,7 @@ For more information on build models, see the [Build Models] page.
 
 Federate models are defined in the `models/federates/` folder.
 
-Create a `models/federates/fdr_weather_by_period.sql` file with the following contents.
+Create a `models/federates/weather_by_period.sql` file with the following contents.
 
 ```sql
 WITH
@@ -491,7 +480,7 @@ cte_weather_grouped AS (
         {{ ctx.order_col }} AS ordering,
         {{ get_metrics() | indent(4) }}
 
-    FROM {{ ref("bds_weather_by_date") }}
+    FROM {{ ref("weather_by_date") }}
 
     GROUP BY dim_value, ordering
 
@@ -517,18 +506,18 @@ The `{{ ctx.dim_col }}` and `{{ ctx.order_col }}` variables are used to referenc
 
 Just like the build model, we use the `get_metrics` macro again. We also use the `ref` macro to reference the build model created earlier.
 
-Federate models are able to call the `ref` macro on sources (that have `load_to_duckdb: true`), seeds, build models, dbview models, and other federate models.
+Federate models are able to call the `ref` macro on sources (that have `load_to_vdl: true`), seeds, build models, dbview models, and other federate models.
 
 :::
 
-Also, create the `models/federates/fdr_weather_by_period.yml` file to add metadata for the federate model.
+Also, create the `models/federates/weather_by_period.yml` file to add metadata for the federate model.
 
 ```yaml
 description: |
   This model aggregates weather data by time of year or condition to show weather statistics.
 
-depends_on:
-  - bds_weather_by_date
+depends_on:             # optional for SQL models - Squirrels can automatically track dependencies for SQL models via the `ref()` macro
+  - weather_by_date
 
 columns:
   - name: dimension_type
@@ -546,28 +535,28 @@ columns:
     description: Total precipitation of the time period or condition in centimeters, rounded to 1 decimal place
     category: measure
     depends_on:
-      - bds_weather_by_date.precipitation
+      - weather_by_date.precipitation
 
   - name: temperature_max
     type: decimal
     description: Maximum temperature of the time period or condition in degrees Celsius, rounded to 1 decimal place
     category: measure
     depends_on:
-      - bds_weather_by_date.temp_max
+      - weather_by_date.temp_max
 
   - name: temperature_min
     type: decimal
     description: Minimum temperature of the time period or condition in degrees Celsius, rounded to 1 decimal place
     category: measure
     depends_on:
-      - bds_weather_by_date.temp_min
+      - weather_by_date.temp_min
 
   - name: wind
     type: decimal
     description: Average wind speed of the time period or condition in km/h, rounded to 4 decimal places
     category: measure
     depends_on:
-      - bds_weather_by_date.wind
+      - weather_by_date.wind
 ```
 
 For more information on federate models, see the [Federate Models] page.
@@ -590,74 +579,71 @@ See the [Dbview Models] page for more information on dbview models.
 
 ## Step 9: Development testing
 
-You can build the static data models and run the API server by running:
+You can build the static data models by running:
 
 ```bash
-sqrl run --build
+sqrl build
 ```
 
-See [Running the project](./run-project) for more information on exploring the project in [Squirrels Studio].
+Then, run the API server by running:
+
+```bash
+sqrl run
+```
+
+Take the time now to explore the project in [Squirrels Studio] before proceeding.
 
 ### Compiling SQL queries
 
-:::note
+In practice, you may wish to review what the compiled SQL queries look like (for a given set of parameter selections) before actually running the queries.
 
-Currently, this feature is only available for compiling dbview and federate models. Support for compiling build models will be added in a future release.
-
-:::
-
-In practice, you may wish to review what the compiled SQL queries look like (for some set of parameter selections) before actually running the queries.
-
-Run the following to compile the queries for the `weather_by_period` dataset using the default parameter selections:
+Run the following to compile the queries using the default parameter selections.
 
 ```bash
-sqrl compile --dataset weather_by_period
+sqrl compile -y
 ```
 
-This creates the folder path `target/compile/weather_by_period/default` with the compiled SQL queries for all the relevant SQL models (without actually running them).
+This creates the folder path `target/compile/` with the compiled SQL queries for all the SQL models (without actually running them).
+- The `target/compile/buildtime/` folder contains the compiled SQL queries for all the "build models"
+- The `target/compile/runtime/default/` folder contains the compiled SQL queries for all the "dbview models" and "federate models" using default parameter selections
+
+If you only care about compiling one model, you can use the `-s` or `--select` option:
+
+```bash
+sqrl compile -y --select weather_by_period
+```
+
+In addition to writing the file in the `target` folder, this will print out the compiled SQL query for the `weather_by_period` model as well.
 
 :::tip
 
-You can also use `-d` instead of `--dataset`. You may also use `-D` or `--all-datasets` to compile for all datasets.
-
-:::
-
-If you only care about compiling one model, you can run:
-
-```bash
-sqrl compile --dataset weather_by_period --select fdr_weather_by_period
-```
-
-In addition to writing the file in the `target` folder, this will print out the compiled SQL query for the `fdr_weather_by_period` model as well.
-
-:::tip
-
-You can also use `-s` instead of `--select`. You can choose to run the SQL query with the `--runquery` or `-r` option. When used in conjunction with `-s` or `--select`, this will compile and run all the upstream models as well. You can find the run results as csv files in the `target` folder.
+In addition, you can choose to run the SQL query with the `--runquery` or `-r` option.
+- This produces the run results as csv files in the `target/compile/runtime/` folder.
+- This option does not apply to static data models. You may need to build the virtual data lake first before using this option.
+- When used in conjunction with `-s` or `--select` on a dynamic data model, this will compile and run all the upstream models as well.
 
 :::
 
 ### Using selection test sets
 
-To test on non-default parameter selections, you would define and use test sets. Suppose you want to group by month instead of grouping by year (the default parameter selection).
+To test on non-default parameter selections, you can define test sets. Suppose you want to group by month instead of grouping by year (the default parameter selection).
 
 In the [squirrels.yml] file, replace the **selection_test_sets** section with:
 
 ```yaml
 selection_test_sets:
   - name: group_by_month
-    datasets:
-      - weather_by_period
     parameters:
-      group_by_dim: 'month'
+      group_by_dim: month
 ```
 
-The "datasets" field defines the list of datasets that this test set can be applied to, and the "parameters" field defines parameter selections. The selected value for "group_by_dim" ("month"), which is the ID for the option labeled "Month" in the [parameters.py] file. You can use the `--test-set` or `-t` option to specify the test set to compile with:
+The "parameters" field defines parameter selections. The selected value for "group_by_dim" ("month") is the ID for the option labeled "Month" in the [parameters.py] file. You can use the `-t` or `--test-set` option to specify the test set to compile with:
 
 ```bash
-sqrl compile --dataset weather_by_period --test-set group_by_month
+sqrl compile -y --test-set group_by_month
 ```
 
-This creates new files in the `target/compile/weather_by_period/group_by_month` folder (not the "target/compile/weather_by_period/**default**" folder we were looking at before).
+This creates new files in the `target/compile/runtime/group_by_month/` folder (not the "target/compile/runtime/**default**/" folder we were looking at before).
 
 See `sqrl compile --help` or the [sqrl compile] page for more details. 
 
@@ -676,10 +662,10 @@ This will add the `dashboards/dashboard_example.py` and `dashboards/dashboard_ex
 For a working example, replace the `dashboards/dashboard_example.py` file with the following code:
 
 ```python
-from squirrels import DashboardArgs, dashboards as d
+from squirrels import arguments as args, dashboards as d
 from matplotlib import pyplot as plt, figure as f, axes as a
 
-async def main(sqrl: DashboardArgs) -> d.PngDashboard:
+async def main(sqrl: args.DashboardArgs) -> d.PngDashboard:
     weather_by_group = await sqrl.dataset("weather_by_period")
     weather_by_condition = await sqrl.dataset("weather_by_period", fixed_parameters={"group_by_dim": "cond"})
 
@@ -743,7 +729,7 @@ See the [Dashboards] page for more information on creating dashboards.
 
 :::note
 
-You must reactivate the API server the test out the new changes. Since there were no changes to the static data models you can simply run `sqrl run` instead of `sqrl run --build`.
+You must reactivate the API server to test out the new changes. If you are already running the API server, you can simply restart it by pressing "Ctrl+C" and then running `sqrl run` again.
 
 :::
 

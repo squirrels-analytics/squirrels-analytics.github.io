@@ -6,25 +6,13 @@ Once you have the Squirrels Python library installed (see [Installation](./insta
 
 The sections below provide two options for using the [sqrl new] command.
 
-### Option 1: Use default options (recommended for newcomers)
+### Option 1: Use default options
 
-Use the following command to set up the Squirrels project in the current directory without going through any interactive prompts.
+Use the following command to set up the Squirrels project **in the current directory** without going through any interactive prompts.
 
 ```bash
 sqrl new --curr-dir --use-defaults
 ```
-
-:::note
-
-In most cases, creating an empty directory allows you to set up your virtual environment in the directory first before installing Squirrels and running the command above.
-
-However, if you wish to create a new folder for your project, you can specify a positional argument for the folder name instead of using the `--curr-dir` option.
-
-```bash
-sqrl new my-project-folder --use-defaults
-```
-
-:::
 
 ### Option 2: Use interactive prompts to set up with custom options
 
