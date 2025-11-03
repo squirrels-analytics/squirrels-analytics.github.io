@@ -156,7 +156,7 @@ function HomepageHeader() {
             <p className="hero__subtitle">{siteConfig.tagline}</p>
             <p className={styles.heroDescription}>
               Build feature-rich data analytics applications with a powerful Python framework that simplifies data source connections, 
-              data models, and interactive datasets and dashboards. Includes built-in OAuth 2.1 and <b>MCP servers</b> to
+              data models, and interactive datasets and dashboards. <b>Includes built-in MCP servers</b> to
               power AI agents with user-permissioned business intelligence.
             </p>
             <div className={styles.buttons}>
@@ -205,7 +205,7 @@ function HomepageFeatures() {
   );
 }
 
-export default function Home(): JSX.Element {
+export default function Home() {
   return (
     <Layout
       title={`Home`}

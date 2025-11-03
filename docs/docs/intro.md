@@ -18,9 +18,7 @@ Want to serve well-described datasets to AI agents? Squirrels has you covered! S
 
 ## Getting Started
 
-First, check out [Installation](./start/install) and [Creating a new project](./start/new-project) to get started. 
-
-Explore the new Squirrels project to learn by example. The page on [Running the project](./start/run-project) provides details on activating the API server for the project
+First, check out [Quickstart](./start/quickstart) to get started quickly with a new working Squirrels project. 
 
 Finally, see the [Tutorial](./start/tutorial) page to follow a step-by-step guide on creating a new Squirrels project from the ground up. This should help you get a deeper understanding on the main concepts of the Squirrels framework.
 

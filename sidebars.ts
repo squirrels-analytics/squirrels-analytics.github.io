@@ -23,9 +23,7 @@ const sidebars: SidebarsConfig = {
         id: "docs/start/index"
       },
       items: [
-        "docs/start/install",
-        "docs/start/new-project",
-        "docs/start/run-project",
+        "docs/start/quickstart",
         "docs/start/tutorial",
       ],
     },

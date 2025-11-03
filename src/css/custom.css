@@ -52,8 +52,8 @@
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #b85707;
+html[data-theme='dark'] {
+  --ifm-color-primary: #ef9750;
   --ifm-color-primary-dark: #cacaca;
   --ifm-color-primary-darker: #b0b0b0;
   --ifm-color-primary-darkest: #909090;
@@ -67,44 +67,44 @@
 }
 
 /* Button styling for dark mode */
-[data-theme='dark'] .button.button--secondary {
+html[data-theme='dark'] .button.button--secondary {
   background-color: #404040;
   color: #ffffff;
   border-color: #505050;
 }
 
-[data-theme='dark'] .button.button--secondary:hover {
+html[data-theme='dark'] .button.button--secondary:hover {
   background-color: #505050;
   color: #ffffff;
   border-color: #606060;
 }
 
 /* Code block styling for dark mode */
-[data-theme='dark'] .codeBlock {
+html[data-theme='dark'] .codeBlock {
   background-color: #161616;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
-[data-theme='dark'] .command {
+html[data-theme='dark'] .command {
   color: #e0e0e0;
 }
 
-[data-theme='dark'] .comment {
+html[data-theme='dark'] .comment {
   color: #808080;
 }
 
 /* Feature card styling for dark mode */
-[data-theme='dark'] .featureCard {
+html[data-theme='dark'] .featureCard {
   background-color: #2a2a2a;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-[data-theme='dark'] .featureCard:hover {
+html[data-theme='dark'] .featureCard:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   background-color: #303030;
 }
 
 /* Hero section dark mode override */
-[data-theme='dark'] .heroBanner {
+html[data-theme='dark'] .heroBanner {
   background: linear-gradient(120deg, #242424 0%, #1a1a1a 100%);
 }

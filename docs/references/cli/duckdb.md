@@ -1,6 +1,6 @@
 # sqrl duckdb
 
-The `duckdb` command runs the DuckDB command-line interface (CLI) to interact with your project's embedded database. You must have [DuckDB installed](https://duckdb.org/docs/installation) on your system to use this command.
+The `duckdb` command runs the DuckDB command-line interface (CLI) to interact with your project's embedded database. You must have the [DuckDB CLI](https://duckdb.org/docs/installation) installed on your system to use this command.
 
 ## Usage
 
